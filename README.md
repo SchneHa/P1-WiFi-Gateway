@@ -73,7 +73,9 @@ g: feste mqtt
 
 Empfohlenes Board:
 
-Wemos D1 mini Pro, Flash Größe: 4 MB, FS: 2 MB, OTA: ~1019 kB
+Wemos D1 mini Pro, Flash Größe: 16 MB, FS: 14 MB, OTA: ~1019 kB
+ebenso möglich:
+Wemos D1 R2 und mini, Flash Größe: 4 MB, FS: 2 MB, OTA: ~1019 kB oder jedes andere kompatible board
 
 ```
 Benötigte Dateien:
@@ -173,7 +175,9 @@ g: fixed mqtt
 ```
 
 Recommended board:
-Wemos D1 mini Pro, Flash size: 4 MB, FS: 2 MB, OTA: ~1019 kB
+Wemos D1 mini Pro, Flash Größe: 16 MB, FS: 14 MB, OTA: ~1019 kB
+also possible:
+Wemos D1 R2 und mini, Flash Größe: 4 MB, FS: 2 MB, OTA: ~1019 kB or any other compatible board
 
 
 Files needed:
