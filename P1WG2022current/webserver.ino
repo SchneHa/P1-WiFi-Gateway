@@ -1,6 +1,6 @@
 // HTML statics
 
-void addHead(String& str)
+void addHead(String& str, int refresh)
 {
   str += F("<!DOCTYPE html><html lang='en' class=''>");
   str += F("<meta charset='utf-8'><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,user-scalable=no\"/>");

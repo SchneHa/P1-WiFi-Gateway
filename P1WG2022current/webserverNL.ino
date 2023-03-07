@@ -73,7 +73,7 @@ void handleUploadForm(){
     } else  AdminAuthenticated = true;
   String str="";
   monitoring = false; // stop monitoring data
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset><fieldset><legend><b>Update firmware</b></legend>");
   str += F("<form method='POST' action='/update' enctype='multipart/form-data'><p>");
@@ -107,7 +107,7 @@ void successResponse(){
 void handleRoot(){
   debugln("handleRoot");
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
 
   str += F("<main class='form-signin'>");
@@ -140,7 +140,7 @@ void handleLogin(){
     handleSetup();
   }
    String str = "";
-   addHead(str);
+   addHead(str,0);
    addIntro(str);
    str += F("<form action='/Setup2' method='POST'><fieldset>");
    str += F("<input type='hidden' name='setuptoken' value='");
@@ -160,7 +160,7 @@ void handleUpdateLogin(){
   debugln("handleUpdateLogin");
 
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<form action='/uploadDialog' method='POST'><fieldset>");
   str += F("<input type='hidden' name='setuptoken' value='");
@@ -178,7 +178,7 @@ void handleUpdateLogin(){
 void errorLogin(String returnpage){
   debugln("errorLogin");
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset><legend><b>Fout</b></legend>");
   str += F("<p><b>Admin password is incorrect.</b><br>");
@@ -206,7 +206,7 @@ void handleSetup(){
   String str = ""; 
   debugln("handleSetupForm");
 
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<form action='/SetupSave' method='POST'><fieldset>");
   str += F("<input type='hidden' name='setuptoken' value='");
@@ -333,7 +333,7 @@ void handleP1(){
   
   char str2[10];
   int temp;
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
 
   // str += ("</p>");
@@ -448,7 +448,7 @@ void handleHelp(){
   sprintf_P(ipstr, PSTR("%u.%u.%u.%u"), ip[0], ip[1], ip[2], ip[3]);
   
   String str;
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset>");
   str += F("<fieldset><legend><b>Help</b></legend>");

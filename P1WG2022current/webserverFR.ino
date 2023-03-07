@@ -63,7 +63,7 @@ void setupSaved(String& str){
 
 void uploadDiag(String& str){
   monitoring = false; // stop monitoring data
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset><fieldset><legend><b>Mettre à jour le micrologiciel</b></legend>");
   str += F("<form action='' method='post'><form method='POST' action='' enctype='multipart/form-data'><p>");
@@ -76,7 +76,7 @@ void uploadDiag(String& str){
 }
 
 void successResponse(String& str){
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset>");
   str += F("<fieldset><legend><b>Wifi et configuration du module</b></legend>");
@@ -93,7 +93,7 @@ void successResponse(String& str){
 void handleRoot(){
   debugln("handleRoot");
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
 
   str += F("<main class='form-signin'>");
@@ -107,6 +107,32 @@ void handleRoot(){
   monitoring = true;
 }
 
+void handleLogin(){
+  createToken();
+  debugln("handleLogin");
+
+  if (millis() < 60000) {
+    debug(millis());
+    debugln(" – You made it within the timeframe, go to setup without login."); 
+    bootSetup = true; // our ticket to handleSetup
+    handleSetup();
+  }
+  String str = "";
+  addHead(str,0);
+  addIntro(str);
+  str += F("<form action='/Setup2' method='POST'><fieldset>");
+  str += F("<input type='hidden' name='setuptoken' value='");
+  str+= setupToken;
+  str+=  F("'>");
+  str += F("<fieldset><legend><b>&nbsp;Login&nbsp;</b></legend>");
+  str += F("<p><b>Admin Passwort</b><br>");
+  str += F("<input type='text' class='form-control' name='adminPassword' value='' </p>");
+  str+=  F("</fieldset>");
+  str += F("<p><button type='submit'>Login</button></form>");
+  addFoot(str);
+  server.send(200, "text/html", str);
+}
+
 void handleSetup(){
   debugln("handleSetup");
   monitoring = false; // stop monitoring data
@@ -114,7 +140,7 @@ void handleSetup(){
   String str = ""; 
   debugln("handleSetupForm");
 
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset>");
   str += F("<fieldset><legend><b>&nbsp;Paramètres Wi-Fi&nbsp;</b></legend>");
@@ -230,7 +256,7 @@ void handleP1(){
   
   char str2[10];
   int temp;
-    addHead(str);
+    addHead(str,0);
     addIntro(str);
   //  str += ("<p>");
   //  str += P1timestamp;
@@ -345,7 +371,7 @@ void handleHelp(){
   IPAddress ip = WiFi.localIP();
   sprintf_P(ipstr, PSTR("%u.%u.%u.%u"), ip[0], ip[1], ip[2], ip[3]);
   String str;
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset>");
   str += F("<fieldset><legend><b>Aider</b></legend>");

@@ -34,10 +34,11 @@
 void handleGraphMenu(){
   String str="";
  
-  addHead(str);
+  addHead(str,0);
+//  addHead(str);
   addIntro(str);
   
-  #ifdef NEDERLANDS  
+  #ifdef NEDERLANDS 
     str += F("<html>\n<head>\n");
     str += F("<title>Slimme meter</title>");
     str += F("</head><body>");
@@ -136,18 +137,18 @@ void DumpDataFiles(){
 }
 
 void selectGraph(){
-char switcher[3];
-    strncpy(switcher, server.arg("graphtype").c_str(), server.arg("graphtype").length() );
-    switcher[1] ='\0';
+  char switcher[3];
+  strncpy(switcher, server.arg("graphtype").c_str(), server.arg("graphtype").length() );
+  switcher[1] ='\0';
 
-char period[6];
-    strncpy(period, server.arg("period").c_str(), server.arg("period").length() );
-    period[server.arg("period").length()] ='\0';
+  char period[6];
+  strncpy(period, server.arg("period").c_str(), server.arg("period").length() );
+  period[server.arg("period").length()] ='\0';
       
   debug("Selected graph: ");
-  debugln(switcher);
-    debug("Selected period: ");
-  debugln(period);
+    debugln(switcher);
+  debug("Selected period: ");
+    debugln(period);
   
   #ifdef NEDERLANDS
     if (server.method() == HTTP_POST){
@@ -155,38 +156,47 @@ char period[6];
       debugln(switcher);
      switch (atoi(switcher)){
       case 1: //delivered T1/T2
-        theGraph("E1.log", "E2.log", "Elektriciteit gebruik T1", "Elektriciteit gebruik T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period );
+//        theGraph("E1.log", "E2.log", "Elektriciteit gebruik T1", "Elektriciteit gebruik T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period );
+        theGraph("E1", "E2", "Elektriciteit gebruik T1", "Elektriciteit gebruik T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period );
         break;
       case 2: // returned T1/T2
-        theGraph("R1.log", "R2.log","Elektriciteit retour T1", "Elektriciteit retour T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+//        theGraph("R1.log", "R2.log","Elektriciteit retour T1", "Elektriciteit retour T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+        theGraph("R1", "R2","Elektriciteit retour T1", "Elektriciteit retour T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
         break;
       case 3: //Total E
-        theGraph("TE.log", "TR.log", "Elektriciteit totaal gebruik", "Elektriciteit totaal retour", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+//        theGraph("TE.log", "TR.log", "Elektriciteit totaal gebruik", "Elektriciteit totaal retour", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+        theGraph("TE", "TR", "Elektriciteit totaal gebruik", "Elektriciteit totaal retour", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);        
         break; 
       case 4: //Gas
-        theGraph("G.log", "","Gas","", "[{label:'uur', type:'number'},{label:'kubieke meter', type:'number'}],", period);
+//        theGraph("G.log", "","Gas","", "[{label:'uur', type:'number'},{label:'kubieke meter', type:'number'}],", period);
+        theGraph("G", "","Gas","", "[{label:'uur', type:'number'},{label:'kubieke meter', type:'number'}],", period);
         break;  
       default:
         break; 
      }
     }
   #endif
+  
   #ifdef GERMAN
     if (server.method() == HTTP_POST){
   //  int switcher = atoi(server.arg("datatype").c_str());
       debugln(switcher);
      switch (atoi(switcher)){
       case 1: //delivered T1/T2
-        theGraph("E1.log", "E2.log", "Elektrizität Verbrauch T1", "Elektrizität Verbrauch T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period );
+//        theGraph("E1.log", "E2.log", "Elektrizität Verbrauch T1", "Elektrizität Verbrauch T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period );
+        theGraph("E1", "E2", "Elektrizität Verbrauch T1", "Elektrizität Verbrauch T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period );
         break;
       case 2: // returned T1/T2
-        theGraph("R1.log", "R2.log","Elektrizität zurück T1", "Elektrizität zurück T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+//        theGraph("R1.log", "R2.log","Elektrizität zurück T1", "Elektrizität zurück T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+        theGraph("R1", "R2","Elektrizität zurück T1", "Elektrizität zurück T2", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
         break;
       case 3: //Total E
-        theGraph("TE.log", "TR.log", "Elektrizität insgesamt Verbrauch", "Elektrizität insgesamt zurück", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+//        theGraph("TE.log", "TR.log", "Elektrizität insgesamt Verbrauch", "Elektrizität insgesamt zurück", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);
+        theGraph("TE", "TR", "Elektrizität insgesamt Verbrauch", "Elektrizität insgesamt zurück", "[{label:'uur', type:'number'},{label:'kWh', type:'number'}],", period);        
         break; 
       case 4: //Gas
-        theGraph("G.log", "","Gas","", "[{label:'uur', type:'number'},{label:'Kubikmeter', type:'number'}],", period);
+//        theGraph("G.log", "","Gas","", "[{label:'uur', type:'number'},{label:'Kubikmeter', type:'number'}],", period);
+        theGraph("G", "","Gas","", "[{label:'uur', type:'number'},{label:'Kubikmeter', type:'number'}],", period);        
         break;  
       default:
         break; 
@@ -195,80 +205,86 @@ char period[6];
   #endif
 }
 
-void theGraph(const char * type1, const char * type2, String title1, String title2, String label, String period ){
+void theGraph(const char* type1, const char* type2, String title1, String title2, String label, String period) {
   monitoring = false;
-String str ="";
-char buffer[64];
-char path1[20];
-char path2[20];
-char totaal1[12];
-char totaal2[12];
-String pageTitle ="";
+  String str ="";
+  char buffer[64];
+  char path1[20];
+  char path2[20];
+  char totaal1[12];
+  char totaal2[12];
+  String pageTitle ="";
 
-#ifdef NEDERLANDS
-  if (period =="day") {
-    strcpy(path1, "/Hour");
-    strcat(path1, type1);
-    strcpy(path2, "/Hour");
-    strcat(path2, type2);
-    pageTitle = " Vandaag ";
-  } else if (period =="week") {
-    strcpy(path1, "/Week");
-    strcat(path1, type1);
-    strcpy(path2, "/Week");
-    strcat(path2, type2);
-    pageTitle = " Deze week ";
-  } else if (period =="month") {
-    strcpy(path1, "/Month");
-    strcat(path1, type1);
-    strcpy(path2, "/Month");
-    strcat(path2, type2);
-    pageTitle = " Deze maand ";
+  #ifdef NEDERLANDS
+    if (period =="day") {
+      strcpy(path1, "/Hour");
+      strcat(path1, type1);
+      strcpy(path2, "/Hour");
+      strcat(path2, type2);
+      pageTitle = " Vandaag ";
+    } else if (period =="week") {
+      strcpy(path1, "/Week");
+      strcat(path1, type1);
+      strcpy(path2, "/Week");
+      strcat(path2, type2);
+      pageTitle = " Deze week ";
+    } else if (period =="month") {
+      strcpy(path1, "/Month");
+      strcat(path1, type1);
+      strcpy(path2, "/Month");
+      strcat(path2, type2);
+      pageTitle = " Deze maand ";
+    } else if (period =="year") {
+      strcpy(path1, "/Year");
+      strcat(path1, type1);
+      strcpy(path2, "/Year");
+      strcat(path2, type2);
+      pageTitle = " Dit jaar ";
+    }
+  #endif
 
-  } else if (period =="year") {
-    strcpy(path1, "/Year");
-    strcat(path1, type1);
-    strcpy(path2, "/Year");
-    strcat(path2, type2);
-    pageTitle = " Dit jaar ";
-  }
-#endif
-
-#ifdef GERMAN
-  if (period =="day") {
-    strcpy(path1, "/Hour");
-    strcat(path1, type1);
-    strcpy(path2, "/Hour");
-    strcat(path2, type2);
-    pageTitle = " Heute ";
-  } else if (period =="week") {
-    strcpy(path1, "/Week");
-    strcat(path1, type1);
-    strcpy(path2, "/Week");
-    strcat(path2, type2);
-    pageTitle = " Diese Woche ";
-  } else if (period =="month") {
-    strcpy(path1, "/Month");
-    strcat(path1, type1);
-    strcpy(path2, "/Month");
-    strcat(path2, type2);
-    pageTitle = " Diesen Monat ";
-  } else if (period =="year") {
-    strcpy(path1, "/Year");
-    strcat(path1, type1);
-    strcpy(path2, "/Year");
-    strcat(path2, type2);
-    pageTitle = " Dieses Jahr ";
-  }  
-#endif
+  #ifdef GERMAN
+    if (period =="day") {
+      strcpy(path1, "/Hour");
+      strcat(path1, type1);
+      strcpy(path2, "/Hour");
+      strcat(path2, type2);
+      pageTitle = " Heute ";
+    } else if (period =="week") {
+      strcpy(path1, "/Week");
+      strcat(path1, type1);
+      strcpy(path2, "/Week");
+      strcat(path2, type2);
+      pageTitle = " Diese Woche ";
+    } else if (period =="month") {
+      strcpy(path1, "/Month");
+      strcat(path1, type1);
+      strcpy(path2, "/Month");
+      strcat(path2, type2);
+      pageTitle = " Diesen Monat ";
+    } else if (period =="year") {
+      strcpy(path1, "/Year");
+      strcat(path1, type1);
+      strcpy(path2, "/Year");
+      strcat(path2, type2);
+      pageTitle = " Dieses Jahr ";
+    }  
+  #endif
+strcat(path1, ".log");
+strcat(path2, ".log");
 
 //debug("file1 to read: ");
 //debugln(path1);
 //debug("file2 to read: ");
 //debugln(path2);
 
-File file1 = LittleFS.open(path1, "r");
-File file2 = LittleFS.open(path2, "r");
+//https://stackoverflow.com/questions/44159990/how-to-add-a-total-to-a-chart-in-google-charts
+
+//File file1 = LittleFS.open(path1, "r");
+//File file2 = LittleFS.open(path2, "r");
+File file1 = FST.open(path1, "r");
+File file2 = FST.open(path2, "r");
+
 
 addGraphHead(str);
 str += F("<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>");
@@ -312,12 +328,13 @@ server.sendContent(str);
 // debugln(str);
 
  delay(200);
+ 
  str ="";
 
-if (type2[0] != '\0'){
-  str = F("function drawChart2() { var data = new google.visualization.arrayToDataTable([");
-  str += label; //F("[\"uur\", \"m^3\"], ");
-  server.sendContent( str);
+  if (type2[0] != '\0'){
+    str = F("function drawChart2() { var data = new google.visualization.arrayToDataTable([");
+    str += label; //F("[\"uur\", \"m^3\"], ");
+    server.sendContent( str);
 //  debugln(str);
 
   if (!file2) {
@@ -339,12 +356,12 @@ if (type2[0] != '\0'){
   str += title2; //'Gasverbruik per uur in m^3'
   str += F(" '};"); 
   if (type2[0] == 'T')     
-      str += F("var chart = new google.visualization.LineChart(document.getElementById('Chart2'));");
-      else  str += F("var chart = new google.visualization.ColumnChart(document.getElementById('Chart2'));");
+    str += F("var chart = new google.visualization.LineChart(document.getElementById('Chart2'));");
+  else  str += F("var chart = new google.visualization.ColumnChart(document.getElementById('Chart2'));");
   str += F("chart.draw(data, options); }");
   server.sendContent ( str);
 //  debugln(str);
-}  //only if we have a second file to display
+  }  //only if we have a second file to display
 
   #ifdef NEDERLANDS
     str = F("</script>");
@@ -361,7 +378,9 @@ if (type2[0] != '\0'){
       str += F("<div id=\"Chart2\" style=\"width:100%; max-width:1200px; height:500px\"></div><br>");
       str += F("Totaal deze periode: ");
       str += "nog te implementeren</br></fieldset>";
+    }  
   #endif
+  
   #ifdef GERMAN
     str = F("</script>");
     str += F("</head><body>");
@@ -376,15 +395,17 @@ if (type2[0] != '\0'){
     if (type2[0] != '\0'){
       str += F("<div id=\"Chart2\" style=\"width:100%; max-width:1200px; height:500px\"></div><br>");
       str += F("Insgesamt für diese Periode: ");
-      str += "noch zu implementieren</br></fieldset>";  
-  #endif    
-}
+      str += "noch zu implementieren</br></fieldset>";
+    }  
+  #endif
+     
+//}
   str += F("<form action='/' method='POST'><button class='button bhome'>Menu</button></form>");
   addFootBare(str);   
   server.sendContent ( str);
 //  debugln(str);
   server.sendContent(F(""));
- monitoring = true;
+  monitoring = true;
 }
 
 void calendarGas(){
@@ -416,15 +437,18 @@ server.sendContent(str);
   delay(200);
  }
  str = "";
+ 
  #ifdef NEDERLANDS
    str += F("]); var chart = new google.visualization.Calendar(document.getElementById('calendar_gas')); var options = { title: 'Gas gebruiksintensiteit', height: 350};");
  #endif
+ 
  #ifdef GERMAN
    str += F("]); var chart = new google.visualization.Calendar(document.getElementById('calendar_gas')); var options = { title: 'Gas Verbrauchsintensität', height: 350};");
  #endif
- str += F("chart.draw(dataTable, options);}</script></head><body><div id='calendar_gas' style='width: 1000px; height: 350px;'></div>");
+ 
+ str += F("chart.draw(dataTable, options);}</script></head><body><div id='calendar_gas' style='width: 800px; height: 350px;'></div>");
 
-  str += F("<form action='/' method='POST'><button class='button bhome'>Menu</button></form>");
+  str += F("<form action='/' method='POST'><button class='button bhome'style='width: 300px'>Menu</button></form>");
   addFootBare(str);   
   server.sendContent (str);
 //debugln(str);

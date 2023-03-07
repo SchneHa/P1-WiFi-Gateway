@@ -1,5 +1,6 @@
 #ifdef GERMAN
-void addIntro(String& str){
+//void addIntro(String& str){
+  void addIntro(String& str){
   char ipstr[20];
   IPAddress ip = WiFi.localIP();
   sprintf_P(ipstr, PSTR("%u.%u.%u.%u"), ip[0], ip[1], ip[2], ip[3]);
@@ -73,7 +74,7 @@ void handleUploadForm(){
     } else  AdminAuthenticated = true;
   String str="";
   monitoring = false; // stop monitoring data
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset><fieldset><legend><b>Update Firmware</b></legend>");
   str += F("<form method='POST' action='/update' enctype='multipart/form-data'><p>");
@@ -107,7 +108,7 @@ void successResponse(){
 void handleRoot(){
   debugln("handleRoot");
   String str = ""; 
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
 
   str += F("<main class='form-signin'>");
@@ -140,7 +141,7 @@ void handleLogin(){
     handleSetup();
   }
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<form action='/Setup2' method='POST'><fieldset>");
   str += F("<input type='hidden' name='setuptoken' value='");
@@ -160,7 +161,7 @@ void handleUpdateLogin(){
   debugln("handleUpdateLogin");
 
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<form action='/uploadDialog' method='POST'><fieldset>");
   str += F("<input type='hidden' name='setuptoken' value='");
@@ -178,7 +179,7 @@ void handleUpdateLogin(){
 void errorLogin(String returnpage){
   debugln("errorLogin");
   String str = "";
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset><legend><b>Fout</b></legend>");
   str += F("<p><b>Admin Passwort ist falsch.</b><br>");
@@ -206,7 +207,7 @@ void handleSetup(){
   String str = ""; 
   debugln("handleSetupForm");
 
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<form action='/SetupSave' method='POST'><fieldset>");
   str += F("<input type='hidden' name='setuptoken' value='");
@@ -335,7 +336,7 @@ void handleP1(){
   
   char str2[10];
   int temp;
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
 	
    // str += ("<p>");
@@ -450,7 +451,7 @@ void handleRawData(){
 /*
 void uploadDiag(String& str){
   monitoring = false; // stop monitoring data
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset><fieldset><legend><b>Update firmware</b></legend>");
   str += F("<form action='' method='post'><form method='POST' action='' enctype='multipart/form-data'><p>");
@@ -469,7 +470,7 @@ void handleHelp(){
   sprintf_P(ipstr, PSTR("%u.%u.%u.%u"), ip[0], ip[1], ip[2], ip[3]);
   
   String str;
-  addHead(str);
+  addHead(str,0);
   addIntro(str);
   str += F("<fieldset>");
   str += F("<fieldset><legend><b>Hilfe</b></legend>");
@@ -487,7 +488,7 @@ void handleHelp(){
   str += F("Nach der Erstellung erscheinen die Idxes auf der Registerkarte 'Geräte'.</p><br>");
   str += F("");
   str += F("Über Port 23 des Moduls (p1wifi.local:23) können Daten auch gelesen werden (z.B. von Domoticz). ");
-  str += F("Auf diese Weise kann die Domoticz mittels Hardware einstellung [P1 Smart Meter mit LAN-Schnittstelle] Daten abrufen. ");
+  str += F("Auf diese Weise kann die Domoticz mittels Hardwareeinstellung [P1 Smart Meter mit LAN-Schnittstelle] Daten abrufen. ");
   str += F("Sie brauchen auf der p1wifi Seite nichts einzustellen (Nur Häkchen bei json und mqtt). ");
 
   str += F("Für andere Systeme können Sie einen MQTT Broker verwenden. Füllen Sie die Details der Broker aus und legen Sie das Stammthema fest. Für Home Assistant ist dies 'sensors/power/p1meter'.</p>");

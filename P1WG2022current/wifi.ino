@@ -101,6 +101,7 @@ void start_webservices(){
   server.on("/zapFiles", zapFiles);
   server.on("/zapConfig", zapConfig);
   server.on("/Dir", DirListing);
+  server.on("/Format", formatFS);
   
   server.onNotFound(handleNotFound);
 #endif
@@ -124,7 +125,7 @@ server.on("/update", HTTP_POST, []() {
       if (upload.status == UPLOAD_FILE_START) {
         Serial.setDebugOutput(true);
         WiFiUDP::stopAll();
-        debugf("Update: %s\n", upload.filename.c_str());
+        debugff("Update: %s\n", upload.filename.c_str());
         uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
         if (!Update.begin(maxSketchSpace)) { //start with max available size
           Update.printError(Serial);
@@ -135,7 +136,7 @@ server.on("/update", HTTP_POST, []() {
         }
       } else if (upload.status == UPLOAD_FILE_END) {
         if (Update.end(true)) { //true to set the size to the current progress
-          debugf("Update Success: %u\nRebooting...\n", upload.totalSize);
+          debugff("Update Success: %u\nRebooting...\n", upload.totalSize);
           successResponse();
           ESP.restart();
         } else {
@@ -183,7 +184,7 @@ void calcSleeptime(){
     case MAIN:
       time_to_sleep = millis() + 5000;
       break;
-    case CONFIG:
+    case WCONFIG:
       time_to_sleep = millis() + wakeTime + 10000;
       break;
     case DATA:

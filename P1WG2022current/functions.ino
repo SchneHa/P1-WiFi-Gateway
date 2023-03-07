@@ -70,6 +70,15 @@ int FindCharInArrayRev(char array[], char c, int len) {
     }
   }
   return -1;
+  
+}
+int FindCharInArrayRev2(char array[], char c, int len) {
+  for (int i = len - 1; i >= 0; i--) {
+    if (array[i] == c && array[i+1] == '(') {
+      return i;
+    }
+  }
+  return -1;
 }
 
 void settime(){
@@ -77,6 +86,8 @@ void settime(){
   //YYMMDDhhmmssX
   setTime(NUM(6,10) + NUM(7,1), NUM(8, 10) + NUM(9, 1), NUM(10, 10) + NUM(11, 1), NUM(4, 10)+ NUM(5, 1), NUM(2,10) + NUM(3, 1), NUM(0, 10) + NUM(1,1)); 
   debug(timestamp());
+  LastReportinSecs = now();
+  timeIsSet = true;
 }
 
 String timestamp(){
@@ -85,6 +96,15 @@ String timestamp(){
 
 String timestampkaal(){
     return (String) hour() + ":" + minute() + ":" + second();
+}
+
+void timeIsSet_cb(){
+  if (!timeIsSet)
+  {
+    debugln("Time is set, starting timer service.");
+    timeIsSet = true;
+    timerAlarm.startService();
+  }
 }
 
 void createToken(){
@@ -100,7 +120,7 @@ void createToken(){
 }
 
 void listDir(const char * dirname) {
-  debugf("Listing directory: %s\n", dirname);
+  debugff("Listing directory: %s\n", dirname);
 
   Dir root = LittleFS.openDir(dirname);
 
@@ -114,14 +134,14 @@ void listDir(const char * dirname) {
     time_t lw = file.getLastWrite();
     file.close();
     struct tm * tmstruct = localtime(&cr);
-   Serial.printf("    CREATION: %d-%02d-%02d %02d:%02d:%02d\n", (tmstruct->tm_year) + 1900, (tmstruct->tm_mon) + 1, tmstruct->tm_mday, tmstruct->tm_hour, tmstruct->tm_min, tmstruct->tm_sec);
+    Serial.printf("    CREATION: %d-%02d-%02d %02d:%02d:%02d\n", (tmstruct->tm_year) + 1900, (tmstruct->tm_mon) + 1, tmstruct->tm_mday, tmstruct->tm_hour, tmstruct->tm_min, tmstruct->tm_sec);
     tmstruct = localtime(&lw);
    Serial.printf("  LAST WRITE: %d-%02d-%02d %02d:%02d:%02d\n", (tmstruct->tm_year) + 1900, (tmstruct->tm_mon) + 1, tmstruct->tm_mday, tmstruct->tm_hour, tmstruct->tm_min, tmstruct->tm_sec);
   }
 }
 
 void readFile(const char * path) {
-  debugf("Reading file: %s\n", path);
+  debugff("Reading file: %s\n", path);
   debugln();
   File file = LittleFS.open(path, "r");
   if (!file) {
@@ -138,9 +158,10 @@ void readFile(const char * path) {
 }
 
 void writeFile(const char * path, const char * message) {
-  debugf("Writing file: %s\n", path);
+  debugff("Writing file: %s\n", path);
 
-  File file = LittleFS.open(path, "w");
+//  File file = LittleFS.open(path, "w");
+  File file = FST.open(path, "w");
   if (!file) {
     debugln("Failed to open file for writing");
     return;
@@ -155,26 +176,37 @@ void writeFile(const char * path, const char * message) {
 }
 
 void appendFile(const char * path, const char * message) {
-  debugf("Appending to file: %s\n", path);
+  debugfff("Appending to file: %s\n", path, (String)millis());
+  char payload[50];
 
-  File file = LittleFS.open(path, "a");
+//  File file = LittleFS.open(path, "a");
+  File file = FST.open(path, "a");
   if (!file) {
     debugln("Failed to open file for appending");
+    sprintf(payload, "can't open file %s", path);
+    send_mqtt_message("p1wifi/logging", payload);
     return;
   }
   if (file.print(message)) {
     debug("Message appended: ");
     debugln(message);
+    sprintf(payload,"Append to %s with %s succeeded: %s", path, message, timestampkaal());
+    send_mqtt_message("p1wifi/logging", payload);
   } else {
     debugln("Append failed");
+    sprintf(payload,"Append to %s with %s failed: %s", path, message, timestampkaal());
+    send_mqtt_message("p1wifi/logging", payload);
   }
+  file.flush();
+  delay(3000);
   file.close();
 }
 
 void renameFile(const char * path1, const char * path2) {
-  debugf("Renaming file %s ", path1);
-  debugf("to %s\n", path2);
-  if (LittleFS.rename(path1, path2)) {
+  debugff("Renaming file %s ", path1);
+  debugff("to %s\n", path2);
+//  if (LittleFS.rename(path1, path2)) {
+  if (FST.rename(path1, path2)) {
     debugln("File renamed");
   } else {
     debugln("Rename failed");
@@ -182,8 +214,9 @@ void renameFile(const char * path1, const char * path2) {
 }
 
 void deleteFile(const char * path) {
-  debugf("Deleting file: %s\n", path);
-  if (LittleFS.remove(path)) {
+  debugff("Deleting file: %s\n", path);
+//  if (LittleFS.remove(path)) {
+  if (FST.remove(path)) {
     debugln("File deleted");
   } else {
     debugln("Delete failed");
@@ -235,7 +268,8 @@ int numLines(const char * path){
   char ch;
   
   debugln("counting lines in file");
-    File file = LittleFS.open(path, "r");
+//    File file = LittleFS.open(path, "r");
+  File file = FST.open(path, "r");
   if (!file) {
     debugln("Failed to open file for reading");
     return 0;
@@ -252,9 +286,11 @@ int numLines(const char * path){
 }
 
 boolean MountFS(){
-    debugln("Mount LittleFS");
-  if (!LittleFS.begin()) {
-    debugln("LittleFS mount failed");
+  debugln("Mount LittleFS");
+//  if (!LittleFS.begin()) {
+//    debugln("LittleFS mount failed");
+  if (!FST.begin()) {
+    debugln("FST mount failed");  
     return false;
   }
   return true;
@@ -262,7 +298,8 @@ boolean MountFS(){
 
 static void handleNotFound() {
   String path = server.uri();
-  if (!LittleFS.exists(path)) {
+//  if (!LittleFS.exists(path)) {
+  if (!FST.exists(path)) {
     server.send(404, "text/plain", "Path " + path + " not found. Please double-check the URL");
     return;
   }
@@ -278,7 +315,8 @@ static void handleNotFound() {
   } else if (path.endsWith(".log")) {
     contentType = "text/plain";
   }
-  File file = LittleFS.open(path, "r");
+//  File file = LittleFS.open(path, "r");
+  File file = FST.open(path, "r");
   server.streamFile(file, contentType);
   file.close();
 }
@@ -334,4 +372,68 @@ void zapConfig(){
   deleteFile("/logData.txt");
   deleteFile("/logData-1.txt");
 debugln("done.");
+}
+
+void formatFS(){
+  char payload[50];
+  sprintf(payload,"Formatting filesystem at %s", timestampkaal());
+  if (MQTT_debug) send_mqtt_message("p1wifi/logging", payload);
+    FST.format();
+    if (!FST.begin()) {
+      debugln("FST mount failed AGAIN");
+    } else {
+      sprintf(payload,"Filesystem formatted at %s", timestampkaal());
+      if (MQTT_debug)  send_mqtt_message("p1wifi/logging", payload);
+  }
+}
+
+String totalXY(const char* type, String period){
+  char value[12];
+  if (period == "day") {
+    if (type == "E1") return (String)(atof(electricityUsedTariff1) - atof(log_data.dayE1));
+    if (type == "E2") return (String)(atof(electricityUsedTariff2) - atof(log_data.dayE2));
+    if (type == "R1") return (String)(atof(electricityReturnedTariff1) - atof(log_data.dayR1));
+    if (type == "R2") return (String)(atof(electricityReturnedTariff2) - atof(log_data.dayR2));
+    if (type == "TE") {
+      dtostrf((atof(electricityUsedTariff1) - atof(log_data.dayE1)) + (atof(electricityUsedTariff2) - atof(log_data.dayE2)), 6, 2, value);
+      return (String)value;
+    }
+    if (type == "TR") {
+      dtostrf((atof(electricityReturnedTariff1) - atof(log_data.dayR1)) + (atof(electricityReturnedTariff2) - atof(log_data.dayR2)), 6, 2, value);
+      return (String)value;
+    }
+    if (type == "G") return (String)(atof(gasReceived5min) - atof(log_data.dayG));
+    
+  } else if (period == "week") {
+    if (type == "E1") return (String)(atof(electricityUsedTariff1) - atof(log_data.weekE1));
+    if (type == "E2") return (String)(atof(electricityUsedTariff2) - atof(log_data.weekE2));
+    if (type == "R1") return (String)(atof(electricityReturnedTariff1) - atof(log_data.weekR1));
+    if (type == "R2") return (String)(atof(electricityReturnedTariff2) - atof(log_data.weekR2));
+    if (type == "TE") {
+      dtostrf((atof(electricityUsedTariff1) - atof(log_data.weekE1)) + (atof(electricityUsedTariff2) - atof(log_data.weekE2)), 6, 2, value);
+      return (String)value;
+    }
+    if (type == "TR") {
+      dtostrf((atof(electricityReturnedTariff1) - atof(log_data.weekR1)) + (atof(electricityReturnedTariff2) - atof(log_data.weekR2)), 6, 2, value);
+      return (String)value;
+    }
+    if (type == "G") return (String)(atof(gasReceived5min) - atof(log_data.weekG));
+  } else if (period == "month") {
+    if (type == "E1") return (String)(atof(electricityUsedTariff1) - atof(log_data.monthE1));
+    if (type == "E2") return (String)(atof(electricityUsedTariff2) - atof(log_data.monthE2));
+    if (type == "R1") return (String)(atof(electricityReturnedTariff1) - atof(log_data.monthR1));
+    if (type == "R2") return (String)(atof(electricityReturnedTariff2) - atof(log_data.monthR2));
+    if (type == "TE") {
+      dtostrf((atof(electricityUsedTariff1) - atof(log_data.monthE1)) + (atof(electricityUsedTariff2) - atof(log_data.monthE2)), 6, 2, value);
+      return (String)value;
+    }
+    if (type == "TR") {
+      dtostrf((atof(electricityReturnedTariff1) - atof(log_data.monthR1)) + (atof(electricityReturnedTariff2) - atof(log_data.monthR2)), 6, 2, value);
+      return (String)value;
+    }
+    if (type == "G") return (String)(atof(gasReceived5min) - atof(log_data.monthG));    
+  } else if (period == "year") {
+    return "Year not implemented yet";
+  }
+  return "fault";
 }

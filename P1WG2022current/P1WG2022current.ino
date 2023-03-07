@@ -1,163 +1,167 @@
+ /*
+ * Copyright (c) 2022 Ronald Leenes
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 /*
-  Copyright (c) 2022 Ronald Leenes
-
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+ * @file P1WG2022current.ino
+ * @author Ronald Leenes
+ *         Hans Schneider
+ * @date 03.03.2023
+ * @version 1.2 
+ *
+ * @brief This file contains the main file for the P1 wifi gatewway
+ *
+ * @see http://esp8266thingies.nl
+ */
+ 
+/*
+ * P1 wifi gateway 2022
+ * 
+ * Deze software brengt verschillende componenten bij elkaar in een handzaam pakket.
+ * 
+ * De software draait op een ESP8285 of ESP8266 en heeft een bescheiden voetafdruk.
+ * 
+ * De data processing is gebaseerd op: http://domoticx.com/p1-poort-slimme-meter-data-naar-domoticz-esp8266/
+ * De captive portal is gebaseerd op een van de ESP8266 voorbeelden, de OTA eenheid eveneens.
+ * 
+ * De module levert data aan een host via JSON of MQTT messages, maar kan ook via de webinterface van de module of via telnet worden uitgelezen
+ * 
+ * De module zal bij opstarten eerst de buffercondensator laden. 
+ * Vervolgens knippert hij 2x en zal eerst proberen te koppelen aan je wifi netwerk. Gedurende dat proces zal de LED knipperen
+ * met een periode van 0.5 Hz.
+ * Wanneer geen verbinding kan worden gemaakt start de modiule een Access point onder de naam P1_Setup
+ * Verbind met dit netwerk en surf naar 192.168.4.1
+ * 
+ * Het menuscherm van de module verschijnt dan. Vul daar SSID en wachtwoord van je wifi netwerk in. 
+ * Daaronder vul je gegevens van de ontvangede server in (IP en poortnummer). Dit kan je DOmotociz server zijn
+ * In dat geval moet je ook het IDx dat Domoticz maakt voor een Gas device en een Energy device invoeren.
+ * Tenslotte geef je aan per hoeveel seconde je data naar de server wilt laten sturen.
+ * DSMR4 meters hanteren een meetinterval van 10 sec. SMR5 meters leveren iedere seconde data. Dat lijkt me wat veel en 
+ * kost de module ook veel stroom waardoor het maar de vraag is of hij parasitair (door de meter gevoed) kan werken.
+ * Ik raad een interval van 15 sec of hoger aan. Het interval dat je hier invoert zal niet altijd synchroon lopen met
+ * het data interval van de meter, ga er dus niet van uit dat je exact iedere x seconden een meetwaarde ziet in DOmoticz. 
+ * Tussen metingen 'slaapt' de module (de modem wordt afgeschakeld waardoor het stroomverbruik van zo'n 70mA terugvalt naar 15 mA). 
+ * Dit geeft de bufferelco tijd omm op te laden voor de stroompiekjes die de wifi zender van de module produceert 
+ * (en het bespaart hoe dan ook wat stroom (die weliswaar door je energieleverancier wordt betaald, maar toch). Alle kleine 
+ * beetjes helpen..
+ *
+ *  informatie, vragen, suggesties ed richten aan romix@macuser.nl 
+ *  
+ *  
+ *    
+ *  versie: 1.2
+ *  datum:  3 Mar 2023
+ *  auteur: Ronald Leenes
+ *          Hans Schneider
+ *          
+ *          
+ *  1.2:   bug fixes
+ *         improvements for T211 SmartMeter in Belgium
+ *         implemented support for HTTP input meter in cFos Power Brain wallbox *  
+ *  1.1b   cleaning up, bug fixes, cosmetic changes
+ *  1.1adc
+ *  1.1ad: bug fixes and graph improvements
+ *  1.1aa: bug fixes
+ *  1.1: implemented graphs
+ *  
+ *  
+ *  ud: fixed refreshheader
+ *  ua: fixed setup field issue
+ *  u: 
+ *    password on Setup and Firmware Update
+ *    made mqtt re-connect non-blocking
+ *    incorporated "DSMR Reader" mqtt topics 
+ *    fixed hardboot daycounters reset
+ *    fixed sending empty MQTT messages
+ *  
+ *  t: improvements on powermanagement, overall (minor) cleanup
+ *  ta: fix for Telnet reporting
+ *  
+ *  s: added German localisation
+ *        Added mqtt output for Swedish specific OBIS codes
+ *        
+ *  r: speed improvements and streamlining of the parser
+ *      localisations for: NL, SE
+ *      
+ *  q: added daily values
+ *  p: incorporated equipmentID in mqtt set
+ *  o: fixed gas output, fixed mqtt reconnect
+ *  n: empty call to SetupSave now redirects to main menu instead of resetting settings ;-)
+ *      fixed kWh/Wh inversion
+ *  m: setupsave fix, relocate to p1wifi.local na 60 sec 
+ *      mqtt - kw/W fix
+ *  l: wifireconnect after wifi loss
+ *  k: fixed big BUG, softAP would not produce accessible webserver.
+ *  j: raw data on port 23
+ *      major code rewrite
+ *      implemented data reporting methods: 
+ *        parsed data: json, mqtt, p1wifi.local/P1
+ *        raw data: telnet on port 23, p1wifi.local/Data
+ *        
+ *  i:  extended max line length for TD210-D meters, which have a really loong 1-0:99.97.0 line
+ *  h:  extended mqtt set with instant powers, voltages, actual tarif group. power outages, power drops
+ *  g: fixed mqtt
+ *  
+ *  Generic ESP8285 module 
+*   Flash Size: 2mb (FS: 128Kb, OTA: –960Kb) 
+*   
+*   needed files: 
+*   this one (obv), 
+*   vars.h            in the process of moving all vars here
+*   lang.h
+*   CRC16.h
+*   JSON.ino
+*   MQTT.ino
+*   TELNET.ino
+*   debug.ino
+*   decoder.ino
+*   functions.ino
+*   graph.ino
+*   webserver.ino
+*   webserverDE.ino 
+*   webserverSE.ino
+*   webserverNL.ino
+*   wifi.ino
+*   
 */
 
-/*
-   @file P1WG2022current.ino
-   @author Ronald Leenes
-           Haans Schneider
-   @date 28.12.2022
-         14.02.2023
-         03.03.2023
-   @version 1.2
-
-   @brief This file contains the main file for the P1 wifi gatewway
-
-   @see http://esp8266thingies.nl
-*/
-
-/*
-   P1 wifi gateway 2022
-
-   Deze software brengt verschillende componenten bij elkaar in een handzaam pakket.
-
-   De software draait op een ESP8285 of ESP8266 en heeft een bescheiden voetafdruk.
-
-   De data processing is gebaseerd op: http://domoticx.com/p1-poort-slimme-meter-data-naar-domoticz-esp8266/
-   De captive portal is gebaseerd op een van de ESP8266 voorbeelden, de OTA eenheid eveneens.
-
-   De module levert data aan een host via JSON of MQTT messages, maar kan ook via de webinterface van de module of via telnet worden uitgelezen
-
-   De module zal bij opstarten eerst de buffercondensator laden.
-   Vervolgens knippert hij 2x en zal eerst proberen te koppelen aan je wifi netwerk. Gedurende dat proces zal de LED knipperen
-   met een periode van 0.5 Hz.
-   Wanneer geen verbinding kan worden gemaakt start de modiule een Access point onder de naam P1_
-   Verbind met dit netwerk en surf naar 192.168.4.1
-
-   Het menuscherm van de module verschijnt dan. Vul daar SSID en wachtwoord van je wifi netwerk in.
-   Daaronder vul je gegevens van de ontvangede server in (IP en poortnummer). Dit kan je DOmotociz server zijn
-   In dat geval moet je ook het IDx dat Domoticz maakt voor een Gas device en een Energy device invoeren.
-   Tenslotte geef je aan per hoeveel seconde je data naar de server wilt laten sturen.
-   DSMR4 meters hanteren een meetinterval van 10 sec. SMR5 meters leveren iedere seconde data. Dat lijkt me wat veel en
-   kost de module ook veel stroom waardoor het maar de vraag is of hij parasitair (door de meter gevoed) kan werken.
-   Ik raad een interval van 15 sec of hoger aan. Het interval dat je hier invoert zal niet altijd synchroon lopen met
-   het data interval van de meter, ga er dus niet van uit dat je exact iedere x seconden een meetwaarde ziet in DOmoticz.
-   Tussen metingen 'slaapt' de module (de modem wordt afgeschakeld waardoor het stroomverbruik van zo'n 70mA terugvalt naar 15 mA).
-   Dit geeft de bufferelco tijd omm op te laden voor de stroompiekjes die de wifi zender van de module produceert
-   (en het bespaart hoe dan ook wat stroom (die weliswaar door je energieleverancier wordt betaald, maar toch). Alle kleine
-   beetjes helpen..
-
-    informatie, vragen, suggesties ed richten aan romix@macuser.nl
-
-
-
-    versie: 1.2
-    datum:  3 Mar 2023
-    auteur: Ronald Leenes
-            Hans Schneider
-
-    1.2: bug fixes
-         improvements for T211 SmartMeter in Belgium
-         implemented support for HTTP input meter in cFos Power Brain wallbox
-
-    1.1aa: bug fixes
-    1.1: implemented graphs
-
-
-    ud: fixed refreshheader
-    ua: fixed setup field issue
-    u:
-      password on Setup and Firmware Update
-      made mqtt re-connect non-blocking
-      incorporated "DSMR Reader" mqtt topics
-      fixed hardboot daycounters reset
-      fixed sending empty MQTT messages
-
-    t: improvements on powermanagement, overall (minor) cleanup
-    ta: fix for Telnet reporting
-
-    s: added German localisation
-          Added mqtt output for Swedish specific OBIS codes
-
-    r: speed improvements and streamlining of the parser
-        localisations for: NL, SE
-
-    q: added daily values
-    p: incorporated equipmentID in mqtt set
-    o: fixed gas output, fixed mqtt reconnect
-    n: empty call to SetupSave now redirects to main menu instead of resetting settings ;-)
-        fixed kWh/Wh inversion
-    m: setupsave fix, relocate to p1wifi.local na 60 sec
-        mqtt - kw/W fix
-    l: wifireconnect after wifi loss
-    k: fixed big BUG, softAP would not produce accessible webserver.
-    j: raw data on port 23
-        major code rewrite
-        implemented data reporting methods:
-          parsed data: json, mqtt, p1wifi.local/P1
-          raw data: telnet on port 23, p1wifi.local/Data
-
-    i:  extended max line length for TD210-D meters, which have a really loong 1-0:99.97.0 line
-    h:  extended mqtt set with instant powers, voltages, actual tarif group. power outages, power drops
-    g: fixed mqtt
-
-    Generic ESP8285 module
-    Flash Size: 2mb (FS: 128Kb, OTA: –960Kb)
-
-    needed files:
-    this one (obv),
-    CRC16.h
-    JSON.ino
-    MQTT.ino
-    TELNET.ino
-    debug.ino
-    decoder.ino
-    functions.ino
-    graph.ino
-    webserver.ino
-    webserverDE.ino
-    webserverSE.ino
-    webserverNL.ino
-    wifi.ino
-*/
 bool zapfiles = false; //false; //true;
 
-#define      GERMAN // GERMAN / FRENCH / NEDERLANDS / SWEDISH
+#define      SWEDISH // GERMAN / FRENCH / NEDERLANDS / SWEDISH
 
 #ifdef GERMAN
-  String lang = "DE";
+  String sfx = "DE";
 #endif
 #ifdef FRENCH
-  String lang = "FR";
+  String sfx = "FR";
 #endif
 #ifdef NEDERLANDS
-  String lang = "NL";
+  String sfx = "NL";
 #endif
 #ifdef SWEDISH
-  String lang = "SE";
+  String sfx = "SE";
 #endif
 
-String version = "1.2 – "+lang;
+String version = "1.2 – "+sfx;
 
 #define HOSTNAME "p1meter"
-
+#define FSystem 0 // 0= LittleFS 1 = SPIFFS
 #define GRAPH 1
 #define V3
-#define DEBUG 1 //0 //1 //0 //1 // 1 is on serial only, 2 is serial + telnet, 
+#define DEBUG 1 //0 //1 //2 //3 // 1 is on serial only, 2 is serial + telnet, 3 is MQTT?
 #define ESMR5 1
 //#define SLEEP_ENABLED
 
@@ -170,24 +174,32 @@ const char* host = "P1test";
 #define BLED LED_BUILTIN
 #define debug(x) Serial.print(x)
 #define debugf(x) Serial.printf(x)
-#define debugf(x,y) Serial.printf(x,y)
-#define debugff(x,y,z) Serial.printf(x,y,z)
+#define debugff(x,y) Serial.printf(x,y)
+#define debugfff(x,y,z) Serial.printf(x,y,z)
 #define debugln(x) Serial.println(x)
 #elif DEBUG == 2
 #define BLED LED_BUILTIN
 #define debug(x) Serial.print(x);if(telnetConnected)telnet.print(x)
 #define debugf(x) Serial.printf(x)
-#define debugf(x,y) Serial.printf(x,y)
-#define debugff(x,y,z) Serial.printf(x,y,z)
+#define debugff(x,y) Serial.printf(x,y)
+#define debugfff(x,y,z) Serial.printf(x,y,z)
 #define debugln(x) Serial.println(x);if(telnetConnected)telnet.println(x)
-#else
-const char* host = "P1wifi";
+#elif DEBUG == 3
+const char* host = "P1home";
 #define BLED LED_BUILTIN
 #define debug(x)
 #define debugln(x)
 #define debugf(x)
-#define debugf(x,y)
-#define debugff(x,y,z)
+#define debugff(x,y)
+#define debugfff(x,y,z)
+#else
+const char* host = "p1wifi";
+#define BLED LED_BUILTIN
+#define debug(x)
+#define debugln(x)
+#define debugf(x)
+#define debugff(x,y)
+#define debugfff(x,y,z)
 #endif
 
 #define errorHalt(msg) {debugln(F(msg)); return;}
@@ -200,19 +212,28 @@ const char* host = "P1wifi";
 #define OE  16 //IO16 OE on the 74AHCT1G125 
 #define DR  4  //IO4 is Data Request
 
-
+#include <TZ.h>
+#define MYTZ TZ_Europe_Amsterdam
 #include <TimeLib.h>
+#include <coredecls.h> // settimeofday_cb()
+#include <MyAlarm.h>
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiUdp.h>
 #include "CRC16.h"
-//#include <base64.h>
 
 #if GRAPH == 1
-#include "FS.h"
-#include <LittleFS.h>
+//  #include "FS.h"
+  #if FSystem == 0
+    #include <LittleFS.h>
+    #define FST LittleFS
+  #elif FSystem == 1
+    #include "FS.h" //SPIFFS
+    #define FST SPIFFS
 //#include "SPIFFS.h"
-File file;
+  #endif
+  File file;
 #endif
 
 
@@ -264,6 +285,7 @@ bool telnetConnected = false;
 // end raw data stuff
 
 #include "vars.h"
+//#include "lang.h"
 
 struct settings {
   char dataSet[4];
@@ -284,9 +306,8 @@ struct settings {
   char cfosPort[10] = "80";
   char cfosID[5] = "M4";
   char cfosModel[30] = "HTTP_Input";
-//  char cfosIsVA[10] = "false";
   char interval[3] = "20";
-  char cfosVA[4] = "";
+  char cfosVA[4] = "n";
   char domo[4] = "j";
   char mqtt[4] = "n";
   char cfos[4] = "j";
@@ -298,40 +319,17 @@ struct settings {
 
 
 float RFpower = 0;      //20.5; // (For OdBm of output power, lowest. Supply current~70mA)
-//20.5dBm (For 20.5dBm of output, highest. Supply current~85mA)
+                        //20.5dBm (For 20.5dBm of output, highest. Supply current~85mA)
 
 ADC_MODE(ADC_VCC);  // allows you to monitor the internal VCC level;
 float volts;
 
-// energy management vars
-int interval;
-unsigned long nextUpdateTime = 0;
-long last10 = 0;
-unsigned long time_to_wake = 0; // calculated wakeup time
-unsigned long time_to_sleep = 0;    // calculated sleep time
-unsigned long lastSleeptime = 0;
-boolean entitledToSleep = false;       // aangezien slaapinterval en meetinterval niet synchroon lopen, moeten we na ontwaken eerst een telegram inlezen en afleveren alvorens ModemSleep mag worden aangeroepen.
-bool monitoring = false;          // are we permitted to collect P1 data? Not if in setup or firmware update
-bool atsleep = true;
-bool bootSetup = false;           // flag for adminpassword bypass
-
-// datagram stuff
-#define MAXLINELENGTH 1040        // 0-0:96.13.0 has a maximum lenght of 1024 chars + 11 of its identifier
-char telegram[MAXLINELENGTH];     // holds a single line of the datagram
-String datagram;                  // holds entire datagram for raw output
-bool datagramValid = false;    //
-bool dataEnd = false;             // signals that we have found the end char in the data (!)
-unsigned int currentCRC = 0;      // the CRC v alue of the datagram
-bool gas22Flag = false;        // flag for parsing second gas line on dsmr2.2 meters
-bool reportInDecimals = true;
-bool CRCcheckEnabled = true;      // by default enable CRC checking
-String mtopic = "Een lange MQTT boodschap als placeholder";
 
 // Vars to store meter readings
 // we capture all data in char arrays or Strings for longer hard to delineate data
 String P1header;
 char P1version[8];
-int P1prot;             // 4 or 5 based on P1version 1-3:0.2.8
+int P1prot;             // 4 or 5 based on P1version 1-3:0.2.8 
 char P1timestamp[30]  = "\0";
 char equipmentId[100] = "\0";
 char electricityUsedTariff1[12];
@@ -351,9 +349,9 @@ char numberVoltageSwellsL1[7];
 char numberVoltageSwellsL2[7];
 char numberVoltageSwellsL3[7];
 String textMessage;
-char instantaneousVoltageL1[8];
-char instantaneousVoltageL2[8];
-char instantaneousVoltageL3[8];
+char instantaneousVoltageL1[7];
+char instantaneousVoltageL2[7];
+char instantaneousVoltageL3[7];
 char instantaneousCurrentL1[9];
 char instantaneousCurrentL2[9];
 char instantaneousCurrentL3[9];
@@ -365,7 +363,7 @@ char activePowerL2NP[9];
 char activePowerL3NP[9];
 
 // Swedish specific
-char cumulativeActiveImport[12];    // 1.8.0 
+char cumulativeActiveImport[12];    // 1.8.0
 char cumulativeActiveExport[12];    // 2.8.0
 char cumulativeReactiveImport[12];  // 3.8.0
 char cumulativeReactiveExport[12];  // 4.8.0
@@ -408,70 +406,6 @@ char prevGAS[12];           // not an P1 protocol var, but holds gas value
 // char monthStartReturnedT1[12];
 // char monthStartReturnedT2[12];
 
-// process stuff
-#define DISABLED 0
-#define WAITING 1
-#define READING 2
-#define CHECKSUM 3
-#define DONE 4
-#define FAILURE 5
-int state = DISABLED;
-
-#define CONFIG  0   // getting basic Meter data to select correct parse rules
-#define GOTMETER 1
-#define RUNNING 2
-int devicestate = CONFIG;
-
-#define NONE 0
-#define MAIN 1
-#define DATA 2
-#define CONFIG 3
-#define UPDATE 4
-int webstate = NONE;
-
-
-bool wifiSta = false;
-bool breaking = false;
-bool softAp = false;
-bool Json = false;
-bool Telnet = false;
-
-bool AdminAuthenticated = false;
-bool Mqtt = false;
-bool MqttConnected = false;
-bool MqttDelivered = false;
-String LastReport = ""; //timestamp of last telegram reported
-bool mqtt_dsmr = false; // deliver mqtt data in 'dsmr reader" format
-bool MQTT_debug = false;
-
-// for cFos
-bool cfos = true;
-const char* cfosUsr = "admin";
-const char* cfosPwd = "1234abcd";
-const char* cfosIP = "192.168.1.183";
-const char* cfosPort = "80";
-const char* cfosID = "M4";
-const char* cfosModel = "HTTP_Input";
-const char* cfosIsVA = "true";
-char aktuelleLeistungImport[8];
-char aktuelleLeistungExport[8];
-char CurrentL1[9];
-char CurrentL2[9];
-char CurrentL3[9];
-// for cFos Ende
-
-bool daystart = true;
-bool OEstate = false;  // 74125 OE output enable is off by default (EO signal high)
-// a bit of a kludge to get the first readings at coldboot to reset the daycounter. the coldboot flags will be reset once the daycounters are reset with valid values. The availability of valid values is signalled by
-// the two gotXReadings
-bool coldbootE = true;
-bool coldbootG = true;
-bool gotPowerReading = false;
-bool gotGasReading = false;
-char setupToken[18];
-
-bool needToInitLogVars = false;
-bool needToInitLogVarsGas = false;
 
 void setup() {
   WiFi.forceSleepBegin(sleepTime * 1000000L); //In uS. Must be same length as your delay
@@ -493,8 +427,8 @@ void setup() {
   debugln("Done with Cap charging … ");
   debugln("Let's go …");
 
-  EEPROM.begin(sizeof(struct settings) );
-  EEPROM.get( 0, config_data );
+  EEPROM.begin(sizeof(struct settings));
+  EEPROM.get(0, config_data);
 
   if (config_data.dataSet[0] != 'j') {
     config_data = (settings) {"n", "", "", "192.168.1.12", "8080", "1234", "1235", "sensors/power/p1meter", "192.168.1.12", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "192.168.1.183", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "n", "adminpwd"};
@@ -506,24 +440,25 @@ void setup() {
   (config_data.cfos[0] == 'j') ? cfos = true : cfos = false;
   (config_data.telnet[0] == 'j') ? Telnet = true : Telnet = false;
   (config_data.debug[0] == 'j') ? MQTT_debug = true : MQTT_debug = false;
-  if (config_data.cfosVA[0] == 'j')
+  if (config_data.cfosVA[0] == 'j') {
     cfosIsVA = "true";
-  else
+  } else {
     cfosIsVA = "false";
+  }
   
   if (strcmp(config_data.mqttTopic, "dsmr") == 0) { // auto detext need to report in 'dsmr reader' mqtt format
     mqtt_dsmr = true;
-    // reportInDecimals = true;
+   // reportInDecimals = true;
   } else {
-    mqtt_dsmr = false;
-    // reportInDecimals = false;
+    mqtt_dsmr = false; 
+   // reportInDecimals = false;
   }
 
   debugln("EEprom read: done");
   PrintConfigData();
 
   interval = atoi(config_data.interval) * 1000;
-  debug("interval: ");
+  debug("Internal Interval: ");
   debugln(interval);
 
   debugln("Trying to connect to your WiFi network:");
@@ -545,8 +480,8 @@ void setup() {
     }
   }
   debugln("");
-  debugln("Set up WiFi, either in STA or AP mode");
-  if (softAp) {
+  debugln("Set up wifi, either in STA or AP mode");
+  if (softAp){
     debugln("running in AP mode, all handles will be initiated");
     start_webservices();
   }
@@ -568,42 +503,46 @@ void setup() {
       start_services();
     #endif
     debugln("All systems are ok...");
-
+    
     state = WAITING;    // signal that we are waiting for a valid start char (aka /)
     devicestate = CONFIG;
-    nextUpdateTime = nextMQTTreconnectAttempt = millis();
-
+    nextUpdateTime = nextMQTTreconnectAttempt = EverSoOften = millis();
     monitoring = true; // start monitoring data
     time_to_sleep = millis() + wakeTime;  // we go to sleep wakeTime seconds from now
 
     // handle Files
     debug("Mounting file system ... ");
-    if (!LittleFS.begin()) {
-      debugln("LittleFS mount failed");
-      debug("Formatting file system ... ");
-      LittleFS.format();
-      if (!LittleFS.begin()) {
-        debugln("LittleFS mount failed AGAIN");
-      } else
-      {
+
+    if (!FST.begin()) {
+      debugln("FST mount failed");
+      debug("Formatting file system ... "); 
+      FST.format();
+      if (!FST.begin()) {
+        debugln("FST mount failed AGAIN");
+      } else { 
         debugln("done.");
         if (zapfiles) zapFiles();
+        }
+      } else debugln("done.");
+ 
+
+      debugln("Reading logdata:");
+      File logData = FST.open("/logData.txt", "r");
+      if (logData) {
+        logData.read((byte *)&log_data, sizeof(log_data)/sizeof(byte));
+        logData.close();
+      } else {
+        debugln("Failed to open logData.txt for reading");
+        needToInitLogVars = true;
+        needToInitLogVarsGas = true;
       }
-    }
-
-    File logData = LittleFS.open("/logData.txt", "r");
-    if (logData) {
-      logData.read((byte *)&log_data, sizeof(log_data));
-      logData.close();
-    } else {
-      debugln("Failed to open logData.txt for reading");
-      needToInitLogVars = true;
-      needToInitLogVarsGas = true;
-    }
-    if (zapfiles) zapFiles();
-
-  } // WL connected
-  //debugln("Something is terribly wrong, no network connection");
+      if (zapfiles) zapFiles();
+      
+   } // WL connected
+ //debugln("Something is terribly wrong, no network connection");
+  timerAlarm.stopService();
+  settimeofday_cb(timeIsSet_cb);
+  configTime(MYTZ, "pool.ntp.org");
 }
 
 void readTelegram() {
@@ -619,7 +558,7 @@ void readTelegram() {
         break;
       } else { // we don't have valid data, but still may need to report to Domo
         if (dataEnd && !CRCcheckEnabled) { //this is used for dsmr 2.2 meters
-          // yield(); //state = WAITING;
+         // yield(); //state = WAITING; 
         }
       }
     }
@@ -627,9 +566,8 @@ void readTelegram() {
   }
 }
 
-
 void loop() {
-  if ((millis() > nextUpdateTime) && monitoring) {
+  if (millis() > nextUpdateTime) {//&& monitoring) {
     if (!OEstate) { // OE is disabled  == false
       RTS_on();
       Serial.flush();
@@ -637,17 +575,22 @@ void loop() {
   } // update window
   if (OEstate) readTelegram();
 
-  if ((millis() > time_to_sleep) && !atsleep && wifiSta) { // not currently sleeping and sleeptime
+//  if ((millis() > time_to_sleep) && !atsleep && wifiSta) { // not currently sleeping and sleeptime
   #ifdef SLEEP_ENABLED
-    modemSleep();
+    if ((millis() > time_to_sleep) && !atsleep && wifiSta){  // not currently sleeping and sleeptime
+      modemSleep();
+    }
+    if (wifiSta && (millis() > time_to_wake) && (WiFi.status() != WL_CONNECTED)) { // time to wake, if we're not already awake
+      modemWake();
+    }
   #endif
-  }
+//  }
 
-  if (wifiSta && (millis() > time_to_wake) && (WiFi.status() != WL_CONNECTED)) { // time to wake, if we're not already awake
-  #ifdef SLEEP_ENABLED
-    modemWake();
-  #endif
-  }
+//  if (wifiSta && (millis() > time_to_wake) && (WiFi.status() != WL_CONNECTED)) { // time to wake, if we're not already awake
+//  #ifdef SLEEP_ENABLED
+//    modemWake();
+//  #endif
+//  }
 
   if (datagramValid && (state == DONE) && (WiFi.status() == WL_CONNECTED)) {
 
@@ -676,26 +619,55 @@ void loop() {
       state = WAITING;
     }
     if (MQTT_debug) MQTT_Debug();
-    
-    nextUpdateTime = millis() + interval;
-    if (ESP.getFreeHeap() < 2000) ESP.reset(); // watchdog, we do have a memory leak (still)
-    state = WAITING;
 
-    checkCounters();
-    resetFlags();
-  }
+    state = WAITING;
+  }  
+    
+//    nextUpdateTime = millis() + interval;
+//    if (ESP.getFreeHeap() < 2000) ESP.reset(); // watchdog, we do have a memory leak (still)
+//    state = WAITING;
+
+//    checkCounters();
+//    resetFlags();
+//  }
 
   if (softAp || (WiFi.status() == WL_CONNECTED)) {
     server.handleClient(); //handle web requests
     MDNS.update();
     if (Telnet) telnet.loop();
   }
-  //yield();
+
+  if (millis() > EverSoOften){
+    checkCounters();
+    resetFlags();
+    doWatchDogs();
+    EverSoOften = millis() + 22000;
+  }
+  timerAlarm.update(); 
+}
+
+void initTimers(){
+  #if DEBUG == 1
+    timerAlarm.createHour(59, 0, doHourlyLog);
+    timerAlarm.createHour(15, 0, doHourlyLog);
+    timerAlarm.createHour(30, 0, doHourlyLog);
+    timerAlarm.createHour(45, 0, doHourlyLog);
+  #else
+    timerAlarm.createHour(59, 0, doHourlyLog);
+  #endif
+  timerAlarm.createDay(23,58, 0, doDailyLog);
+  timerAlarm.createWeek(timerAlarm.dw_Sunday, 23, 59, 0, doWeeklyLog);
+  timerAlarm.createMonth(31, 0, 0, 0, doMonthlyLog);
 }
 
 void checkCounters() {
   // see logging.ino
-  time_t t = now();
+//  time_t t = now();
+  if (timeIsSet && !TimeTriggersSet) {
+    initTimers();
+    TimeTriggersSet= true;
+  }
+
   if (coldbootE && gotPowerReading) {
     if (needToInitLogVars) {
       doInitLogVars();
@@ -703,6 +675,7 @@ void checkCounters() {
     resetEnergyDaycount();
     resetEnergyMonthcount();
   }
+  
   if (coldbootG && gotGasReading) {
     if (needToInitLogVarsGas) {
       doInitLogVarsGas();
@@ -710,23 +683,55 @@ void checkCounters() {
     resetGasCount();
   }
 
-  if (!CHK_FLAG(logFlags, hourFlag) && minute(t) == 59) doHourlyLog();
-  if (!CHK_FLAG(logFlags, dayFlag) && (hour(t) == 23) && (minute(t) == 59)) doDailyLog();
-  if (!CHK_FLAG(logFlags, weekFlag) && weekday(t) == 1 && hour(t) == 23 && minute(t) == 59) doWeeklyLog(); // day of the week (1-7), Sunday is day 1
-  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 28 && month(t) == 2 && hour(t) == 23 && minute(t) == 59 && year(t) != 2024 && year(t) != 2028 ) doMonthlyLog();
-  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 29 && month(t) == 2 && hour(t) == 23 && minute(t) == 59 ) doMonthlyLog(); // schrikkeljaren
-  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 30 && (month(t) == 4 || month(t) == 6 || month(t) == 9 || month(t) == 11) && hour(t) == 23 && minute(t) == 59 ) doMonthlyLog();
-  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 31 && (month(t) == 1 || month(t) == 3 || month(t) == 5 || month(t) == 7 || month(t) == 8 || month(t) == 10 || month() == 12) && hour() == 23 && minute() == 59 ) doMonthlyLog();
-  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 31 && month(t) == 12 && hour(t) == 23 && minute(t) == 59 ) doYearlyLog();
+//  if (!CHK_FLAG(logFlags, hourFlag) && ( minute() == 10 || minute() == 20 || minute() == 30 || minute() == 40 || minute() == 50) ) doHourlyLog();
+
+// if (!minFlag && second() > 55) doMinutelyLog();
+
+//  if (!CHK_FLAG(logFlags, hourFlag) && minute(t) == 59) doHourlyLog();
+//  if (!CHK_FLAG(logFlags, dayFlag) && (hour(t) == 23) && (minute(t) == 59)) doDailyLog();
+//  if (!CHK_FLAG(logFlags, weekFlag) && weekday(t) == 1 && hour(t) == 23 && minute(t) == 59) doWeeklyLog(); // day of the week (1-7), Sunday is day 1
+//  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 28 && month(t) == 2 && hour(t) == 23 && minute(t) == 59 && year(t) != 2024 && year(t) != 2028 ) doMonthlyLog();
+//  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 29 && month(t) == 2 && hour(t) == 23 && minute(t) == 59 ) doMonthlyLog(); // schrikkeljaren
+//  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 30 && (month(t) == 4 || month(t) == 6 || month(t) == 9 || month(t) == 11) && hour(t) == 23 && minute(t) == 59 ) doMonthlyLog();
+//  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 31 && (month(t) == 1 || month(t) == 3 || month(t) == 5 || month(t) == 7 || month(t) == 8 || month(t) == 10 || month() == 12) && hour() == 23 && minute() == 59 ) doMonthlyLog();
+//  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 31 && month(t) == 12 && hour(t) == 23 && minute(t) == 59 ) doYearlyLog();
+//  doMonthlyLog();
+//  if (!monthFlag && day() == 31 && (month() == 1 || month() == 3 || month() == 5 || month() == 7 || month() == 8 || month() == 10 || month() == 12) && hour() == 23 && minute() == 59 ) doMonthlyLog();
+//  if (!monthFlag && day() == 31 && month() == 12 && hour() == 23 && minute() == 59 ) doYearlyLog();
 }
 
 void resetFlags() {
-  if (CHK_FLAG(logFlags, hourFlag) &&  (minute() > 0) ) CLR_FLAG(logFlags, hourFlag);// if (hourFlag &&  (minute() > 24)) hourFlag = false; // CLR_FLAG(logFlags, hourFlag);
-  if (CHK_FLAG(logFlags, dayFlag) && (day() > 0)) CLR_FLAG(logFlags, dayFlag);
+//  if (CHK_FLAG(logFlags, hourFlag) &&  (minute() > 0) ) CLR_FLAG(logFlags, hourFlag);// if (hourFlag &&  (minute() > 24)) hourFlag = false; // CLR_FLAG(logFlags, hourFlag);
+//  if (CHK_FLAG(logFlags, dayFlag) && (day() > 0)) CLR_FLAG(logFlags, dayFlag);
 
-  if (CHK_FLAG(logFlags, weekFlag) &&  (weekday() > 1)) CLR_FLAG(logFlags, weekFlag);
-  if (CHK_FLAG(logFlags, monthFlag) &&  (day() > 0)) CLR_FLAG(logFlags, monthFlag);
-  if (CHK_FLAG(logFlags, yearFlag) &&  (day() == 1) && month() == 1) CLR_FLAG(logFlags, yearFlag);
-  debug("logFlags : ");
-  Serial.println(logFlags);
+//  if (CHK_FLAG(logFlags, weekFlag) &&  (weekday() > 1)) CLR_FLAG(logFlags, weekFlag);
+//  if (CHK_FLAG(logFlags, monthFlag) &&  (day() > 0)) CLR_FLAG(logFlags, monthFlag);
+//  if (CHK_FLAG(logFlags, yearFlag) &&  (day() == 1) && month() == 1) CLR_FLAG(logFlags, yearFlag);
+//  debug("logFlags : ");
+//  Serial.println(logFlags);
+  if (minFlag && (second() > 5) && (second() < 10)) minFlag = false;
+  if (checkMinute >= 59) checkMinute = 0; 
+  if (hourFlag && ((minute() > (checkMinute + 2)) && (minute() < (checkMinute + 4)))) hourFlag=false;// if (hourFlag &&  (minute() > 24)) hourFlag = false; // CLR_FLAG(logFlags, hourFlag);
+  if (dayFlag && (day() > 0)) dayFlag = false;
+  if (weekFlag && (weekday() > 1)) weekFlag = false;
+  if (monthFlag && (day() > 0)) monthFlag = false;
+  if (yearFlag && (day() == 1) && month() == 1) yearFlag = false;
+}
+
+void doWatchDogs(){
+  char payload[60];
+  if (ESP.getFreeHeap() < 2000) ESP.reset(); // watchdog, in case we still have a memery leak
+  if (millis() - LastSample > 300000) {
+    Serial.flush();
+    sprintf(payload, "No data in 300 sec, restarting monitoring: ", timestampkaal());
+    if (MQTT_debug) send_mqtt_message("p1wifi/logging", payload);
+    hourFlag = false;
+    nextUpdateTime = millis() + 10000;
+    OEstate = false;
+    state = WAITING;
+    monitoring=true;
+  }
+  if (minute() == 23) hourFlag = false; // clear all flags at a safe timeslot. 
+  if (minute() == 43) hourFlag = false; // clear all flags at a safe timeslot.
+  if (!monitoring && (minute() == 16 || minute() == 31 || minute() == 46)  ) monitoring = true; // kludge to make sure we keep monitoring
 }

@@ -339,7 +339,7 @@ void doMonthlyLog(){
    * set flag
    */
 
-  debug("Monthlyly log started ... ");
+  debug("Monthly log started ... ");
   String str ="";
   char buffer[55];
   char value[12];
