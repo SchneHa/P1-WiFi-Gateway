@@ -1,5 +1,6 @@
 ### P1-WiFi-Gateway
 P1-WiFi-Gateway mit Unterstützung der cFos Power Brain Wallbox
+
 P1 wifi gateway 2022
 
 **(English Version below)**
@@ -103,7 +104,8 @@ Anmerkung: Zurzeit sind nur die Deutsche und die Niederländische Versionen lauf
 
 **English Version:**
 
-P1-WiFi-Gateway with suppert for cFos Power Brain Wallbox
+P1-WiFi-Gateway with support for cFos Power Brain Wallbox
+
 P1 wifi gateway 2022
 
 This software combines various components in one handy package.
