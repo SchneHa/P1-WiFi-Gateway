@@ -140,7 +140,7 @@
 
 bool zapfiles = false; //false; //true;
 
-#define      SWEDISH // GERMAN / FRENCH / NEDERLANDS / SWEDISH
+#define      GERMAN // GERMAN / FRENCH / NEDERLANDS / SWEDISH
 
 #ifdef GERMAN
   String sfx = "DE";
@@ -161,7 +161,7 @@ String version = "1.2 – "+sfx;
 #define FSystem 0 // 0= LittleFS 1 = SPIFFS
 #define GRAPH 1
 #define V3
-#define DEBUG 1 //0 //1 //2 //3 // 1 is on serial only, 2 is serial + telnet, 3 is MQTT?
+#define DEBUG 1 //0 //1 //2 //3 // 1 is on serial only, 2 is serial + telnet
 #define ESMR5 1
 //#define SLEEP_ENABLED
 
@@ -273,7 +273,7 @@ WiFiClient espClient;                   // * Initiate WIFI client
 PubSubClient mqtt_client(espClient);    // * Initiate MQTT client
 bool MQTT_Server_Fail = false;
 long nextMQTTreconnectAttempt;
-char outstr[10];
+//char outstr[10];
 // end mqtt stuff
 
 //// Raw data server

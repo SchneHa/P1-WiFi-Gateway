@@ -152,26 +152,26 @@ void MQTT_reporter(){
       mqtt_send_metric("meter-stats/short_power_drops", numberVoltageSagsL1);
       mqtt_send_metric("meter-stats/short_power_peaks", numberVoltageSwellsL1);    
 
-     send_metric("day-consumption/electricity1", (atof(electricityUsedTariff1) - atof(log_data.dayE1)));
-     send_metric("day-consumption/electricity2", (atof(electricityUsedTariff2) - atof(log_data.dayE2)));
-     send_metric("day-consumption/electricity1_returned", (atof(electricityReturnedTariff1) - atof(log_data.dayR1)));
-     send_metric("day-consumption/electricity2_returned", (atof(electricityReturnedTariff2) - atof(log_data.dayR2)));
+      send_metric("day-consumption/electricity1", (atof(electricityUsedTariff1) - atof(log_data.dayE1)));
+      send_metric("day-consumption/electricity2", (atof(electricityUsedTariff2) - atof(log_data.dayE2)));
+      send_metric("day-consumption/electricity1_returned", (atof(electricityReturnedTariff1) - atof(log_data.dayR1)));
+      send_metric("day-consumption/electricity2_returned", (atof(electricityReturnedTariff2) - atof(log_data.dayR2)));
 
-     send_metric("day-consumption/electricity_merged", ((atof(electricityUsedTariff1) - atof(log_data.dayE1)) + (atof(electricityUsedTariff2) - atof(log_data.dayE2))));
-     send_metric("day-consumption/electricity_returned_merged", ((atof(electricityReturnedTariff1) - atof(log_data.dayR1)) + (atof(electricityReturnedTariff2) - atof(log_data.dayR2))));
-     send_metric("day-consumption/gas", (atof(gasReceived5min) - atof(log_data.dayG)));
+      send_metric("day-consumption/electricity_merged", ((atof(electricityUsedTariff1) - atof(log_data.dayE1)) + (atof(electricityUsedTariff2) - atof(log_data.dayE2))));
+      send_metric("day-consumption/electricity_returned_merged", ((atof(electricityReturnedTariff1) - atof(log_data.dayR1)) + (atof(electricityReturnedTariff2) - atof(log_data.dayR2))));
+      send_metric("day-consumption/gas", (atof(gasReceived5min) - atof(log_data.dayG)));
 
-     send_metric("current-month/electricity1", (atof(electricityUsedTariff1) - atof(log_data.monthE1)));
-     send_metric("current-month/electricity2", (atof(electricityUsedTariff2) - atof(log_data.monthE2)));
-     send_metric("current-month/electricity1_returned", (atof(electricityReturnedTariff1) - atof(log_data.monthR1)));
-     send_metric("current-month/electricity2_returned", (atof(electricityReturnedTariff2) - atof(log_data.monthR2)));
+      send_metric("current-month/electricity1", (atof(electricityUsedTariff1) - atof(log_data.monthE1)));
+      send_metric("current-month/electricity2", (atof(electricityUsedTariff2) - atof(log_data.monthE2)));
+      send_metric("current-month/electricity1_returned", (atof(electricityReturnedTariff1) - atof(log_data.monthR1)));
+      send_metric("current-month/electricity2_returned", (atof(electricityReturnedTariff2) - atof(log_data.monthR2)));
 
-     send_metric("current-month/electricity_merged", ((atof(electricityUsedTariff1) - atof(log_data.monthE1)) + (atof(electricityUsedTariff2) - atof(log_data.monthE2))));
-     send_metric("current-month/electricity_returned_merged", ((atof(electricityReturnedTariff1) - atof(log_data.monthR1)) + (atof(electricityReturnedTariff2) - atof(log_data.monthR2))));
-     send_metric("current-month/gas", (atof(gasReceived5min) - atof(log_data.monthG)));
-     LastReport = timestampkaal();
-     MqttDelivered = true;
-     return;
+      send_metric("current-month/electricity_merged", ((atof(electricityUsedTariff1) - atof(log_data.monthE1)) + (atof(electricityUsedTariff2) - atof(log_data.monthE2))));
+      send_metric("current-month/electricity_returned_merged", ((atof(electricityReturnedTariff1) - atof(log_data.monthR1)) + (atof(electricityReturnedTariff2) - atof(log_data.monthR2))));
+      send_metric("current-month/gas", (atof(gasReceived5min) - atof(log_data.monthG)));
+      LastReport = timestampkaal();
+      MqttDelivered = true;
+      return;
     
   }
   mqtt_send_metric("equipmentID", equipmentId);
@@ -232,7 +232,7 @@ void MQTT_reporter(){
   mqtt_send_metric("long_power_outages", numberLongPowerFailuresAny);
   mqtt_send_metric("short_power_drops", numberVoltageSagsL1);
   mqtt_send_metric("short_power_peaks", numberVoltageSwellsL1);
-  mqtt_send_metric("P1module_voltage", outstr);
+//  mqtt_send_metric("P1module_voltage", outstr);
 #endif
 
 #ifdef SWEDISH
@@ -269,42 +269,42 @@ void MQTT_reporter(){
 /*
  * https://github.com/forsberg/esphome-p1reader
  */
-      mqtt_send_metric("cumulativeActiveImport", cumulativeActiveImport);       // 1.8.0
-      mqtt_send_metric("cumulativeActiveExport", cumulativeActiveExport);       // 2.8.0
-      mqtt_send_metric("cumulativeReactiveImport", cumulativeReactiveImport);   // 3.8.0
-      mqtt_send_metric("cumulativeReactiveExport", cumulativeReactiveExport);   // 4.8.0
+  mqtt_send_metric("cumulativeActiveImport", cumulativeActiveImport);       // 1.8.0
+  mqtt_send_metric("cumulativeActiveExport", cumulativeActiveExport);       // 2.8.0
+  mqtt_send_metric("cumulativeReactiveImport", cumulativeReactiveImport);   // 3.8.0
+  mqtt_send_metric("cumulativeReactiveExport", cumulativeReactiveExport);   // 4.8.0
 
-      mqtt_send_metric("momentaryActiveImport", momentaryActiveImport);         // 1.7.0
-      mqtt_send_metric("momentaryActiveExport", momentaryActiveExport);         // 2.7.0
-      mqtt_send_metric("momentaryReactiveImport", momentaryReactiveImport);     // 3.7.0
-      mqtt_send_metric("momentaryReactiveExport", momentaryReactiveExport);     // 4.7.0      
+  mqtt_send_metric("momentaryActiveImport", momentaryActiveImport);         // 1.7.0
+  mqtt_send_metric("momentaryActiveExport", momentaryActiveExport);         // 2.7.0
+  mqtt_send_metric("momentaryReactiveImport", momentaryReactiveImport);     // 3.7.0
+  mqtt_send_metric("momentaryReactiveExport", momentaryReactiveExport);     // 4.7.0      
 
-      mqtt_send_metric("momentaryActiveImportL1", activePowerL1P);              // 21.7.0
-      mqtt_send_metric("momentaryActiveExportL1", reactivePowerL1NP);           // 22.7.0
+  mqtt_send_metric("momentaryActiveImportL1", activePowerL1P);              // 21.7.0
+  mqtt_send_metric("momentaryActiveExportL1", reactivePowerL1NP);           // 22.7.0
 
-      mqtt_send_metric("momentaryActiveImportL2", activePowerL2P);              // 41.7.0
-      mqtt_send_metric("momentaryActiveExportL2", reactivePowerL2NP);           // 42.7.0
+  mqtt_send_metric("momentaryActiveImportL2", activePowerL2P);              // 41.7.0
+  mqtt_send_metric("momentaryActiveExportL2", reactivePowerL2NP);           // 42.7.0
 
-      mqtt_send_metric("momentaryActiveImportL3", activePowerL3P);              // 61.7.0
-      mqtt_send_metric("momentaryActiveExportL3", reactivePowerL3NP);           // 62.7.0
+  mqtt_send_metric("momentaryActiveImportL3", activePowerL3P);              // 61.7.0
+  mqtt_send_metric("momentaryActiveExportL3", reactivePowerL3NP);           // 62.7.0
 
-      mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveImportL1);   // 23.7.0
-      mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveExportL1);   // 24.7.0
+  mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveImportL1);   // 23.7.0
+  mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveExportL1);   // 24.7.0
       
-      mqtt_send_metric("momentaryReactiveImportL2", momentaryReactiveImportL2);   // 43.7.0
-      mqtt_send_metric("momentaryReactiveExportL2", momentaryReactiveExportL2);   // 44.7.0
+  mqtt_send_metric("momentaryReactiveImportL2", momentaryReactiveImportL2);   // 43.7.0
+  mqtt_send_metric("momentaryReactiveExportL2", momentaryReactiveExportL2);   // 44.7.0
       
-      mqtt_send_metric("momentaryReactiveImportL3", momentaryReactiveImportL3);   // 63.7.0
-      mqtt_send_metric("momentaryReactiveExportL1", momentaryReactiveExportL3);   // 64.7.0
+  mqtt_send_metric("momentaryReactiveImportL3", momentaryReactiveImportL3);   // 63.7.0
+  mqtt_send_metric("momentaryReactiveExportL1", momentaryReactiveExportL3);   // 64.7.0
 
-      mqtt_send_metric("voltageL1", instantaneousVoltageL1);  // 32.7.0
-      mqtt_send_metric("voltageL2", instantaneousVoltageL2);  // 52.7.0
-      mqtt_send_metric("voltageL3", instantaneousVoltageL3);  // 72.7.0
+  mqtt_send_metric("voltageL1", instantaneousVoltageL1);  // 32.7.0
+  mqtt_send_metric("voltageL2", instantaneousVoltageL2);  // 52.7.0
+  mqtt_send_metric("voltageL3", instantaneousVoltageL3);  // 72.7.0
 
-      mqtt_send_metric("currentL1", instantaneousCurrentL1);  // 31.7.0
-      mqtt_send_metric("currentL2", instantaneousCurrentL2);  // 51.7.0
-      mqtt_send_metric("currentL3", instantaneousCurrentL3);  // 71.7.0
-      mqtt_send_metric("P1module_voltage", outstr);
+  mqtt_send_metric("currentL1", instantaneousCurrentL1);  // 31.7.0
+  mqtt_send_metric("currentL2", instantaneousCurrentL2);  // 51.7.0
+  mqtt_send_metric("currentL3", instantaneousCurrentL3);  // 71.7.0
+//  mqtt_send_metric("P1module_voltage", outstr);
 #endif      
   LastReport = timestamp();
   MqttDelivered = true;
