@@ -51,7 +51,7 @@
 void doInitLogVars(){
   char value[12];
   // init all vars on current (first) reading
-debug("Initialising log vars ... ");
+  debug("Initialising log vars ... ");
   strcpy(log_data.hourE1, electricityUsedTariff1);
   strcpy(log_data.dayE1, electricityUsedTariff1);
   strcpy(log_data.weekE1, electricityUsedTariff1);
@@ -106,6 +106,19 @@ void doInitLogVarsGas(){
   debugln("done.");
 }
 
+void doMinutelyLog(){
+   //  if (minFlag) return;
+   FST.begin();
+  char buffer[60];
+  char value[13];
+  dtostrf((atof(gasReceived5min) - atof(minG)), 6, 2, value);
+  sprintf(buffer, "['%s:%s:%s',%s],\n", (String)hour(), (String)minute(), (String)second(), value);
+  appendFile("/MinG.log", buffer);
+  strcpy(minG, gasReceived5min);
+  FST.end();
+  MountFS();
+}
+
 void doHourlyLog(){
   /*
    * cur - hour
@@ -114,11 +127,12 @@ void doHourlyLog(){
    * set flag
    */
   // if (hourFlag) return;
+  FST.begin();
    
-  debug("Hourly log started ... ");
+  debugff("Hourly log started at %s ... ", timestampkaal());
 
-  char buffer[55];
-  char value[12];
+  char buffer[60];
+  char value[13];
 
   dtostrf((atof(electricityUsedTariff1) - atof(log_data.hourE1)), 6, 2, value);
   sprintf(buffer, "['%s', %s],\n", (String)hour(), value);
@@ -158,13 +172,23 @@ void doHourlyLog(){
   // save state to file
   deleteFile("/logData1.txt");
   renameFile("/logData.txt", "/logData1.txt");
-  File file = LittleFS.open("/logData.txt", "w");
+//  File file = LittleFS.open("/logData.txt", "w");
+  File file = FST.open("/logData.txt", "w");
   file.write((byte *)&log_data, sizeof(log_data));
   file.close();
 
-  SET_FLAG(logFlags, hourFlag);
-  //hourFlag = true;
-  debugln("completed.");
+  FST.end();
+  //  SET_FLAG(logFlags, hourFlag); 
+  hourFlag = true;
+  //  debugln("completed.");
+  debugff("completed at %s.", timestampkaal());
+  debugln();
+  checkMinute = minute();
+  if (MountFS()){
+    char payload[50];
+      sprintf(payload,"Remounted FS at %s", timestampkaal());
+     if (MQTT_debug) send_mqtt_message("p1wifi/logging", payload);
+  }
 }
 
 void doDailyLog(){
@@ -257,7 +281,8 @@ void doDailyLog(){
   deleteFile("/HourTR.log");
   deleteFile("/HourG.log");
   
-  SET_FLAG(logFlags, dayFlag);
+//  SET_FLAG(logFlags, dayFlag);
+  dayFlag=true;
   debugln("completed.");
   monitoring = true;
 }
@@ -328,7 +353,8 @@ void doWeeklyLog(){
   appendFile("/WeeksG.log", buffer);
   strcpy(log_data.weekG, value);
   
-  SET_FLAG(logFlags, weekFlag);
+//  SET_FLAG(logFlags, weekFlag);
+  weekFlag=true;
   debugln("completed.");
 }
 
@@ -398,7 +424,8 @@ void doMonthlyLog(){
   appendFile("/MonthsG.log", buffer);
   strcpy(log_data.monthG, value);
   
-  SET_FLAG(logFlags, monthFlag);
+//  SET_FLAG(logFlags, monthFlag);
+  monthFlag=true;
   debugln("completed.");
 }
 
@@ -448,7 +475,14 @@ void DirListing(){
  String str; 
  char buffer[55];
  str += F("<html>\n<head>\n");
- str += F("<title>Slimme meter</title>");
+ 
+ #ifdef NEDERLANDS
+   str += F("<title>Slimme meter</title>");
+ #endif
+   str += F("<title>Smart-Meter</title>");
+ #ifdef GERMAN
+ 
+ #endif
  str += F("</head><body>\n");
 
 Dir root = LittleFS.openDir("/");
