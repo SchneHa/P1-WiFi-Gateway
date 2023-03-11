@@ -76,6 +76,7 @@ void PrintConfigData(){
     debugln(config_data.cfosVA);
   debug("cfosIsVA : ");
     debugln(cfosIsVA);
+    
   debug("interval : ");
     debugln(config_data.interval);
   debug("json : ");

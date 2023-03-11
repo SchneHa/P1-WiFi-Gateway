@@ -92,33 +92,33 @@ void start_webservices(){
   server.on("/Data",  handleRawData);
   server.on("/Help", handleHelp);
 
-#if GRAPH == 1
+  #if GRAPH == 1
 //  server.on("/Graph", handleGraph);
-  server.on("/Graphs", handleGraphMenu); // Grafieken
-  server.on("/GasCalendar", calendarGas);
-  server.on("/SelectGraph", selectGraph);
+    server.on("/Graphs", handleGraphMenu); // Grafieken
+    server.on("/GasCalendar", calendarGas);
+    server.on("/SelectGraph", selectGraph);
    
-  server.on("/zapFiles", zapFiles);
-  server.on("/zapConfig", zapConfig);
-  server.on("/Dir", DirListing);
-  server.on("/Format", formatFS);
+    server.on("/zapFiles", zapFiles);
+    server.on("/zapConfig", zapConfig);
+    server.on("/Dir", DirListing);
+    server.on("/Format", formatFS);
   
-  server.onNotFound(handleNotFound);
-#endif
+    server.onNotFound(handleNotFound);
+  #endif
 
-server.on("/update", HTTP_GET, []() {
-  debugln("Index");
-  handleUpdateLogin();
-  });
-server.on("/update", HTTP_POST, []() {
-  if (AdminAuthenticated){
-    debugln("Connection close part");
+  server.on("/update", HTTP_GET, []() {
+    debugln("Index");
+    handleUpdateLogin();
+    });
+  server.on("/update", HTTP_POST, []() {
+    if (AdminAuthenticated){
+      debugln("Connection close part");
     // debugln("Error: handleUpdateLogin entered with wrong password"); 
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
+      server.sendHeader("Connection", "close");
+      server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
     //  ESP.restart();
-  }
-}, []() {
+    }
+  }, []() {
     if (AdminAuthenticated){
       HTTPUpload& upload = server.upload();
       debugln("Upload part");
@@ -145,11 +145,11 @@ server.on("/update", HTTP_POST, []() {
         Serial.setDebugOutput(false);
       }
       yield();
-     } // AdminAuthenticated
-    });
-    debugln("   … HTTPupdater");
-    server.begin();
-    debugln("   … webserver");
+    } // AdminAuthenticated
+  });
+  debugln("   … HTTPupdater");
+  server.begin();
+  debugln("   … webserver");
 }
 
 void start_services(){

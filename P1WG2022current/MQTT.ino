@@ -35,12 +35,12 @@
 // * MQTT                           *
 // **********************************
 
-void doMQTT(){
+void doMQTT() {
   mqtt_connect();
   if (MqttConnected) MQTT_reporter();
 }
 
-void mqtt_connect(){
+void mqtt_connect() {
   if (!mqtt_client.connected()) {
      MqttConnected = false;
      debugln("Reconnecting to mqtt broker …");
@@ -48,15 +48,15 @@ void mqtt_connect(){
   } else MqttConnected = true;
 }
 
-void mqtt_reconnect(){
-  
+void mqtt_reconnect() {
   if (millis() > nextMQTTreconnectAttempt) {
     debugln("Attempting MQTT connection...");
     // Create a random client ID
     String clientId = "P1 Smart Meter – ";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
-    if (mqtt_client.connect(HOSTNAME, config_data.mqttUser, config_data.mqttPass)){
+    if (mqtt_client.connect(HOSTNAME, config_data.mqttUser, config_data.mqttPass)) {
+//    if (mqtt_client.connect(HOSTNAME, "p1meter", "NTnnJU@t")) {
       debugln("   connected to broker");
       // Once connected, publish an announcement...
       mqtt_client.publish("outTopic", "p1 gateway running");
@@ -85,44 +85,39 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 // * Send a message to a broker topic
-void send_mqtt_message(const char *topic, char *payload)
-{
-    if (payload[0] == 0) return; //nothing to report
-    debug("MQTT Outgoing on > ");
+void send_mqtt_message(const char *topic, char *payload) {
+  if (payload[0] == 0) return; //nothing to report
+  debug("MQTT Outgoing on > ");
+  debug(topic);
+  debug(" > ");
+  debugln(payload);
+
+  bool result = mqtt_client.publish(topic, payload, false);
+
+  if (!result) {
+    debug("MQTT publish to topic: ");
     debug(topic);
-    debug(" > ");
-    debugln(payload);
-
-    bool result = mqtt_client.publish(topic, payload, false);
-
-    if (!result)
-    {
-        debug("MQTT publish to topic: ");
-        debug(topic);
-        debugln(" failed.");
-    }
+    debugln(" failed.");
+  }
 }
 
 
-void send_metric(String name, float metric) // added *long
-{
- char value[20];
- dtostrf(metric, 3, 3, value);
+void send_metric(String name, float metric) { // added *long
+  char value[20];
+  dtostrf(metric, 3, 3, value);
   //  output ftoa(metric, output, 3);
     
-    mtopic = String(config_data.mqttTopic) + "/" + name;
-    send_mqtt_message(mtopic.c_str(), value); // output
+  mtopic = String(config_data.mqttTopic) + "/" + name;
+  send_mqtt_message(mtopic.c_str(), value); // output
 }
 
-void mqtt_send_metric(String name, char *metric)  
-{
-    char output[100];
-    mtopic = String(config_data.mqttTopic) + "/" + name;
-    send_mqtt_message(mtopic.c_str(), metric);
+void mqtt_send_metric(String name, char *metric) {
+  char output[100];
+  mtopic = String(config_data.mqttTopic) + "/" + name;
+  send_mqtt_message(mtopic.c_str(), metric);
 }
 
-
-void MQTT_reporter(){
+void MQTT_reporter() {
   #ifdef NEDERLANDS
     if (mqtt_dsmr){
       mqtt_send_metric("equipmentID", equipmentId);
@@ -146,7 +141,8 @@ void MQTT_reporter(){
 
       mqtt_send_metric("consumption/gas/delivered", gasReceived5min);
 
-      mqtt_send_metric("meter-stats/actual_tarif_group", tariffIndicatorElectricity);
+//      mqtt_send_metric("meter-stats/actual_tarif_group", tariffIndicatorElectricity[3]);
+      send_metric("meter-stats/actual_tarif_group", tariffIndicatorElectricity[3]);
       mqtt_send_metric("meter-stats/power_failure_count", numberPowerFailuresAny);
       mqtt_send_metric("meter-stats/long_power_failure_count", numberLongPowerFailuresAny);
       mqtt_send_metric("meter-stats/short_power_drops", numberVoltageSagsL1);
@@ -169,73 +165,75 @@ void MQTT_reporter(){
       send_metric("current-month/electricity_merged", ((atof(electricityUsedTariff1) - atof(log_data.monthE1)) + (atof(electricityUsedTariff2) - atof(log_data.monthE2))));
       send_metric("current-month/electricity_returned_merged", ((atof(electricityReturnedTariff1) - atof(log_data.monthR1)) + (atof(electricityReturnedTariff2) - atof(log_data.monthR2))));
       send_metric("current-month/gas", (atof(gasReceived5min) - atof(log_data.monthG)));
+
       LastReport = timestampkaal();
       MqttDelivered = true;
+      LastReportinMillis = millis();      
       return;
+    }
+    mqtt_send_metric("equipmentID", equipmentId);
+
+    mqtt_send_metric("consumption_low_tarif", electricityUsedTariff1);
+    mqtt_send_metric("consumption_high_tarif", electricityUsedTariff2);
+    mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff1);
+    mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff2);
+    mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
+    mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
+
+    mqtt_send_metric("l1_instant_power_usage", activePowerL1P);
+    mqtt_send_metric("l2_instant_power_usage", activePowerL2P);
+    mqtt_send_metric("l3_instant_power_usage", activePowerL3P);
+    mqtt_send_metric("l1_instant_power_current", instantaneousCurrentL1);
+    mqtt_send_metric("l2_instant_power_current", instantaneousCurrentL2);
+    mqtt_send_metric("l3_instant_power_current", instantaneousCurrentL3);
+    mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
+    mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
+    mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
     
-  }
-  mqtt_send_metric("equipmentID", equipmentId);
+    mqtt_send_metric("gas_meter_m3", gasReceived5min);
 
-  mqtt_send_metric("consumption_low_tarif", electricityUsedTariff1);
-  mqtt_send_metric("consumption_high_tarif", electricityUsedTariff2);
-  mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff1);
-  mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff2);
-  mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
-  mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
+    send_metric("actual_tarif_group", tariffIndicatorElectricity[3]);
+    mqtt_send_metric("short_power_outages", numberPowerFailuresAny);
+    mqtt_send_metric("long_power_outages", numberLongPowerFailuresAny);
+    mqtt_send_metric("short_power_drops", numberVoltageSagsL1);
+    mqtt_send_metric("short_power_peaks", numberVoltageSwellsL1);
+    LastReportinMillis = millis();   
+  #endif
 
-  mqtt_send_metric("l1_instant_power_usage", activePowerL1P);
-  mqtt_send_metric("l2_instant_power_usage", activePowerL2P);
-  mqtt_send_metric("l3_instant_power_usage", activePowerL3P);
-  mqtt_send_metric("l1_instant_power_current", instantaneousCurrentL1);
-  mqtt_send_metric("l2_instant_power_current", instantaneousCurrentL2);
-  mqtt_send_metric("l3_instant_power_current", instantaneousCurrentL3);
-  mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
-  mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
-  mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
-    
-  mqtt_send_metric("gas_meter_m3", gasReceived5min);
+  #ifdef GERMAN
+    mqtt_send_metric("equipmentID", equipmentId);
 
-  mqtt_send_metric("actual_tarif_group", tariffIndicatorElectricity);
-  mqtt_send_metric("short_power_outages", numberPowerFailuresAny);
-  mqtt_send_metric("long_power_outages", numberLongPowerFailuresAny);
-  mqtt_send_metric("short_power_drops", numberVoltageSagsL1);
-  mqtt_send_metric("short_power_peaks", numberVoltageSwellsL1);   
-#endif
+    mqtt_send_metric("consumption_high_tarif", electricityUsedTariff1);
+    mqtt_send_metric("consumption_low_tarif", electricityUsedTariff2);
+    mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff1);
+    mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff2);
+    mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
+    mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
 
-#ifdef GERMAN
-  mqtt_send_metric("equipmentID", equipmentId);
-
-  mqtt_send_metric("consumption_high_tarif", electricityUsedTariff1);
-  mqtt_send_metric("consumption_low_tarif", electricityUsedTariff2);
-  mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff1);
-  mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff2);
-  mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
-  mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
-
-  mqtt_send_metric("l1_instant_power_usage", activePowerL1P);
-  mqtt_send_metric("l2_instant_power_usage", activePowerL2P);
-  mqtt_send_metric("l3_instant_power_usage", activePowerL3P);
-  mqtt_send_metric("l1_instant_power_current", instantaneousCurrentL1);
-  mqtt_send_metric("l2_instant_power_current", instantaneousCurrentL2);
-  mqtt_send_metric("l3_instant_power_current", instantaneousCurrentL3);
+    mqtt_send_metric("l1_instant_power_usage", activePowerL1P);
+    mqtt_send_metric("l2_instant_power_usage", activePowerL2P);
+    mqtt_send_metric("l3_instant_power_usage", activePowerL3P);
+    mqtt_send_metric("l1_instant_power_current", instantaneousCurrentL1);
+    mqtt_send_metric("l2_instant_power_current", instantaneousCurrentL2);
+    mqtt_send_metric("l3_instant_power_current", instantaneousCurrentL3);
 //  mqtt_send_metric("l1_instant_power_current", CurrentL1);
 //  mqtt_send_metric("l2_instant_power_current", CurrentL2);
 //  mqtt_send_metric("l3_instant_power_current", CurrentL3);
-  mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
-  mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
-  mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
+    mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
+    mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
+    mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
     
-  mqtt_send_metric("gas_meter_m3", gasReceived5min);
+    mqtt_send_metric("gas_meter_m3", gasReceived5min);
 
-  mqtt_send_metric("actual_tarif_group", tariffIndicatorElectricity);
-  mqtt_send_metric("short_power_outages", numberPowerFailuresAny);
-  mqtt_send_metric("long_power_outages", numberLongPowerFailuresAny);
-  mqtt_send_metric("short_power_drops", numberVoltageSagsL1);
-  mqtt_send_metric("short_power_peaks", numberVoltageSwellsL1);
-//  mqtt_send_metric("P1module_voltage", outstr);
-#endif
+    mqtt_send_metric("actual_tarif_group", tariffIndicatorElectricity);
+    mqtt_send_metric("short_power_outages", numberPowerFailuresAny);
+    mqtt_send_metric("long_power_outages", numberLongPowerFailuresAny);
+    mqtt_send_metric("short_power_drops", numberVoltageSagsL1);
+    mqtt_send_metric("short_power_peaks", numberVoltageSwellsL1);
+    LastReportinMillis = millis();
+  #endif
 
-#ifdef SWEDISH
+  #ifdef SWEDISH
 /*
 1-0:1.8.0 Mätarställning Aktiv Energi Uttag.  
 1-0:2.8.0 Mätarställning Aktiv Energi Inmatning 
@@ -269,48 +267,49 @@ void MQTT_reporter(){
 /*
  * https://github.com/forsberg/esphome-p1reader
  */
-  mqtt_send_metric("cumulativeActiveImport", cumulativeActiveImport);       // 1.8.0
-  mqtt_send_metric("cumulativeActiveExport", cumulativeActiveExport);       // 2.8.0
-  mqtt_send_metric("cumulativeReactiveImport", cumulativeReactiveImport);   // 3.8.0
-  mqtt_send_metric("cumulativeReactiveExport", cumulativeReactiveExport);   // 4.8.0
+    mqtt_send_metric("cumulativeActiveImport", cumulativeActiveImport);       // 1.8.0
+    mqtt_send_metric("cumulativeActiveExport", cumulativeActiveExport);       // 2.8.0
+    mqtt_send_metric("cumulativeReactiveImport", cumulativeReactiveImport);   // 3.8.0
+    mqtt_send_metric("cumulativeReactiveExport", cumulativeReactiveExport);   // 4.8.0
 
-  mqtt_send_metric("momentaryActiveImport", momentaryActiveImport);         // 1.7.0
-  mqtt_send_metric("momentaryActiveExport", momentaryActiveExport);         // 2.7.0
-  mqtt_send_metric("momentaryReactiveImport", momentaryReactiveImport);     // 3.7.0
-  mqtt_send_metric("momentaryReactiveExport", momentaryReactiveExport);     // 4.7.0      
+    mqtt_send_metric("momentaryActiveImport", momentaryActiveImport);         // 1.7.0
+    mqtt_send_metric("momentaryActiveExport", momentaryActiveExport);         // 2.7.0
+    mqtt_send_metric("momentaryReactiveImport", momentaryReactiveImport);     // 3.7.0
+    mqtt_send_metric("momentaryReactiveExport", momentaryReactiveExport);     // 4.7.0      
 
-  mqtt_send_metric("momentaryActiveImportL1", activePowerL1P);              // 21.7.0
-  mqtt_send_metric("momentaryActiveExportL1", reactivePowerL1NP);           // 22.7.0
+    mqtt_send_metric("momentaryActiveImportL1", activePowerL1P);              // 21.7.0
+    mqtt_send_metric("momentaryActiveExportL1", reactivePowerL1NP);           // 22.7.0
 
-  mqtt_send_metric("momentaryActiveImportL2", activePowerL2P);              // 41.7.0
-  mqtt_send_metric("momentaryActiveExportL2", reactivePowerL2NP);           // 42.7.0
+    mqtt_send_metric("momentaryActiveImportL2", activePowerL2P);              // 41.7.0
+    mqtt_send_metric("momentaryActiveExportL2", reactivePowerL2NP);           // 42.7.0
 
-  mqtt_send_metric("momentaryActiveImportL3", activePowerL3P);              // 61.7.0
-  mqtt_send_metric("momentaryActiveExportL3", reactivePowerL3NP);           // 62.7.0
+    mqtt_send_metric("momentaryActiveImportL3", activePowerL3P);              // 61.7.0
+    mqtt_send_metric("momentaryActiveExportL3", reactivePowerL3NP);           // 62.7.0
 
-  mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveImportL1);   // 23.7.0
-  mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveExportL1);   // 24.7.0
+    mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveImportL1);   // 23.7.0
+    mqtt_send_metric("momentaryReactiveImportL1", momentaryReactiveExportL1);   // 24.7.0
       
-  mqtt_send_metric("momentaryReactiveImportL2", momentaryReactiveImportL2);   // 43.7.0
-  mqtt_send_metric("momentaryReactiveExportL2", momentaryReactiveExportL2);   // 44.7.0
+    mqtt_send_metric("momentaryReactiveImportL2", momentaryReactiveImportL2);   // 43.7.0
+    mqtt_send_metric("momentaryReactiveExportL2", momentaryReactiveExportL2);   // 44.7.0
       
-  mqtt_send_metric("momentaryReactiveImportL3", momentaryReactiveImportL3);   // 63.7.0
-  mqtt_send_metric("momentaryReactiveExportL1", momentaryReactiveExportL3);   // 64.7.0
+    mqtt_send_metric("momentaryReactiveImportL3", momentaryReactiveImportL3);   // 63.7.0
+    mqtt_send_metric("momentaryReactiveExportL1", momentaryReactiveExportL3);   // 64.7.0
 
-  mqtt_send_metric("voltageL1", instantaneousVoltageL1);  // 32.7.0
-  mqtt_send_metric("voltageL2", instantaneousVoltageL2);  // 52.7.0
-  mqtt_send_metric("voltageL3", instantaneousVoltageL3);  // 72.7.0
+    mqtt_send_metric("voltageL1", instantaneousVoltageL1);  // 32.7.0
+    mqtt_send_metric("voltageL2", instantaneousVoltageL2);  // 52.7.0
+    mqtt_send_metric("voltageL3", instantaneousVoltageL3);  // 72.7.0
 
-  mqtt_send_metric("currentL1", instantaneousCurrentL1);  // 31.7.0
-  mqtt_send_metric("currentL2", instantaneousCurrentL2);  // 51.7.0
-  mqtt_send_metric("currentL3", instantaneousCurrentL3);  // 71.7.0
-//  mqtt_send_metric("P1module_voltage", outstr);
-#endif      
+    mqtt_send_metric("currentL1", instantaneousCurrentL1);  // 31.7.0
+    mqtt_send_metric("currentL2", instantaneousCurrentL2);  // 51.7.0
+    mqtt_send_metric("currentL3", instantaneousCurrentL3);  // 71.7.0
+    LastReportinMillis = millis();
+  #endif      
   LastReport = timestamp();
   MqttDelivered = true;
+  LastReportinMillis = millis();
 }
 
-void MQTT_Debug(){
+void MQTT_Debug() {
   char outstr[10];
   dtostrf(volts/1000, 1,3, outstr);
   send_mqtt_message("p1wifi/P1module_voltage", outstr);

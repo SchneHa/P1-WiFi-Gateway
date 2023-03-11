@@ -107,8 +107,8 @@ void doInitLogVarsGas(){
 }
 
 void doMinutelyLog(){
-   //  if (minFlag) return;
-   FST.begin();
+  //  if (minFlag) return;
+  FST.begin();
   char buffer[60];
   char value[13];
   dtostrf((atof(gasReceived5min) - atof(minG)), 6, 2, value);

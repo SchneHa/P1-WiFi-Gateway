@@ -273,7 +273,6 @@ WiFiClient espClient;                   // * Initiate WIFI client
 PubSubClient mqtt_client(espClient);    // * Initiate MQTT client
 bool MQTT_Server_Fail = false;
 long nextMQTTreconnectAttempt;
-//char outstr[10];
 // end mqtt stuff
 
 //// Raw data server
@@ -384,8 +383,8 @@ char reactivePowerL3P[9];
 char reactivePowerL1NP[9];
 char reactivePowerL2NP[9];
 char reactivePowerL3NP[9];
-
 // end Swedish
+
 char deviceType[5];
 char gasId[100] = "\0";;
 char gasReceived5min[12];
@@ -479,13 +478,14 @@ void setup() {
       break;
     }
   }
+  /*
   debugln("");
   debugln("Set up wifi, either in STA or AP mode");
   if (softAp){
     debugln("running in AP mode, all handles will be initiated");
     start_webservices();
   }
-
+*/
   if (WiFi.status() == WL_CONNECTED) {
     WiFi.setAutoReconnect(true);
     debugln("HTTP server running.");
@@ -503,13 +503,14 @@ void setup() {
       start_services();
     #endif
     debugln("All systems are ok...");
-    
+
+    /*
     state = WAITING;    // signal that we are waiting for a valid start char (aka /)
     devicestate = CONFIG;
     nextUpdateTime = nextMQTTreconnectAttempt = EverSoOften = millis();
     monitoring = true; // start monitoring data
     time_to_sleep = millis() + wakeTime;  // we go to sleep wakeTime seconds from now
-
+*/
     // handle Files
     debug("Mounting file system ... ");
 
@@ -602,11 +603,6 @@ void loop() {
         MqttDelivered = false;
       }
     }
-//    if (cfos) {
-//      doCFOS();
-//      datagramValid = false;
-//      state = WAITING;
-//    }
     if (Json) {
       doJSON();
       doCFOS();
