@@ -104,10 +104,10 @@ void handleUploadForm(){
   monitoring = false; // stop monitoring data
   addHead(str,0);
   addIntro(str);
-  str += F("<fieldset><fieldset><legend><b>Update Firmware</b></legend>");
+  str += F("<fieldset><fieldset><legend><b>Uppdatera firmware</b></legend>");
   str += F("<form method='POST' action='/update' enctype='multipart/form-data'><p>");
   str += F("<b>Firmware</b><input type='file' accept='.bin,.bin.gz' name='Firmware'></p>");
-  str += F("<button type='submit'>Update</button>");
+  str += F("<button type='submit'>Uppdatera</button>");
   str += F("</form>");
   str += F("<form action='/' method='POST'><button class='button bhome'>Menu</button></form>");
   addFootBare(str); 
@@ -120,13 +120,14 @@ void successResponse(){
   addRefreshHead(str);
   addIntro(str);
   str += F("<fieldset>");
-  str += F("<fieldset><legend><b>Firmware update</b></legend>");
-  str += F("<p><b>De firmware is succesvol bijgewerkt</b><br><br>");
-  str += F("<p>De module zal nu herstarten. Dat duurt ongeveer een minuut</p><br>");
-  str += F("<p>De blauwe Led zal 2x oplichten wanneer de module klaar is met opstarten</p>");
-  str += F("<p>De led zal langzaam knipperen tijdens koppelen aan uw WiFi netwerk.</p>");
-  str += F("<p>Als de blauwe led blijft branden is de instelling mislukt en zult u <br>");
-  str += F("opnieuw moeten koppelen met WIfi netwerk 'P1_Setup' met wachtwoord 'configP1'.</p>");
+  str += F("<fieldset><legend><b>Uppdatera firmware</b></legend>");
+  str += F("<p><b>Den fasta programvaran har uppdaterats</b><br><br>");
+  str += F("<p>Modulen kommer nu att starta om. Det tar ungefär en minut.</p><br>");
+  str += F("<p>Den blå lysdioden tänds 2x när modulen har startat klart</p>");
+  str += F("<p>Lysdioden blinkar långsamt när du ansluter till ditt WiFi-nätverk.</p>");
+  str += F("<p>Om den blå lysdioden fortsätter att lysa har installationen <br>");
+  str += F("<p>misslyckats och du kommer att göra det behöver återkoppla  <br>");
+  str += F("med WiFi-nätverket 'P1_Setup'.</p>");
   str += F("</fieldset></p>");
   str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://eps8266thingies.nl' target='_blank' style='color:#aaa;'>eps8266thingies.nl</a></div></div></fieldset></body></html>");
   server.send(200, "text/html", str);
@@ -141,15 +142,15 @@ void handleRoot(){
 
   str += F("<main class='form-signin'>");
   str += F("<fieldset><legend><b> Data </b></legend>");
-  str += F("<form action='/P1' method='post'><button type='p1' class='button bhome'>Messwerte</button></form>");
+  str += F("<form action='/P1' method='post'><button type='p1' class='button bhome'>Avläsningar</button></form>");
   #if GRAPH == 1
-    str += F("<form action='/Graphs' method='GET'><button type='submit'>Grafiken</button></form>");
+    str += F("<form action='/Graphs' method='GET'><button type='submit'>Grafik</button></form>");
     // str += F("<form action='/Dir' method='GET'><button type='submit'>Directory</button></form>");
   #endif
   str += F("</fieldset>");
   str += F("<fieldset><legend><b> Setup </b></legend>");
-  str += F("<form action='/Setup' method='post'><button type='Setup'>Setup</button></form>");
-  str += F("<form action='/Update' method='GET'><button type='submit'>Update Firmware</button></fieldset></form>");
+  str += F("<form action='/Setup' method='post'><button type='Setup'>Uppstart</button></form>");
+  str += F("<form action='/Update' method='GET'><button type='submit'>Uppdatera firmware</button></fieldset></form>");
   addUptime(str);
   addFoot(str);
   server.send(200, "text/html", str);
@@ -210,11 +211,11 @@ void errorLogin(String returnpage){
   addHead(str,0);
   addIntro(str);
   str += F("<fieldset><legend><b>Fout</b></legend>");
-  str += F("<p><b>Admin Passwort ist falsch.</b><br>");
+  str += F("<p><b>Administratörslösenordet är fel.</b><br>");
   str += F("</fieldset>");
   str += F("<form action='/");
   str += returnpage;
-  str += F("' method='POST'><button class='button bhome'>wiederholen</button></form></p>");
+  str += F("' method='POST'><button class='button bhome'>upprepa</button></form></p>");
   addFoot(str);
   server.send(200, "text/html", str);
   bootSetup = false;
@@ -299,36 +300,36 @@ void handleSetup(){
 
   str += F("<fieldset><legend><b>&nbsp;cFos Power Brain Wallbox Parameter&nbsp;</b></legend>");
   
-  str += F("<p><b>Daten an cFos Power Brain?</b><input type='checkbox' class='form-control' name='cfos' id='cfos' ");
+  str += F("<p><b>Rapportera till cFos Power Brain?</b><input type='checkbox' class='form-control' name='cfos' id='cfos' ");
   
   if (config_data.cfos[0] =='j') str += F(" checked></p>"); else str += F("></p>");
-  str += F("<p><b>cFos Power Brain IP-Adresse</b><input type='text' class='form-control' name='cfosIP' value='");
+  str += F("<p><b>cFos Power Brain IP address</b><input type='text' class='form-control' name='cfosIP' value='");
   str += config_data.cfosIP;
   str += F("'></p><p>");
   str += F("<b>cFos Power Brain Port</b><input type='text' class='form-control' name='cfosPort' value='");
   str += config_data.cfosPort;
   str += F("'></p><p>");
-  str += F("<b>cFos Power Brain User</b><input type='text' class='form-control' name='cfosUsr' value='");
+  str += F("<b>cFos Power Brain user</b><input type='text' class='form-control' name='cfosUsr' value='");
   str += config_data.cfosUsr;
   str += F("'></p><p>");
-  str += F("<b>cFos Power Brain Passwort</b><input type='text' class='form-control' name='cfosPwd' value='");
+  str += F("<b>cFos Power Brain password</b><input type='text' class='form-control' name='cfosPwd' value='");
   str += config_data.cfosPwd;
   str += F("'></p>");
-  str += F("<b>cFos Power Brain Zählermodell</b><input type='text' class='form-control' name='cfosModel' value='");
+  str += F("<b>cFos Power Brain meter modell</b><input type='text' class='form-control' name='cfosModel' value='");
   str += config_data.cfosModel;
   str += F("'></p>");
-  str += F("<b>cFos Power Brain ZählerID</b><input type='text' class='form-control' name='cfosID' value='");
+  str += F("<b>cFos Power Brain meterID</b><input type='text' class='form-control' name='cfosID' value='");
   str += config_data.cfosID;
   str += F("'></p>");
 //  str += F("<b>cFos Power Brain Zähleranzeige in VA?</b><input type='text' class='form-control' name='cfosIsVA' value='");
 //  str += config_data.cfosIsVA;
-  str += F("<p><b>cfos Power Brain Zähleranzeige in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
+  str += F("<p><b>cfos Power Brain räknardisplay in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
   if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
 //  str += F("'></p>");
   str += F("</fieldset>");
 
 //  str += F("</fieldset>");
-  str += F("<fieldset><legend><b>&nbsp;Weitere Einstellungen&nbsp;</b></legend>");
+  str += F("<fieldset><legend><b>&nbsp;Fler inställningar&nbsp;</b></legend>");
        
   str += F("<b>Mätintervall in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
   str += config_data.interval; 
