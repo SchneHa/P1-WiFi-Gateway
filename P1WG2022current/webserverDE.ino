@@ -365,7 +365,7 @@ void handleP1(){
   str += "</div></p>";
 
   str += "<p><div class='row'><div class='column'><b>Einspeisung Hochtarif:<br>insgesamt (2.8.1)</b><input type='text' class='form-control c6' value='"; //2.8.1
-  str += electricityReturnedTariff1;// T211 SmartMeter provides electricityReturnedTariff1 as high tariff
+  str += electricityReturnedTariff1; // T211 SmartMeter provides electricityReturnedTariff1 as high tariff
   str += eenheid;
   str += "<div class='column' style='text-align:right'><br><b>heute</b><input type='text' class='form-control c7' value='";
   str += atof(electricityReturnedTariff1) - atof(log_data.dayR1);
@@ -373,7 +373,7 @@ void handleP1(){
   str += "</div></p>";
   
   str += "<p><div class='row'><div class='column'><b>Einspeisung Niedertarif:<br>insgesamt (2.8.2)</b><input type='text' class='form-control c6' value='"; //2.8.2
-  str += electricityReturnedTariff2;// T211 SmartMeter provides electricityReturnedTariff2 as low tariff
+  str += electricityReturnedTariff2; // T211 SmartMeter provides electricityReturnedTariff2 as low tariff
   str += eenheid;
   str += "<div class='column' style='text-align:right'><br><b>heute</b><input type='text' class='form-control c7' value='";
   str += atof(electricityReturnedTariff2) - atof(log_data.dayR2);

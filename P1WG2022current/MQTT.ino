@@ -203,10 +203,10 @@ void MQTT_reporter() {
   #ifdef GERMAN
     mqtt_send_metric("equipmentID", equipmentId);
 
-    mqtt_send_metric("consumption_high_tarif", electricityUsedTariff1);
-    mqtt_send_metric("consumption_low_tarif", electricityUsedTariff2);
-    mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff1);
-    mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff2);
+    mqtt_send_metric("consumption_high_tarif", electricityUsedTariff1); // in Belgium electricityUsedTariff1 is high tariff
+    mqtt_send_metric("consumption_low_tarif", electricityUsedTariff2);  // in Belgium electricityUsedTariff2 is low tariff
+    mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff1); // in Belgium electricityReturnedTariff1 is high tariff
+    mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff2);  // in Belgium electricityReturnedTariff2 is low tariff
     mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
     mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
 
