@@ -1,4 +1,4 @@
- /*
+  /*
  * Copyright (c) 2022 Ronald Leenes
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
  * @author Ronald Leenes
  *         Hans Schneider
  * @date 03.03.2023
- * @version 1.2 
+ * @version 1.2a 
  *
  * @brief This file contains the main file for the P1 wifi gatewway
  *
@@ -62,15 +62,16 @@
  *  
  *  
  *    
- *  versie: 1.2
- *  datum:  3 Mar 2023
+ *  versie: 1.2a
+ *  datum:  13 Mar 2023
  *  auteur: Ronald Leenes
  *          Hans Schneider
  *          
- *          
+ *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
  *  1.2:   bug fixes
  *         improvements for T211 SmartMeter in Belgium
- *         implemented support for HTTP input meter in cFos Power Brain wallbox *  
+ *         implemented support for HTTP input meter in cFos Power Brain wallbox  
+ *         debugging French and Swedish versions and improvements of translations (needs to be checked)
  *  1.1b   cleaning up, bug fixes, cosmetic changes
  *  1.1adc
  *  1.1ad: bug fixes and graph improvements
@@ -155,7 +156,7 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2 – "+sfx;
+String version = "1.2a – "+sfx;
 
 #define HOSTNAME "p1meter"
 #define FSystem 0 // 0= LittleFS 1 = SPIFFS
