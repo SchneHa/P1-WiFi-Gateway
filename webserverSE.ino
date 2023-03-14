@@ -23,8 +23,7 @@
     minuten = minuten % 60;
     sprintf_P(strUpTime, PSTR("%d dagar %d timmar %d minuter"), dagen, uren, minuten);
     str += strUpTime;
-//    str += ("<p style='text-align:right;font-size:11px;color:#aaa'>");
-	str += ("<span style='float:right;font-size:11px;color:#aaa'>");
+    str += ("<span style='float:right;font-size:11px;color:#aaa'>");
     str += ipstr;
     str += ("</span></div>");
   }
@@ -207,13 +206,13 @@ void addFoot(String& str){
   }
 
   void handleSetup(){
-	  if (millis() > 60000) {            // if we did not get here directly, check credentials
-  	  debugln("indirect call");
+    if (millis() > 60000) {            // if we did not get here directly, check credentials
+      debugln("indirect call");
       if (strcmp(server.arg("adminPassword").c_str(), config_data.adminPassword) != 0) {  // passwords don't match
         debugln("Error: handlesetup entered with wrong password");
         errorLogin("Setup");
         return;
-	    }
+      }
     }	
     debugln("direct call");
     monitoring = false; // stop monitoring data
@@ -306,16 +305,12 @@ void addFoot(String& str){
     str += F("<b>cFos Power Brain meterID</b><input type='text' class='form-control' name='cfosID' value='");
     str += config_data.cfosID;
     str += F("'></p>");
-//  str += F("<b>cFos Power Brain Zähleranzeige in VA?</b><input type='text' class='form-control' name='cfosIsVA' value='");
-//  str += config_data.cfosIsVA;
     str += F("<p><b>cfos Power Brain räknardisplay in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
     if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
 //  str += F("'></p>");
-    str += F("</fieldset>");
 
-//  str += F("</fieldset>");
+    str += F("</fieldset>");
     str += F("<fieldset><legend><b>&nbsp;Fler inställningar&nbsp;</b></legend>");
-       
     str += F("<b>Mätintervall in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
     str += config_data.interval; 
     str += F("'></p><p>");
@@ -441,14 +436,12 @@ void addFoot(String& str){
   str += F("'></p>");
 */
   
-//    if (gasReceived5min[0] != '\0'){
     str += "<p><div class='row'><div class='column'><b>Gasförbrukning:<br> total</b><input type='text' class='form-control c6' value='";
     str += gasReceived5min;
     str += F(" m3'></div>");
     str += "<div class='column' style='text-align:right'><br><b>idag</b><input type='text' class='form-control c7' value='";
     str += atof(gasReceived5min) - atof(log_data.dayG);
     str += " m3'></div></div></p>";
-//    }
     str += F("</fieldset></form>");
     str += F("<form action='/' method='POST'><button class='button bhome'>Meny</button></form>");
     addUptime(str);
