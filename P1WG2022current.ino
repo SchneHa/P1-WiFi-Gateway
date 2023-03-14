@@ -69,6 +69,7 @@
  *          
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
  *  1.2:   support for HTTP input meter in cFos Power Brain wallbox implemented
+ *           note: for this to work your cFos Charging Manager firmware has to be at least 1.17.4-beta
  *         improvements for T211 SmartMeter in Belgium
  *         bug fixes
  *
