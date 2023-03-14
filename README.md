@@ -13,7 +13,7 @@ Die Software läuft auf einem ESP8266 board wie dem Wemos D1 mini oder mini Pro 
 Die Datenverarbeitung basiert auf: http://domoticx.com/p1-poort-smart-meter-data-to-domoticz-esp8266 
 Das Captive Portal basiert auf einem der ESP8266-Beispiele, die OTA-Einheit ebenfalls.
 
-Das Modul liefert Daten über JSON- oder MQTT-Nachrichten an einen Host, kann aber auch über das Webinterface des Moduls oder per Telnet ausgelesen werden. Die Daten können an einen virtuellen Zähler "HTTP input" in der Power Brain Wallbox von cFos übertragen werden und dort für das Lastmanagement genutzt werden.
+Das Modul liefert Daten über JSON- oder MQTT-Nachrichten an einen Host, kann aber auch über das Webinterface des Moduls oder per Telnet ausgelesen werden. Die Daten können an einen virtuellen Zähler "HTTP input" in der Power Brain Wallbox von cFos übertragen werden und dort für das Lastmanagement genutzt werden. Damit das funktioniert, muss der Charging Manager der Wallbox mindestens auf die Firmwareversion 1.17.4-beta gebracht werden.
 
 Das Modul lädt beim Start zuerst den Pufferkondensator auf. Es blinkt dann 2x und versucht zunächst, sich mit Ihrem WLAN-Netzwerk zu verbinden. Während dieses Vorgangs blinkt die LED mit einer Periode von 0,5 Hz. Kommt keine Verbindung zustande, startet das Modul einen Access Point mit dem Namen P1_Setup. Verbinden Sie sich mit diesem Netzwerk und surfen Sie zu 192.168.4.1
 
