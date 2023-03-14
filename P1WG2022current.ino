@@ -68,7 +68,7 @@
  *          Hans Schneider
  *          
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
- *  1.2:   implemented support for HTTP input meter in cFos Power Brain wallbox
+ *  1.2:   support for HTTP input meter in cFos Power Brain wallbox implemented
  *         improvements for T211 SmartMeter in Belgium
  *         bug fixes
  *
