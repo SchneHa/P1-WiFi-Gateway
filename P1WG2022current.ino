@@ -1,4 +1,4 @@
-  /*
+ /*
  * Copyright (c) 2022 Ronald Leenes
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * @file P1WG2022current.ino
  * @author Ronald Leenes
  *         Hans Schneider
- * @date 03.03.2023
+ * @date 13.03.2023
  * @version 1.2a 
  *
  * @brief This file contains the main file for the P1 wifi gatewway
