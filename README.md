@@ -103,7 +103,7 @@ Benötigte Dateien:
   webserverSE.ino
   wifi.ino
 ```
-Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen lauffähig.</Del> Bei der französischen und der schwedischen Verion muss ggf. die Übersetzung korrigiert werden.
+Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen lauffähig.</Del> Bei der französischen und der schwedischen Version muss ggf. die Übersetzung korrigiert werden.
 
 **English Version:**
 
