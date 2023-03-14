@@ -114,7 +114,7 @@ The software runs on an ESP8266 board like the Wemos D1 mini or mini Pro and has
 The data processing is based on: http://domoticx.com/p1-poort-smart-meter-data-to-domoticz-esp8266
 The captive portal is based on one of the ESP8266 samples, as is the OTA unit.
 
-The module delivers data to a host via JSON or MQTT messages, but can also be read out via the module's web interface or via Telnet.
+The module delivers data to a host via JSON or MQTT messages, but can also be read out via the module's web interface or via Telnet. It is possible to send data to a virtual meter "HTTP input" of the Power Brain Wallbox of cFos and can be used to implement load management. For that to work Charging Manager of cFos Power Brain Wallbox has to be at least on firmware version 1.17.4-beta.
 
 When starting, the module first charges the buffer capacitor. It will then blink 2x and first try to connect to your WiFi network. During this process, the LED flashes with a period of 0.5 Hz. If no connection is established, the module starts an access point with the name P1_Setup. Connect to this network and surf to 192.168.4.1
 
