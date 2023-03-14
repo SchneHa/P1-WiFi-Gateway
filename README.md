@@ -29,6 +29,9 @@ Das Modul „schläft“ zwischen den Messungen (das Modem wird ausgeschaltet, s
 Siehe http://esp8266thingies.nl für weitere Informationen über das Modul und http://www.esp8266thingies.nl/wp/forum-2/ für das Diskussionsforum.
 
 ```
+Version: 1.2a Datum: 13.03.2023
+         Fertigstellung der französischen und schwedischen Version
+         diverse Verbesserungen und Fehlerbehebungen
 Version: 1.2 Datum: 05.03.2023, Autor: Hans Schneider
          Unterstützung für den HTTP input Zähler der cFos Power Brain Wallbox hinzugefügt
          diverse Verbesserungen und Fehlerbehebungen
