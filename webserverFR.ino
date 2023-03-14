@@ -23,7 +23,6 @@
     minuten = minuten % 60;
     sprintf_P(strUpTime, PSTR("%d jours %d heures %d minutes"), dagen, uren, minuten);
     str += strUpTime;
-//    str += ("<p style='text-align:right;font-size:11px;color:#aaa'>");
     str += ("<span style='float:right;font-size:11px;color:#aaa'>");
     str += ipstr;
     str += ("</span></div>");
@@ -120,14 +119,14 @@
     str += F("<fieldset>");
     str += F("<main class='form-signin'>");
     str += F("<form action='/P1' method='post'><button type='p1' class='button bhome'>Valeurs mesurées</button></form>");
-	#if GRAPH == 1
-	   str += F("<form action='/Graphs' method='GET'><button type='submit'>Graphique</button></form>");
+    #if GRAPH == 1
+      str += F("<form action='/Graphs' method='GET'><button type='submit'>Graphique</button></form>");
     // str += F("<form action='/Dir' method='GET'><button type='submit'>Directory</button></form>");
     #endif
     str += F("</fieldset>");
     str += F("<fieldset><legend><b> Setup </b></legend>");	
     str += F("<form action='/Setup' method='post'><button type='Setup'>Configuration</button></form>");
-      str += F("<form action='/update' method='GET'><button type='submit'>Mise à jour du firmware</button></form>");
+    str += F("<form action='/update' method='GET'><button type='submit'>Mise à jour du firmware</button></form>");
     addUptime(str);
     addFoot(str);
     server.send(200, "text/html", str);
@@ -198,8 +197,7 @@
   }
 
   void handleSetup(){
-//    debugln("handleSetup");
-	if (millis() > 60000) {            // if we did not get here directly, check credentials
+    if (millis() > 60000) {            // if we did not get here directly, check credentials
       debugln("indirect call");
       if (strcmp(server.arg("adminPassword").c_str(), config_data.adminPassword) != 0) {  // passwords don't match
         debugln("Error: handlesetup entered with wrong password");
@@ -215,7 +213,7 @@
 
     addHead(str,0);
     addIntro(str);
-	str += F("<form action='/SetupSave' method='POST'><fieldset>");
+    str += F("<form action='/SetupSave' method='POST'><fieldset>");
     str += F("<input type='hidden' name='setuptoken' value='");
     str += setupToken;
     str += F("'>");
@@ -322,8 +320,6 @@
     webstate = CONFIG;
   }
 	
-  
-  
   void handleP1(){
     debugln("handleP1");
     String str = "";
