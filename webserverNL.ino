@@ -23,7 +23,6 @@
     minuten = minuten % 60;
     sprintf_P(strUpTime, PSTR("%d dagen %d uren %d minuten"), dagen, uren, minuten);
     str += strUpTime;
-//    str += ("</div><div style='text-align:right;font-size:11px;color:#aaa'>");
     str += ("<span style='float:right;font-size:11px;color:#aaa'>");
     str += ipstr;
     str += ("</div>");
