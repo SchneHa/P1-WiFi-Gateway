@@ -103,7 +103,7 @@ Benötigte Dateien:
   webserverSE.ino
   wifi.ino
 ```
-Anmerkung: <Del>Zurzeit sind nur die Deutsche und die Niederländische Versionen lauffähig.</Del> Bei der Französischen und der Schwedischen Verion muss ggf. die Übersetzung korrigiert werden.
+Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen lauffähig.</Del> Bei der französischen und der schwedischen Verion muss ggf. die Übersetzung korrigiert werden.
 
 **English Version:**
 
@@ -133,6 +133,9 @@ The module "sleeps" between the measurements (the modem is switched off so that 
 See http://esp8266thingies.nl for more information about the module and http://www.esp8266thingies.nl/wp/forum-2/ for the discussion forum.
 
 ```
+Version: 1.2a Datum: 13.03.2023
+         Finishing of the french and swedish Version
+         various Improvements and bug fixes
 Version: 1.2 Date: 03/05/2023, Author: Hans Schneider
          added Support for the HTTP input meter of cFos Power Brain Wallbox
          various improvements and bug fixes
