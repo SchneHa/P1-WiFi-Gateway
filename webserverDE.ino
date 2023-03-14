@@ -24,7 +24,6 @@
     sprintf_P(strUpTime, PSTR("%d Tage %d Stunden %d Minuten"), dagen, uren, minuten);
     str += strUpTime;
 //  str += ("</div>");
-//  str += ("<p style='text-align:right;font-size:11px;color:#aaa'>");
     str += ("<span style='float:right;font-size:11px;color:#aaa'>");
     str += ipstr;
     str += ("</span></div>");
