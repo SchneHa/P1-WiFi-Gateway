@@ -23,7 +23,6 @@
     minuten = minuten % 60;
     sprintf_P(strUpTime, PSTR("%d Tage %d Stunden %d Minuten"), dagen, uren, minuten);
     str += strUpTime;
-//  str += ("</div>");
     str += ("<span style='float:right;font-size:11px;color:#aaa'>");
     str += ipstr;
     str += ("</span></div>");
@@ -34,8 +33,9 @@
   
     if (Mqtt) {
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
-      str += F(" letztes sample: ");
+      str += F(" letztes sample ");
       str += LastReport;
+	  str += F("<br>");
     }
     str += F(" Firmware version: ");
     str += version;

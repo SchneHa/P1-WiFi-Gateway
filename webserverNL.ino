@@ -25,7 +25,7 @@
     str += strUpTime;
     str += ("<span style='float:right;font-size:11px;color:#aaa'>");
     str += ipstr;
-    str += ("</div>");
+    str += ("</span></div>");
   }
 
   void addFoot(String& str){
@@ -33,8 +33,9 @@
   
     if (Mqtt) {
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
-      str += F(" laatste sample: ");
+      str += F(" laatste sample ");
       str += LastReport;
+	  str += F("<br>");
     }
     str += F(" firmware versie: ");
     str += version;

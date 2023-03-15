@@ -45,10 +45,11 @@ void addFoot(String& str){
   
     if (Mqtt) {
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
-      str += F(" sista prov: ");
+      str += F(" sista prov ");
       str += LastReport;
+	  str += F("<br>");
     }
-    str += F(" Firmware version: ");
+    str += F(" Firmware version ");
     str += version;
     str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
     str += F("</div></div></body></html>");

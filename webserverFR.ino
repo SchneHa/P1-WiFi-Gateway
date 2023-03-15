@@ -33,8 +33,9 @@
   
     if (Mqtt) {
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
-      str += F(" letztes sample: ");
+      str += F(" letztes sample ");
       str += LastReport;
+	  str += F("<br>");
   }  
 	str += F(" Firmware version: ");
 	str += version;
