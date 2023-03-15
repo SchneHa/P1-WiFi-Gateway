@@ -133,7 +133,7 @@ The module "sleeps" between the measurements (the modem is switched off so that 
 See http://esp8266thingies.nl for more information about the module and http://www.esp8266thingies.nl/wp/forum-2/ for the discussion forum.
 
 ```
-Version: 1.2a Datum: 13.03.2023
+Version: 1.2a Date: 13.03.2023
          Finishing the french and swedish Version
          various Improvements and bug fixes
 Version: 1.2 Date: 03/05/2023, Author: Hans Schneider
