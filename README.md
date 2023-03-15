@@ -134,7 +134,7 @@ See http://esp8266thingies.nl for more information about the module and http://w
 
 ```
 Version: 1.2a Datum: 13.03.2023
-         Finishing of the french and swedish Version
+         Finishing the french and swedish Version
          various Improvements and bug fixes
 Version: 1.2 Date: 03/05/2023, Author: Hans Schneider
          added Support for the HTTP input meter of cFos Power Brain Wallbox
