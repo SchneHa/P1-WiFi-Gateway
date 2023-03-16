@@ -5,7 +5,7 @@ P1 wifi gateway 2022
 
 **(English Version below)**
 
-Basierend auf einem Repo von Ronald Leenes: romix123/P1-wifi-gateway
+Basierend auf einem Repo von Ronald Leenes: https://github.com/romix123/P1-wifi-gateway
 
 Diese Software vereint verschiedene Komponenten in einem handlichen Paket.
 Die Software läuft auf einem ESP8266 board wie dem Wemos D1 mini oder mini Pro und hat einen bescheidenen Platzbedarf.
@@ -110,6 +110,8 @@ Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen
 P1-WiFi-Gateway with support for cFos Power Brain Wallbox
 
 P1 wifi gateway 2022
+
+Based on a repo of Ronald Leenes: https://github.com/romix123/P1-wifi-gateway
 
 This software combines various components in one handy package.
 The software runs on an ESP8266 board like the Wemos D1 mini or mini Pro and has a modest footprint.
