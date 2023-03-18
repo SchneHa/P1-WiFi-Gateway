@@ -118,27 +118,27 @@
  *  g: fixed mqtt
  *  
  *  Generic ESP8285 module 
-*   Flash Size: 2mb (FS: 128Kb, OTA: –960Kb) 
-*   
-*   needed files: 
-*   this one (obv), 
-*   vars.h            in the process of moving all vars here
-*   lang.h
-*   CRC16.h
-*   JSON.ino
-*   MQTT.ino
-*   TELNET.ino
-*   debug.ino
-*   decoder.ino
-*   functions.ino
-*   graph.ino
-*   webserver.ino
-*   webserverDE.ino 
-*   webserverSE.ino
-*   webserverNL.ino
-*   wifi.ino
-*   
-*/
+ *  Flash Size: 2mb (FS: 128Kb, OTA: –960Kb) 
+ *   
+ *  needed files: 
+ *  this one (obv), 
+ *  vars.h            in the process of moving all vars here
+ *  lang.h
+ *  CRC16.h
+ *  JSON.ino
+ *  MQTT.ino
+ *  TELNET.ino
+ *  debug.ino
+ *  decoder.ino
+ *  functions.ino
+ *  graph.ino
+ *  webserver.ino
+ *  webserverDE.ino 
+ *  webserverSE.ino
+ *  webserverNL.ino
+ *  wifi.ino
+ *   
+ */
 
 bool zapfiles = false; //false; //true;
 
@@ -213,6 +213,7 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
 #define LEDon   digitalWrite(BLED, LOW);
 #define OE  16 //IO16 OE on the 74AHCT1G125 
 #define DR  4  //IO4 is Data Request
+//#define WLED 12  //IO12 (D6) is WiFi-LED, uncomment if it's present
 
 #include <TZ.h>
 #define MYTZ TZ_Europe_Amsterdam
@@ -422,7 +423,11 @@ void setup() {
   digitalWrite(OE, HIGH);   //  Put(Keep) OE in Tristate mode
   pinMode(DR, OUTPUT);      //IO4 Data Request
   digitalWrite(DR, LOW);    //  DR low (only goes high when we want to receive data)
-
+  #ifdef WLED
+    pinMode(WLED, OUTPUT);
+    digitalWrite(WLED, LOW);   // LED is high when WiFi is connected
+  #endif
+ 
   blink(3);
   debugln("Booting");
   debugln("Done with Cap charging … ");
@@ -497,6 +502,9 @@ void setup() {
     wifiSta = true;
     debugln("WiFi running in STA (normal) mode");
     LEDoff
+    #ifdef WLED
+      digitalWrite(WLED, HIGH);
+    #endif  
     ESP.rtcUserMemoryWrite(RTC_config_data_SLOT_WIFI_STATE, reinterpret_cast<uint32_t *>(&WiFistate), sizeof(WiFistate));
     #ifdef SLEEP_ENABLED
       modemSleep();
