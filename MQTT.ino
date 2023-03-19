@@ -311,8 +311,6 @@ void MQTT_reporter() {
 
 void MQTT_Debug() {
   char outstr[10];
-  dtostrf(volts/1000, 1,3, outstr);
-  send_mqtt_message("p1wifi/P1module_voltage", outstr);
 
   dtostrf(millis(), 10,0, outstr);
   send_mqtt_message("p1wifi/P1now", outstr);
