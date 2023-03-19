@@ -1,4 +1,23 @@
+## OS Specific Hidden Files ####
 
+# MacOSX Finder *****
+.DS_Store
+
+# Fuse FileSystem ***
+.fuse_hidden*
+
+
+## PlatformIO ##################
+.pioenvs
+.clang_complete
+.gcc-flags.json
+.piolibdeps
+pre_extra_script.py
+*.code-workspace
+.pio
+.piopm
+
+## Project #####################
 P1WG2022current/.DS_Store
 P1WG2022current/Firmware/D1mini Pro/.DS_Store
 P1WG2022current/.DS_Store
