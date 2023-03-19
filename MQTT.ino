@@ -216,9 +216,6 @@ void MQTT_reporter() {
     mqtt_send_metric("l1_instant_power_current", instantaneousCurrentL1);
     mqtt_send_metric("l2_instant_power_current", instantaneousCurrentL2);
     mqtt_send_metric("l3_instant_power_current", instantaneousCurrentL3);
-//  mqtt_send_metric("l1_instant_power_current", CurrentL1);
-//  mqtt_send_metric("l2_instant_power_current", CurrentL2);
-//  mqtt_send_metric("l3_instant_power_current", CurrentL3);
     mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
     mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
     mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
