@@ -195,7 +195,7 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
   #define debugff(x,y)
   #define debugfff(x,y,z)
 #else
-  const char* host = "p1wifi";
+  const char* host = "p1meter";
   #define BLED LED_BUILTIN
   #define debug(x)
   #define debugln(x)
