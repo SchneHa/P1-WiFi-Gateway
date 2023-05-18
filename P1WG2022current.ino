@@ -485,14 +485,14 @@ void setup() {
       break;
     }
   }
-  /*
+ 
   debugln("");
   debugln("Set up wifi, either in STA or AP mode");
   if (softAp){
     debugln("running in AP mode, all handles will be initiated");
     start_webservices();
   }
-*/
+ 
   if (WiFi.status() == WL_CONNECTED) {
     WiFi.setAutoReconnect(true);
     debugln("HTTP server running.");
@@ -514,13 +514,12 @@ void setup() {
     #endif
     debugln("All systems are ok...");
 
-    /*
     state = WAITING;    // signal that we are waiting for a valid start char (aka /)
     devicestate = CONFIG;
     nextUpdateTime = nextMQTTreconnectAttempt = EverSoOften = millis();
     monitoring = true; // start monitoring data
     time_to_sleep = millis() + wakeTime;  // we go to sleep wakeTime seconds from now
-*/
+
     // handle Files
     debug("Mounting file system ... ");
 
