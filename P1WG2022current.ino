@@ -167,6 +167,7 @@ String version = "1.2a – "+sfx;
 #define ESMR5 1
 //#define SLEEP_ENABLED
 
+#define LED_BUILTIN 2
 
 const uint32_t  wakeTime = 90000; // stay awake wakeTime millisecs
 const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
@@ -242,7 +243,7 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
 
 // van ESP8266WiFi/examples/WiFiShutdown/WiFiShutdown.ino
 #ifndef RTC_config_data_SLOT_WIFI_STATE
-#define RTC_config_data_SLOT_WIFI_STATE 33u
+  #define RTC_config_data_SLOT_WIFI_STATE 33u
 #endif
 #include <include/WiFiState.h>  // WiFiState structure details
 //#include <WiFiState.h>  // WiFiState structure details
@@ -535,7 +536,6 @@ void setup() {
         }
       } else debugln("done.");
  
-
       debugln("Reading logdata:");
       File logData = FST.open("/logData.txt", "r");
       if (logData) {
@@ -701,8 +701,8 @@ void checkCounters() {
 //  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 31 && (month(t) == 1 || month(t) == 3 || month(t) == 5 || month(t) == 7 || month(t) == 8 || month(t) == 10 || month() == 12) && hour() == 23 && minute() == 59 ) doMonthlyLog();
 //  if (!CHK_FLAG(logFlags, monthFlag) && day(t) == 31 && month(t) == 12 && hour(t) == 23 && minute(t) == 59 ) doYearlyLog();
 //  doMonthlyLog();
-//  if (!monthFlag && day() == 31 && (month() == 1 || month() == 3 || month() == 5 || month() == 7 || month() == 8 || month() == 10 || month() == 12) && hour() == 23 && minute() == 59 ) doMonthlyLog();
-//  if (!monthFlag && day() == 31 && month() == 12 && hour() == 23 && minute() == 59 ) doYearlyLog();
+  if (!monthFlag && day() == 31 && (month() == 1 || month() == 3 || month() == 5 || month() == 7 || month() == 8 || month() == 10 || month() == 12) && hour() == 23 && minute() == 59 ) doMonthlyLog();
+  if (!monthFlag && day() == 31 && month() == 12 && hour() == 23 && minute() == 59 ) doYearlyLog();
 }
 
 void resetFlags() {
@@ -736,7 +736,7 @@ void doWatchDogs(){
     state = WAITING;
     monitoring=true;
   }
-  if (minute() == 23) hourFlag = false; // clear all flags at a safe timeslot. 
-  if (minute() == 43) hourFlag = false; // clear all flags at a safe timeslot.
-  if (!monitoring && (minute() == 16 || minute() == 31 || minute() == 46)  ) monitoring = true; // kludge to make sure we keep monitoring
+//  if (minute() == 23) hourFlag = false; // clear all flags at a safe timeslot. 
+//  if (minute() == 43) hourFlag = false; // clear all flags at a safe timeslot.
+//  if (!monitoring && (minute() == 16 || minute() == 31 || minute() == 46)  ) monitoring = true; // kludge to make sure we keep monitoring
 }
