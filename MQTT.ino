@@ -56,7 +56,6 @@ void mqtt_reconnect() {
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
     if (mqtt_client.connect(HOSTNAME, config_data.mqttUser, config_data.mqttPass)) {
-//    if (mqtt_client.connect(HOSTNAME, "p1meter", "NTnnJU@t")) {
       debugln("   connected to broker");
       // Once connected, publish an announcement...
       mqtt_client.publish("outTopic", "p1 gateway running");
@@ -72,7 +71,6 @@ void mqtt_reconnect() {
     }
   } 
 }
-
 
 void callback(char* topic, byte* payload, unsigned int length) {
   debug("Message arrived [");
@@ -100,7 +98,6 @@ void send_mqtt_message(const char *topic, char *payload) {
     debugln(" failed.");
   }
 }
-
 
 void send_metric(String name, float metric) { // added *long
   char value[20];
@@ -308,6 +305,9 @@ void MQTT_reporter() {
 
 void MQTT_Debug() {
   char outstr[10];
+  
+  dtostrf(volts/1000, 1,3, outstr);
+  send_mqtt_message("p1wifi/P1module_voltage", outstr);
 
   dtostrf(millis(), 10,0, outstr);
   send_mqtt_message("p1wifi/P1now", outstr);

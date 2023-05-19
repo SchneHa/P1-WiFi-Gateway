@@ -160,10 +160,10 @@ bool zapfiles = false; //false; //true;
 String version = "1.2a – "+sfx;
 
 #define HOSTNAME "p1meter"
-#define FSystem 0 // 0= LittleFS 1 = SPIFFS
+#define FSystem 1 // 0= LittleFS 1 = SPIFFS
 #define GRAPH 1
 #define V3
-#define DEBUG 0 //0 //1 //2 //3 // 1 is on serial only, 2 is serial + telnet
+#define DEBUG 1 //0 //1 //2 //3 // 1 is on serial only, 2 is serial + telnet
 #define ESMR5 1
 //#define SLEEP_ENABLED
 
@@ -228,14 +228,12 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
 #include "CRC16.h"
 
 #if GRAPH == 1
-//  #include "FS.h"
   #if FSystem == 0
     #include <LittleFS.h>
     #define FST LittleFS
   #elif FSystem == 1
     #include "FS.h" //SPIFFS
     #define FST SPIFFS
-//#include "SPIFFS.h"
   #endif
   File file;
 #endif
@@ -266,10 +264,6 @@ ESP8266WebServer    server(80);
 #include <WiFiClient.h>
 #include <ESP8266mDNS.h>
 
-//#include "ESP8266HTTPUpdateServer.h"
-//const char* update_username = "admin";
-
-//ESP8266HTTPUpdateServer httpUpdater;
 
 // mqtt stuff . https://github.com/ict-one-nl/P1-Meter-ESP8266-MQTT/blob/master/P1Meter/P1Meter.ino
 #include <PubSubClient.h>
@@ -585,7 +579,6 @@ void loop() {
   } // update window
   if (OEstate) readTelegram();
 
-//  if ((millis() > time_to_sleep) && !atsleep && wifiSta) { // not currently sleeping and sleeptime
   #ifdef SLEEP_ENABLED
     if ((millis() > time_to_sleep) && !atsleep && wifiSta){  // not currently sleeping and sleeptime
       modemSleep();
@@ -594,13 +587,6 @@ void loop() {
       modemWake();
     }
   #endif
-//  }
-
-//  if (wifiSta && (millis() > time_to_wake) && (WiFi.status() != WL_CONNECTED)) { // time to wake, if we're not already awake
-//  #ifdef SLEEP_ENABLED
-//    modemWake();
-//  #endif
-//  }
 
   if (datagramValid && (state == DONE) && (WiFi.status() == WL_CONNECTED)) {
 
@@ -628,13 +614,6 @@ void loop() {
     state = WAITING;
   }  
     
-//    nextUpdateTime = millis() + interval;
-//    if (ESP.getFreeHeap() < 2000) ESP.reset(); // watchdog, we do have a memory leak (still)
-//    state = WAITING;
-
-//    checkCounters();
-//    resetFlags();
-//  }
 
   if (softAp || (WiFi.status() == WL_CONNECTED)) {
     server.handleClient(); //handle web requests

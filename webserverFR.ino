@@ -40,9 +40,11 @@
 	str += F(" Firmware version: ");
 	str += version;
 	
-//    char sysmsg[100];
-//    sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
-//    str += sysmsg;
+    char sysmsg[100];
+    readVoltage();
+    sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
+    str += sysmsg;
+    
     str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
     str += F("</div></div></body></html>");
   }
@@ -51,6 +53,12 @@
     str += F("<div style='text-align:right;font-size:11px;color:#aaa;'><hr/>");
     str += F(" firmware version: ");
     str += version;
+	
+    char sysmsg[100];
+    readVoltage();
+    sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
+    str += sysmsg;
+	
     str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
     str += F("</div></div></body></html>");
   }
@@ -214,6 +222,7 @@
 
     addHead(str,0);
     addIntro(str);
+	str += F("<fieldset>");
     str += F("<form action='/SetupSave' method='POST'><fieldset>");
     str += F("<input type='hidden' name='setuptoken' value='");
     str += setupToken;

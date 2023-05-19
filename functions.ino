@@ -62,7 +62,6 @@ bool isNumber(char* res, int len) {
   return true;
 }
 
-
 int FindCharInArrayRev(char array[], char c, int len) {
   for (int i = len - 1; i >= 0; i--) {
     if (array[i] == c) {
@@ -70,8 +69,8 @@ int FindCharInArrayRev(char array[], char c, int len) {
     }
   }
   return -1;
-  
 }
+
 int FindCharInArrayRev2(char array[], char c, int len) {
   for (int i = len - 1; i >= 0; i--) {
     if (array[i] == c && array[i+1] == '(') {
@@ -242,26 +241,26 @@ void deleteFile(const char * path) {
  * if not at end-of-file.
  *
  */
-size_t readField(File* file, char* str, size_t size, char* delim) {
-  char ch;
-  size_t n = 0;
+// size_t readField(File* file, char* str, size_t size, char* delim) {
+//   char ch;
+//   size_t n = 0;
 
   
-  while ((n + 1) < size){ // && filel.available()) {
-    ch = file->read(); 
-    debug(ch);
-      // Delete CR.
-      if (ch == '\r') {
-      continue;
-    }
-    str[n++] = ch;
-    if (strchr(delim, ch)) {
-        break;
-    }
-  }
-  str[n] = '\0';
-  return n;
-}
+//   while ((n + 1) < size){ // && filel.available()) {
+//     ch = file->read(); 
+//     debug(ch);
+//       // Delete CR.
+//       if (ch == '\r') {
+//       continue;
+//     }
+//     str[n++] = ch;
+//     if (strchr(delim, ch)) {
+//         break;
+//     }
+//   }
+//   str[n] = '\0';
+//   return n;
+// }
 
 int numLines(const char * path){
   int numberOfLines = 0;

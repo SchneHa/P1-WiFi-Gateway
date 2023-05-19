@@ -30,48 +30,48 @@
 long getValidVal(long valNew, long valOld, long maxDiffer)
 {
   //check if the incoming value is valid
-      if(valOld > 0 && ((valNew - valOld > maxDiffer) && (valOld - valNew > maxDiffer)))
-        return valOld;
-      return valNew;
+  if(valOld > 0 && ((valNew - valOld > maxDiffer) && (valOld - valNew > maxDiffer)))
+    return valOld;
+  return valNew;
 }
 
 void getValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar){
-    String cleanres="";
-    int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
-    int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
+  String cleanres="";
+  int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
+  int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
 
-    char res[16];
-    memset(res, 0, sizeof(res));
+  char res[16];
+  memset(res, 0, sizeof(res));
     
 
-   if (strncpy(res, buffer + s + 1, l)) {
-        if (endchar == '*')
-        {
-            if (isNumber(res, l)){
-              int flag = 1;
-              for(int i=0; i < l + 1; i++)     
-              {
-                if (flag == 1 && res[i] != '0') flag = 0;
-                if (res[i] == '0' && res[i+1] == '.') flag = 0;
-                if(flag != 1){
-                  if (!reportInDecimals)    {       // BELGIQUE // report in Watts instead of KW
-                      if (res[i] != '.') cleanres += res[i];
-                    }
-                    else cleanres += res[i];
-                  }
-              }
+  if (strncpy(res, buffer + s + 1, l)) {
+    if (endchar == '*')
+    {
+      if (isNumber(res, l)) {
+        int flag = 1;
+        for(int i=0; i < l + 1; i++)     
+          {
+          if (flag == 1 && res[i] != '0') flag = 0;
+          if (res[i] == '0' && res[i+1] == '.') flag = 0;
+          if(flag != 1) {
+            if (!reportInDecimals) {       // BELGIQUE // report in Watts instead of KW
+              if (res[i] != '.') cleanres += res[i];
             }
-          cleanres.toCharArray(theValue, cleanres.length());
-          theValue[cleanres.length()+1]=0;
-              } else if (endchar == ')') 
-        {
-            if (isNumber(res, l))  strncpy(theValue, res, l);
-            theValue[cleanres.length()+1]=0;
-        }
-    }
- }
+          else cleanres += res[i];
+            }
+          }
+      }
+      cleanres.toCharArray(theValue, cleanres.length());
+      theValue[cleanres.length()+1]=0;
+    } else if (endchar == ')') 
+      {
+        if (isNumber(res, l))  strncpy(theValue, res, l);
+        theValue[cleanres.length()+1]=0;
+      }
+   }
+}
 
-  void getGasValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar){ 
+void getGasValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar) { 
   String cleanres="";
   bool nodecimals = false;
 
@@ -80,9 +80,9 @@ void getValue(char *theValue, char *buffer, int maxlen, char startchar, char end
     
   int s = 0;
   if  (FindCharInArrayRev(buffer, ')(', maxlen - 2) != -1)  // some meters report the meterID in () before the section with actual gas value
-      s = FindCharInArrayRev(buffer, ')(', maxlen - 2);
+     s = FindCharInArrayRev(buffer, ')(', maxlen - 2);
   else
-    s = FindCharInArrayRev(buffer, '(', maxlen - 2);
+     s = FindCharInArrayRev(buffer, '(', maxlen - 2);
     
   if (s < 8) return;
   if (s > 32) s = 32;
@@ -92,41 +92,40 @@ void getValue(char *theValue, char *buffer, int maxlen, char startchar, char end
   char res[16];
   memset(res, 0, sizeof(res));
   if (strncpy(res, buffer + s + 1, l)) {
-    //    if (endchar == '*')
-     //   {
-            if (isNumber(res, l)){
-              int flag = 1;
-              for(int i=0; i < l + 1; i++)     
-              {
-                if (flag == 1 && res[i] != '0') flag = 0;
-                if (res[i] == '0' && res[i+1] == '.') flag = 0;
-                if(flag != 1){
-                  if (nodecimals )    {       
-                      if (res[i] != '.') cleanres += res[i];
-                    } else cleanres += res[i];
-                  }
-              }
-            }
-          cleanres.toCharArray(theValue, cleanres.length());
-          theValue[cleanres.length()+1]=0;
-      //  } else if (endchar == ')')  if (isNumber(res, l))  strncpy(theValue, res, l);
-    }
+    // if (endchar == '*')
+    // {
+    if (isNumber(res, l)){
+      int flag = 1;
+      for(int i=0; i < l + 1; i++)     
+        {
+          if (flag == 1 && res[i] != '0') flag = 0;
+          if (res[i] == '0' && res[i+1] == '.') flag = 0;
+          if (flag != 1) {
+            if (nodecimals ) {       
+              if (res[i] != '.') cleanres += res[i];
+            } else cleanres += res[i];
+          }
+        }
+      }
+      cleanres.toCharArray(theValue, cleanres.length());
+      theValue[cleanres.length()+1]=0;
+//  } else if (endchar == ')')  if (isNumber(res, l))  strncpy(theValue, res, l);
+  }
 }
-
 
 void getGas22Value(char *theValue, char *buffer, int maxlen, char startchar, char endchar){
-    int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
-    int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
-    char res[16];
-    memset(res, 0, sizeof(res));
+  int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
+  int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
+  char res[16];
+  memset(res, 0, sizeof(res));
     
-   if (strncpy(res, buffer + s + 1, l)) {
-     if (isNumber(res, l))  strncpy(theValue, res, l);
-     theValue[l+1]=0;
-   }
+  if (strncpy(res, buffer + s + 1, l)) {
+    if (isNumber(res, l))  strncpy(theValue, res, l);
+    theValue[l+1]=0;
+  }
 }
 
- void getDomoticzGasValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar){ 
+void getDomoticzGasValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar){ 
   String cleanres="";
   bool nodecimals = false;
 
@@ -134,7 +133,7 @@ void getGas22Value(char *theValue, char *buffer, int maxlen, char startchar, cha
     
   int s = 0;
   if  (FindCharInArrayRev(buffer, ')(', maxlen - 2) != -1)  // some meters report the meterID in () before the section with actual gas value
-      s = FindCharInArrayRev(buffer, ')(', maxlen - 2);
+    s = FindCharInArrayRev(buffer, ')(', maxlen - 2);
   else
     s = FindCharInArrayRev(buffer, '(', maxlen - 2);
     
@@ -146,57 +145,57 @@ void getGas22Value(char *theValue, char *buffer, int maxlen, char startchar, cha
   char res[16];
   memset(res, 0, sizeof(res));
   if (strncpy(res, buffer + s + 1, l)) {
-    //    if (endchar == '*')
-     //   {
-            if (isNumber(res, l)){
-              int flag = 1;
-              for(int i=0; i < l + 1; i++)     
-              {
-                if (flag == 1 && res[i] != '0') flag = 0;
-                if (res[i] == '0' && res[i+1] == '.') flag = 0;
-                if(flag != 1){
-                      if (res[i] != '.') cleanres += res[i];
-                   }
-              }
-            }
-          cleanres.toCharArray(theValue, cleanres.length());
-          theValue[cleanres.length()+1]=0;
-      //  } else if (endchar == ')')  if (isNumber(res, l))  strncpy(theValue, res, l);
-    }
+    //  if (endchar == '*')
+    //  {
+    if (isNumber(res, l)) {
+      int flag = 1;
+      for (int i=0; i < l + 1; i++)     
+        {
+          if (flag == 1 && res[i] != '0') flag = 0;
+          if (res[i] == '0' && res[i+1] == '.') flag = 0;
+          if (flag != 1) {
+            if (res[i] != '.') cleanres += res[i];
+          }
+        }
+      }
+     cleanres.toCharArray(theValue, cleanres.length());
+     theValue[cleanres.length()+1]=0;
+     // } else if (endchar == ')')  if (isNumber(res, l))  strncpy(theValue, res, l);
+   }
 }
  
 void getStr(char *theValue, char *buffer, int maxlen, char startchar, char endchar){
-    int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
-    int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
-    char res[102];
-    memset(res, 0, sizeof(res));
+  int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
+  int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
+  char res[102];
+  memset(res, 0, sizeof(res));
     
-   if (strncpy(res, buffer + s + 1, l)) {
-     if (isNumber(res, l))  strncpy(theValue, res, l);
-     theValue[l+1]=0;
-   }
+  if (strncpy(res, buffer + s + 1, l)) {
+    if (isNumber(res, l))  strncpy(theValue, res, l);
+    theValue[l+1]=0;
+  }
 }
 
 void getStr12(char *theValue, char *buffer, int maxlen, char startchar){
-    int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
-    int l = 12; //FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
-    char res[102];
-    memset(res, 0, sizeof(res));
+  int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
+  int l = 12; //FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
+  char res[102];
+  memset(res, 0, sizeof(res));
     
-   if (strncpy(res, buffer + s + 1, l)) {
-     if (isNumber(res, l))  strncpy(theValue, res, l);
-     theValue[l+1]=0;
-   }
+  if (strncpy(res, buffer + s + 1, l)) {
+    if (isNumber(res, l))  strncpy(theValue, res, l);
+    theValue[l+1]=0;
+  }
 }
 
 bool decodeTelegram(int len) {
- long val  = 0;
- long val2 = 0;
- int pos4;
+  long val  = 0;
+  long val2 = 0;
+  int pos4;
   //need to check for start
- int startChar = FindCharInArrayRev(telegram, '/', len);
- int endChar = FindCharInArrayRev(telegram, '!', len);
- bool validCRCFound = false;
+  int startChar = FindCharInArrayRev(telegram, '/', len);
+  int endChar = FindCharInArrayRev(telegram, '!', len);
+  bool validCRCFound = false;
 
 // if (state == FAILURE){
 //      datagram ="";
@@ -206,78 +205,78 @@ bool decodeTelegram(int len) {
 // }
   
  if (state == WAITING) {      // we're waiting for a valid start sequence, if this line is not it, just return
-  if(startChar>=0)
-  {
+   if(startChar>=0)
+   {
 
-    //start found. Reset CRC calculation
-    currentCRC=CRC16(0x0000,(unsigned char *) telegram+startChar, len-startChar);
-    // and reset datagram 
-    datagram ="";
-    datagramValid = false;
-    dataEnd = false;
+     //start found. Reset CRC calculation
+     currentCRC=CRC16(0x0000,(unsigned char *) telegram+startChar, len-startChar);
+     // and reset datagram 
+     datagram ="";
+     datagramValid = false;
+     dataEnd = false;
 
 
-      for(int cnt=startChar; cnt<len-startChar;cnt++){
-       // debug(telegram[cnt]);
-        datagram += telegram[cnt];
-      }    
-    debugln("Start found!");
-    state = READING;
-    return false;
-  } else {
-    currentCRC = 0;
-    return false;        // We're waiting for a valid start char, if we're in the middle of a datagram, just return.
-  }
+     for(int cnt=startChar; cnt<len-startChar;cnt++) {
+     // debug(telegram[cnt]);
+       datagram += telegram[cnt];
+     }    
+     debugln("Start found!");
+     state = READING;
+     return false;
+   } else {
+      currentCRC = 0;
+      return false;        // We're waiting for a valid start char, if we're in the middle of a datagram, just return.
+   }
  }
  
-  if (state == READING) {     
-  if(endChar>=0)   // we have found the endchar !
-  {
-    state = CHECKSUM;
-    //add to crc calc 
-    dataEnd = true;         // we're at the end of the data stream, so mark (for raw data output) We don't know if the data is valid, we will test this below.
-    gas22Flag=false;        // assume we have also collected the Gas value
-    currentCRC=CRC16(currentCRC,(unsigned char*)telegram+endChar, 1);
-    char messageCRC[4];
-    strncpy(messageCRC, telegram + endChar + 1, 4);
-    if (datagram.length() < 2048){ 
-      for(int cnt=0; cnt<len;cnt++) {
-        datagram += telegram[cnt];
-      }
-      datagram += "\r";
-      datagram += "\n";
-    } else datagram=""; //prevent bufferoverflow
+ if (state == READING) {     
+ if(endChar>=0)   // we have found the endchar !
+ {
+   state = CHECKSUM;
+   //add to crc calc 
+   dataEnd = true;         // we're at the end of the data stream, so mark (for raw data output) We don't know if the data is valid, we will test this below.
+   gas22Flag=false;        // assume we have also collected the Gas value
+   currentCRC=CRC16(currentCRC,(unsigned char*)telegram+endChar, 1);
+   char messageCRC[4];
+   strncpy(messageCRC, telegram + endChar + 1, 4);
+   if (datagram.length() < 2048){ 
+     for(int cnt=0; cnt<len;cnt++) {
+       datagram += telegram[cnt];
+     }
+     datagram += "\r";
+     datagram += "\n";
+   } else datagram=""; //prevent bufferoverflow
 
-    validCRCFound = (strtol(messageCRC, NULL, 16) == currentCRC);
-    debug("   calculated CRC:");
-    debugln(currentCRC); 
+   validCRCFound = (strtol(messageCRC, NULL, 16) == currentCRC);
+   debug("   calculated CRC:");
+   debugln(currentCRC); 
     
-    if(validCRCFound) {
-      debugln("\nVALID CRC FOUND!"); 
-      datagramValid = true;
-      gotPowerReading = true; // we at least got electricty readings. Not all setups have a gas meter attached, so gotGasReading is handled when we actually get gasIds coming in
-      state = DONE;
-      RTS_off();
-      if (devicestate == GOTMETER) {
-         devicestate = RUNNING;
-      }
+   if(validCRCFound) {
+     debugln("\nVALID CRC FOUND!"); 
+     datagramValid = true;
+     gotPowerReading = true; // we at least got electricty readings. Not all setups have a gas meter attached, so gotGasReading is handled when we actually get gasIds coming in
+     state = DONE;
+     RTS_off();
+     if (devicestate == GOTMETER) {
+       devicestate = RUNNING;
+     }
 
-      return true;
-    }
-    else {
-      debugln("\n===INVALID CRC FOUND!===");
-      state = FAILURE;
-      currentCRC = 0;
-      RTS_off();
-      return false;
-    }
-  } 
+     return true;
+   }
+  else {
+	debugln("\n===INVALID CRC FOUND!===");
+    state = FAILURE;
+    currentCRC = 0;
+    RTS_off();
+    return false;
+  }
+} 
   
-  else  { // normal line, process
-    currentCRC=CRC16(currentCRC, (unsigned char*)telegram, len);
-      for(int cnt=0; cnt<len;cnt++){
-        datagram += telegram[cnt];
-      }
+else  { // normal line, process
+  currentCRC=CRC16(currentCRC, (unsigned char*)telegram, len);
+  for(int cnt=0; cnt<len;cnt++) {
+    datagram += telegram[cnt];
+  }
   
   if ((telegram[4] >= '0') && (telegram[4] <= '9'))
     pos4 = (int)(telegram[4])-48;
@@ -287,13 +286,13 @@ bool decodeTelegram(int len) {
   if (devicestate == CONFIG) {
     // 0-0:96.1.1 equipmentId                         (xxxxxxxxxxxx) 
     if (strncmp(telegram, "96.1.0", strlen("96.1.0")) == 0) {
-    getStr(equipmentId,telegram, len, '(', ')');
+      getStr(equipmentId,telegram, len, '(', ')');
       devicestate = GOTMETER;
     }
     // 1-3:0.2.8(42) or 1-3:0.2.8(50) // protocol version
     if (strncmp(telegram, "1-3:0.2.8", strlen("1-3:0.2.8")) == 0) {
-        getStr(P1version,telegram, len, '(', ')');
-        if (P1version[0] =='4') P1prot = 4; else P1prot = 5;
+      getStr(P1version,telegram, len, '(', ')');
+      if (P1version[0] =='4') P1prot = 4; else P1prot = 5;
     }    
   }
 //debugln(pos4);
