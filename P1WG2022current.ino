@@ -158,7 +158,7 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2ab – "+sfx;
+String version = "1.2ab – " + sfx;
 
 #define HOSTNAME "p1meter"
 #define FSystem 1 // 0= LittleFS 1 = SPIFFS
