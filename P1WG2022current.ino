@@ -62,11 +62,12 @@
  *  
  *  
  *    
- *  versie: 1.2a
+ *  versie: 1.2ab
  *  datum:  13 Mar 2023
  *  auteur: Ronald Leenes
  *          Hans Schneider
- *          
+ *  
+ *  1.2ab  (re)activated display of module voltage in footer of webserver pages, bug fixes 
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
  *  1.2:   support for HTTP input meter in cFos Power Brain wallbox implemented
  *           note: for this to work your cFos Charging Manager firmware has to be at least 1.17.4-beta
@@ -157,7 +158,7 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2a – "+sfx;
+String version = "1.2ab – "+sfx;
 
 #define HOSTNAME "p1meter"
 #define FSystem 1 // 0= LittleFS 1 = SPIFFS
