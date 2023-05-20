@@ -40,7 +40,7 @@
     str += F(" Firmware version: ");
     str += version;
 	
-	char sysmsg[100];
+    char sysmsg[100];
     readVoltage();
     sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
     str += sysmsg;
@@ -54,7 +54,7 @@
     str += F(" Firmware version: ");
     str += version;
 	
-	char sysmsg[100];
+    char sysmsg[100];
     readVoltage();
     sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
     str += sysmsg;
