@@ -67,7 +67,7 @@
  *  auteur: Ronald Leenes
  *          Hans Schneider
  *  
- *  1.2ab  (re)activated display of module voltage in footer of webserver pages, bug fixes 
+ *  1.2ab  display of module voltage in footer of webserver pages (re)activated, bug fixes 
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
  *  1.2:   support for HTTP input meter in cFos Power Brain wallbox implemented
  *           note: for this to work your cFos Charging Manager firmware has to be at least 1.17.4-beta
