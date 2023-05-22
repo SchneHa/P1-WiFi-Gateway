@@ -29,6 +29,10 @@ Das Modul „schläft“ zwischen den Messungen (das Modem wird ausgeschaltet, s
 Siehe http://esp8266thingies.nl für weitere Informationen über das Modul und http://www.esp8266thingies.nl/wp/forum-2/ für das Diskussionsforum.
 
 ```
+Version: 1.2b Datum: 22.05.2023
+         Anpassungen für die Firmware 1.19.4 der cFos Power Brain Wallbox
+         (power_va ist nun power_w, is_va existiert nicht mehr)
+         Korrekturen der niederländischen, französischen und schwedischen Version
 Version: 1.2a Datum: 13.03.2023
          Fertigstellung der französischen und schwedischen Version
          diverse Verbesserungen und Fehlerbehebungen
@@ -135,6 +139,10 @@ The module "sleeps" between the measurements (the modem is switched off so that 
 See http://esp8266thingies.nl for more information about the module and http://www.esp8266thingies.nl/wp/forum-2/ for the discussion forum.
 
 ```
+Version: 1.2b Datum: 22.05.2023
+         changes for cFos Power Brain Firmware 1.19.4
+         (power_va is now power_w, is_va doesn't exist anymore)
+         improvements of dutch, french and swedish language
 Version: 1.2a Date: 13.03.2023
          Finishing the french and swedish Version
          various Improvements and bug fixes
