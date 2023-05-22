@@ -106,8 +106,8 @@ void doCFOS() {
     }
 // end Workaround
     
-    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_va=%s&is_va=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, aktuelleLeistungImport, cfosIsVA);    
-    
+//    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_va=%s&is_va=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, aktuelleLeistungImport, cfosIsVA);    
+    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, aktuelleLeistungImport);    
     debugff("[HTTP] GET... URL: %s\n",url);
     http.begin(client, url); //HTTP
     int httpCode = http.GET();

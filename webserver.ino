@@ -116,7 +116,7 @@ void handleSetupSave() {
     strncpy(config_data.mqttTopic, server.arg("mqttTopic").c_str(), server.arg("mqttTopic").length() );
 
     if (server.arg("cfos") == "on") config_data.cfos[0] = 'j'; else config_data.cfos[0] = 'n';
-    if (server.arg("cfosVA") == "on") (config_data.cfosVA[0] = 'j'); else (config_data.cfosVA[0] = 'n');
+//    if (server.arg("cfosVA") == "on") (config_data.cfosVA[0] = 'j'); else (config_data.cfosVA[0] = 'n');
     strncpy(config_data.cfosIP, server.arg("cfosIP").c_str(), server.arg("cfosIP").length() );
     strncpy(config_data.cfosPort, server.arg("cfosPort").c_str(), server.arg("cfosPort").length() );
     strncpy(config_data.cfosUsr, server.arg("cfosUsr").c_str(), server.arg("cfosUsr").length() );
@@ -153,7 +153,7 @@ void handleSetupSave() {
     config_data.cfosID[server.arg("cfosID").length()] = 
     config_data.cfosModel[server.arg("cfosModel").length()] = 
 //    config_data.cfosIsVA[server.arg("cfosIsVA").length()] = 
-    config_data.cfosVA[1] =      
+//    config_data.cfosVA[1] =      
     config_data.domo[1] = //server.arg("domo").length()] = 
     config_data.mqtt[1] = //server.arg("mqtt").length()] = 
     config_data.cfos[1] =

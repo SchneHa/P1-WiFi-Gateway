@@ -288,29 +288,29 @@
     str += F("<p><b>Daten an cFos Power Brain?</b><input type='checkbox' class='form-control' name='cfos' id='cfos' ");
   
     if (config_data.cfos[0] =='j') str += F(" checked></p>"); else str += F("></p>");
-    str += F("<p><b>cFos Power Brain IP-Adresse</b><input type='text' class='form-control' name='cfosIP' value='");
+    str += F("<p><b>cFos Power Brain IP-adres</b><input type='text' class='form-control' name='cfosIP' value='");
     str += config_data.cfosIP;
     str += F("'></p><p>");
-    str += F("<b>cFos Power Brain Port</b><input type='text' class='form-control' name='cfosPort' value='");
+    str += F("<b>cFos Power Brain poort</b><input type='text' class='form-control' name='cfosPort' value='");
     str += config_data.cfosPort;
     str += F("'></p><p>");
-    str += F("<b>cFos Power Brain User</b><input type='text' class='form-control' name='cfosUsr' value='");
+    str += F("<b>cFos Power Brain user</b><input type='text' class='form-control' name='cfosUsr' value='");
     str += config_data.cfosUsr;
     str += F("'></p><p>");
-    str += F("<b>cFos Power Brain Passwort</b><input type='text' class='form-control' name='cfosPwd' value='");
+    str += F("<b>cFos Power Brain wachtwoord</b><input type='text' class='form-control' name='cfosPwd' value='");
     str += config_data.cfosPwd;
     str += F("'></p>");
-    str += F("<b>cFos Power Brain Zählermodell</b><input type='text' class='form-control' name='cfosModel' value='");
+    str += F("<b>cFos Power Brain meter model</b><input type='text' class='form-control' name='cfosModel' value='");
     str += config_data.cfosModel;
     str += F("'></p>");
-    str += F("<b>cFos Power Brain ZählerID</b><input type='text' class='form-control' name='cfosID' value='");
+    str += F("<b>cFos Power Brain meter ID</b><input type='text' class='form-control' name='cfosID' value='");
     str += config_data.cfosID;
     str += F("'></p>");
-    str += F("<p><b>cfos Power Brain Zähleranzeige in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
-    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+//    str += F("<p><b>cfos Power Brain Zähleranzeige in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
+//    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
     str += F("</fieldset>");
 
-    str += F("<fieldset><legend><b>&nbsp;Weitere Einstellungen&nbsp;</b></legend>");
+    str += F("<fieldset><legend><b>&nbsp;Meer instellingen&nbsp;</b></legend>");
     str += F("<b>Meetinterval in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
     str += config_data.interval; 
     str += F("'></p><p>");

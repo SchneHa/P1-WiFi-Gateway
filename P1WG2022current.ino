@@ -19,8 +19,8 @@
  * @file P1WG2022current.ino
  * @author Ronald Leenes
  *         Hans Schneider
- * @date 13.03.2023
- * @version 1.2a 
+ * @date 22.05.2023
+ * @version 1.2b
  *
  * @brief This file contains the main file for the P1 wifi gatewway
  *
@@ -62,11 +62,13 @@
  *  
  *  
  *    
- *  versie: 1.2ab
- *  datum:  13 Mar 2023
+ *  versie: 1.2b
+ *  datum:  22 May 2023
  *  auteur: Ronald Leenes
  *          Hans Schneider
- *  
+ *
+ *  1.2b   changes for cFos Power Brain FW 1.19.4: power_va is now power_w, is_va doesn't exist anymore
+ *         improvements of Netherlands, French and Swedish language  
  *  1.2ab  display of module voltage in footer of webserver pages (re)activated, bug fixes 
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
  *  1.2:   support for HTTP input meter in cFos Power Brain wallbox implemented
@@ -158,10 +160,11 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2ab – " + sfx;
+String version = "1.2b – " + sfx;
 
 #define HOSTNAME "p1meter"
 #define FSystem 1 // 0= LittleFS 1 = SPIFFS
+
 #define GRAPH 1
 #define V3
 #define DEBUG 1 //0 //1 //2 //3 // 1 is on serial only, 2 is serial + telnet
@@ -305,7 +308,7 @@ struct settings {
   char cfosID[5] = "M4";
   char cfosModel[30] = "HTTP_Input";
   char interval[3] = "20";
-  char cfosVA[4] = "n";
+//  char cfosVA[4] = "n";
   char domo[4] = "j";
   char mqtt[4] = "n";
   char cfos[4] = "j";
@@ -433,7 +436,8 @@ void setup() {
   EEPROM.get(0, config_data);
 
   if (config_data.dataSet[0] != 'j') {
-    config_data = (settings) {"n", "", "", "192.168.1.12", "8080", "1234", "1235", "sensors/power/p1meter", "192.168.1.12", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "192.168.1.183", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "n", "adminpwd"};
+//    config_data = (settings) {"n", "", "", "192.168.1.12", "8080", "1234", "1235", "sensors/power/p1meter", "192.168.1.12", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "192.168.1.183", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "n", "adminpwd"};
+    config_data = (settings) {"n", "", "", "192.168.1.12", "8080", "1234", "1235", "sensors/power/p1meter", "192.168.1.12", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "192.168.1.183", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "adminpwd"};  
   }
   
   (config_data.watt[0] == 'j') ? reportInDecimals = false : reportInDecimals = true;
@@ -442,11 +446,11 @@ void setup() {
   (config_data.cfos[0] == 'j') ? cfos = true : cfos = false;
   (config_data.telnet[0] == 'j') ? Telnet = true : Telnet = false;
   (config_data.debug[0] == 'j') ? MQTT_debug = true : MQTT_debug = false;
-  if (config_data.cfosVA[0] == 'j') {
-    cfosIsVA = "true";
-  } else {
-    cfosIsVA = "false";
-  }
+//  if (config_data.cfosVA[0] == 'j') {
+//    cfosIsVA = "true";
+//  } else {
+//    cfosIsVA = "false";
+//  }
   
   if (strcmp(config_data.mqttTopic, "dsmr") == 0) { // auto detext need to report in 'dsmr reader' mqtt format
     mqtt_dsmr = true;
@@ -499,6 +503,7 @@ void setup() {
     debugln("WiFi running in STA (normal) mode");
     LEDoff
     #ifdef WLED
+	  pinMode(WLED, OUTPUT);
       digitalWrite(WLED, HIGH);
     #endif  
     ESP.rtcUserMemoryWrite(RTC_config_data_SLOT_WIFI_STATE, reinterpret_cast<uint32_t *>(&WiFistate), sizeof(WiFistate));
@@ -516,6 +521,7 @@ void setup() {
     monitoring = true; // start monitoring data
     time_to_sleep = millis() + wakeTime;  // we go to sleep wakeTime seconds from now
 
+	
     // handle Files
     debug("Mounting file system ... ");
 

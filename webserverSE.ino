@@ -319,11 +319,11 @@ void addFoot(String& str){
     str += F("<b>cFos Power Brain meterID</b><input type='text' class='form-control' name='cfosID' value='");
     str += config_data.cfosID;
     str += F("'></p>");
-    str += F("<p><b>cfos Power Brain räknardisplay in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
-    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+//    str += F("<p><b>cfos Power Brain räknardisplay in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
+//    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
 //  str += F("'></p>");
-
     str += F("</fieldset>");
+	
     str += F("<fieldset><legend><b>&nbsp;Fler inställningar&nbsp;</b></legend>");
     str += F("<b>Mätintervall in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
     str += config_data.interval; 

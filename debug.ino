@@ -72,10 +72,10 @@ void PrintConfigData(){
     debugln(config_data.cfosID);
   debug("cfosModel : ");
     debugln(config_data.cfosModel);
-  debug("cfosVA : ");
-    debugln(config_data.cfosVA);
-  debug("cfosIsVA : ");
-    debugln(cfosIsVA);
+//  debug("cfosVA : ");
+//    debugln(config_data.cfosVA);
+//  debug("cfosIsVA : ");
+//    debugln(cfosIsVA);
     
   debug("interval : ");
     debugln(config_data.interval);

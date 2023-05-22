@@ -306,8 +306,8 @@
     str += F("<b>cFos Power Brain ID de compteur</b><input type='text' class='form-control' name='cfosID' value='");
     str += config_data.cfosID;
     str += F("'></p>");
-    str += F("<p><b>cfos Power Brain affichage du compteur dans VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
-    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+//    str += F("<p><b>cfos Power Brain affichage du compteur dans VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
+//    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
     str += F("</fieldset>");
 
     str += F("<fieldset><legend><b>&nbsp;Plus de réglages&nbsp;</b></legend>");
