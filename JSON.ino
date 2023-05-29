@@ -98,8 +98,8 @@ void doCFOS() {
     } else {  // Anzeige in W
       dtostrf((atof(electricityUsedTariff1)+atof(electricityUsedTariff2))*1000, 1, 2, cumulativeActiveImport);
       dtostrf((atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2))*1000, 1, 2, cumulativeActiveExport);
-      dtostrf(atof(actualElectricityPowerDelivered)*1000, 1,2, aktuelleLeistungImport);
-      dtostrf(atof(actualElectricityPowerReturned)*1000, 1,2, aktuelleLeistungExport);
+      dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, aktuelleLeistungImport);
+      dtostrf(atof(actualElectricityPowerReturned)*1000, 1, 2, aktuelleLeistungExport);
       dtostrf(atof(instantaneousCurrentL1)*1000, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*1000, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*1000, 1, 2, CurrentL3);
