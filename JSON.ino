@@ -90,24 +90,24 @@ void doCFOS() {
     if (!reportInDecimals) {  // Anzeige in kW
       dtostrf(atof(electricityUsedTariff1)+atof(electricityUsedTariff2), 1, 2, cumulativeActiveImport);
       dtostrf(atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2), 1, 2, cumulativeActiveExport);
-      dtostrf(atof(actualElectricityPowerDelivered), 1, 2, aktuelleLeistungImport);
-      dtostrf(atof(actualElectricityPowerReturned), 1, 2, aktuelleLeistungExport);
+      dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImport);
+      dtostrf(atof(actualElectricityPowerReturned), 1, 2, actualPowerExport);
       dtostrf(atof(instantaneousCurrentL1)*10, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*10, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*10, 1, 2, CurrentL3);
     } else {  // Anzeige in W
       dtostrf((atof(electricityUsedTariff1)+atof(electricityUsedTariff2))*1000, 1, 2, cumulativeActiveImport);
       dtostrf((atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2))*1000, 1, 2, cumulativeActiveExport);
-      dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, aktuelleLeistungImport);
-      dtostrf(atof(actualElectricityPowerReturned)*1000, 1, 2, aktuelleLeistungExport);
+      dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImport);
+      dtostrf(atof(actualElectricityPowerReturned)*1000, 1, 2, actualPowerExport);
       dtostrf(atof(instantaneousCurrentL1)*1000, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*1000, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*1000, 1, 2, CurrentL3);
     }
 // end Workaround
     
-//    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_va=%s&is_va=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, aktuelleLeistungImport, cfosIsVA);    
-    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, aktuelleLeistungImport);    
+//    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_va=%s&is_va=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerImport, cfosIsVA);    
+    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerImport);    
     debugff("[HTTP] GET... URL: %s\n",url);
     http.begin(client, url); //HTTP
     int httpCode = http.GET();
