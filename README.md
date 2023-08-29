@@ -36,7 +36,7 @@ PCB unbestückt: 5€
 PCB mit Bauteilen: 10€
 PCB fertig bestückt: 15€
 D1 mini ESP8266 mit Headern: 10€
-alles inklusive Versand innerhalb Deutschlands
+inklusive Versand innerhalb Deutschlands
 hans(dot)schneider(at)gmx(dot)net
 ```
 
@@ -156,10 +156,10 @@ I still have some PCBs left from the first batch, please let me know if you need
 
 ```
 PCB unassembled: 5€
-PCB with all parts: 10€
+PCB with parts: 10€
 PCB assembled: 15€
 D1 mini ESP8266 with headers: 10€
-all inclusive shipping to Germany
+shipping to Germany included
 hans(dot)schneider(at)gmx(dot)net
 ```
 
