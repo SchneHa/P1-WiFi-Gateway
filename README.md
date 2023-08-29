@@ -33,13 +33,9 @@ Ergänzung vom 31.07.2023: Seit heute sind die PCB Dateien im KiCAD Format onlin
 Ich habe noch einige PCBs aus der ersten Produktion übrig, bei Bedarf bitte melden.
 ```
 PCB unbestückt: 5€
-
 PCB mit Bauteilen: 10€
-
 PCB fertig bestückt: 15€
-
 D1 mini ESP8266 mit Headern: 10€
-
 alles inklusive Versand innerhalb Deutschlands.
 ```
 
