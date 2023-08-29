@@ -31,11 +31,17 @@ Siehe http://esp8266thingies.nl für weitere Informationen über das Modul und h
 Ergänzung vom 31.07.2023: Seit heute sind die PCB Dateien im KiCAD Format online. Das Board wurde schon produziert und getestet. Ebenso stehen die Gerber Dateien zur Verfügung. 
 
 Ich habe noch einige PCBs aus der ersten Produktion übrig, bei Bedarf bitte melden.
+
 PCB unbestückt: 5€
+
 PCB mit Bauteilen: 10€
+
 PCB fertig bestückt: 15€
+
 D1 mini ESP8266 mit Headern: 10€
+
 alles inklusive Versand innerhalb Deutschlands.
+
 hans(dot)schneider(at)gmx(dot)net
 
 ```
@@ -151,11 +157,17 @@ See http://esp8266thingies.nl for more information about the module and http://w
 Addition from 07/31/2023: Since today the PCB files in KiCAD format are online. The board has already been produced and tested. The Gerber files are also available.
 
 I still have some PCBs left from the first batch, please let me know if you need one.
+
 PCB unassembled: 5€
+
 PCB with all parts: 10€
+
 PCB assembled: 15€
+
 D1 mini ESP8266 with headers: 10€
+
 all inclusive shipping to Germany.
+
 hans(dot)schneider(at)gmx(dot)net
 
 
