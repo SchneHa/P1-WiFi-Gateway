@@ -34,6 +34,11 @@ Ergänzung vom 31.07.2023: Seit heute sind die PCB Dateien im KiCAD Format onlin
 
 ![IMG_3425](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/e56add0c-77cc-4f08-b666-bfb82792363d)
 
+![IMG_3427](https://github.com/SchneHa/P1-WiFi-Gateway/assets/6528455/9c930514-7913-4a67-9cd8-5ad7e0333a02)
+
+![IMG_3428](https://github.com/SchneHa/P1-WiFi-Gateway/assets/6528455/7ad5568e-1ae7-4946-8396-3d993154d132)
+
+
 Ich habe noch einige PCBs aus der ersten Produktion übrig, bei Bedarf bitte melden.
 ```
 PCB unbestückt: 5€
@@ -159,6 +164,10 @@ Addition from 07/31/2023: Since today the PCB files in KiCAD format are online. 
 ![grafik](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/9e9915d1-fa41-47f5-a661-10172123fd67)
 
 ![IMG_3425](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/e56add0c-77cc-4f08-b666-bfb82792363d)
+
+![IMG_3427](https://github.com/SchneHa/P1-WiFi-Gateway/assets/6528455/9c930514-7913-4a67-9cd8-5ad7e0333a02)
+
+![IMG_3428](https://github.com/SchneHa/P1-WiFi-Gateway/assets/6528455/7ad5568e-1ae7-4946-8396-3d993154d132)
 
 I still have some PCBs left from the first batch, please let me know if you need one.
 
