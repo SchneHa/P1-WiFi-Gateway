@@ -28,7 +28,11 @@ Das Modul „schläft“ zwischen den Messungen (das Modem wird ausgeschaltet, s
 
 Siehe http://esp8266thingies.nl für weitere Informationen über das Modul und http://www.esp8266thingies.nl/wp/forum-2/ für das Diskussionsforum.
 
-Ergänzung vom 31.07.2023: Seit heute sind die PCB Dateien im KiCAD Format online. Das Board wurde schon produziert und getestet. Ebenso stehen die Gerber Dateien zur Verfügung. 
+Ergänzung vom 31.07.2023: Seit heute sind die PCB Dateien im KiCAD Format online. Das Board wurde schon produziert und getestet. Ebenso stehen die Gerber Dateien zur Verfügung.
+
+![grafik](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/9e9915d1-fa41-47f5-a661-10172123fd67)
+
+![IMG_3425](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/e56add0c-77cc-4f08-b666-bfb82792363d)
 
 Ich habe noch einige PCBs aus der ersten Produktion übrig, bei Bedarf bitte melden.
 ```
@@ -151,6 +155,10 @@ The module "sleeps" between the measurements (the modem is switched off so that 
 See http://esp8266thingies.nl for more information about the module and http://www.esp8266thingies.nl/wp/forum-2/ for the discussion forum.
 
 Addition from 07/31/2023: Since today the PCB files in KiCAD format are online. The board has already been produced and tested. The Gerber files are also available.
+
+![grafik](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/9e9915d1-fa41-47f5-a661-10172123fd67)
+
+![IMG_3425](https://github.com/SchneHa/P1-WiFi-Gateway-mirrored/assets/6528455/e56add0c-77cc-4f08-b666-bfb82792363d)
 
 I still have some PCBs left from the first batch, please let me know if you need one.
 
