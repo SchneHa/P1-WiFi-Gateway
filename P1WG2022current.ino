@@ -436,8 +436,7 @@ void setup() {
   EEPROM.get(0, config_data);
 
   if (config_data.dataSet[0] != 'j') {
-//    config_data = (settings) {"n", "", "", "192.168.1.12", "8080", "1234", "1235", "sensors/power/p1meter", "192.168.1.12", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "192.168.1.183", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "n", "adminpwd"};
-    config_data = (settings) {"n", "", "", "192.168.1.12", "8080", "1234", "1235", "sensors/power/p1meter", "192.168.1.12", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "192.168.1.183", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "adminpwd"};  
+    config_data = (settings) {"n", "", "", "0.0.0.0", "8080", "1234", "1235", "sensors/power/p1meter", "0.0.0.0", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "0.0.0.0", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "adminpwd"};  
   }
   
   (config_data.watt[0] == 'j') ? reportInDecimals = false : reportInDecimals = true;
