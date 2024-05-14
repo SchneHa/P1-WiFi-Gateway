@@ -372,7 +372,7 @@ void addFoot(String& str){
    // str += P1timestamp[8];
    // str += P1timestamp[9];
    // str += ("</p>");
-    str += "<meta http-equiv='refresh' content='20'/>"; // 20s refresh time   
+    str += "<meta http-equiv='refresh' content='20'/>"; // 20s refresh time
     str += F("<fieldset>");
     str += F("<form ><fieldset><legend><b>Mätardata</b></legend>");
    // str += F("<form action='/' method='post'>");
