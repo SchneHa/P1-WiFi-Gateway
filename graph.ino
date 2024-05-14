@@ -152,7 +152,7 @@
       str += F("<fieldset><legend><b> Period </b></legend>"); 
       str += F("<form action='/SelectGraph' method='POST'>");
       str += F("<div>");
-	  
+
       str += F("<div ><table width='95%' ><tr>");
       str += F("<td width='25%'><input type='radio' id='day' name='period' value='day' checked /><center><label for='day'>i dag</label></center></td>");
       str += F("<td width='25%'><input type='radio' id='week' name='period' value='week' /><center><label for='week'>denna vecka</label></center></td>");
@@ -580,7 +580,7 @@
   void calendarGas(){
     String str ="";
     char buffer[64];
-    File file = LittleFS.open("/YearGc.log", "r");
+    File file = FST.open("/YearGc.log", "r");
     monitoring = false;
 
     addGraphHead(str);

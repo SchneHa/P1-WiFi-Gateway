@@ -35,7 +35,7 @@ long getValidVal(long valNew, long valOld, long maxDiffer)
   return valNew;
 }
 
-void getValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar){
+void getValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar) {
   String cleanres="";
   int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
   int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
@@ -80,9 +80,9 @@ void getGasValue(char *theValue, char *buffer, int maxlen, char startchar, char 
     
   int s = 0;
   if  (FindCharInArrayRev(buffer, ')(', maxlen - 2) != -1)  // some meters report the meterID in () before the section with actual gas value
-     s = FindCharInArrayRev(buffer, ')(', maxlen - 2);
+    s = FindCharInArrayRev(buffer, ')(', maxlen - 2);
   else
-     s = FindCharInArrayRev(buffer, '(', maxlen - 2);
+    s = FindCharInArrayRev(buffer, '(', maxlen - 2);
     
   if (s < 8) return;
   if (s > 32) s = 32;
@@ -94,7 +94,7 @@ void getGasValue(char *theValue, char *buffer, int maxlen, char startchar, char 
   if (strncpy(res, buffer + s + 1, l)) {
     // if (endchar == '*')
     // {
-    if (isNumber(res, l)){
+    if (isNumber(res, l)) {
       int flag = 1;
       for(int i=0; i < l + 1; i++)     
         {
@@ -125,7 +125,7 @@ void getGas22Value(char *theValue, char *buffer, int maxlen, char startchar, cha
   }
 }
 
-void getDomoticzGasValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar){ 
+void getDomoticzGasValue(char *theValue, char *buffer, int maxlen, char startchar, char endchar) { 
   String cleanres="";
   bool nodecimals = false;
 
@@ -183,7 +183,7 @@ void getStr12(char *theValue, char *buffer, int maxlen, char startchar){
   memset(res, 0, sizeof(res));
     
   if (strncpy(res, buffer + s + 1, l)) {
-    if (isNumber(res, l))  strncpy(theValue, res, l);
+   if (isNumber(res, l))  strncpy(theValue, res, l);
     theValue[l+1]=0;
   }
 }
@@ -274,7 +274,7 @@ bool decodeTelegram(int len) {
   
 else  { // normal line, process
   currentCRC=CRC16(currentCRC, (unsigned char*)telegram, len);
-  for(int cnt=0; cnt<len;cnt++) {
+  for (int cnt=0; cnt<len;cnt++) {
     datagram += telegram[cnt];
   }
   
@@ -298,7 +298,7 @@ else  { // normal line, process
 //debugln(pos4);
 //debugln(telegram);
 
-  switch (pos4){
+  switch (pos4) {
     case 1:
           // 0-0:1.0.0.255 datestamp YYMMDDhhmmssX
           if (strncmp(telegram, "0-0:1.0.0", strlen("0-0:1.0.0")) == 0) {

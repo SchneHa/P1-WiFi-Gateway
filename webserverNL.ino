@@ -35,7 +35,7 @@
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
       str += F(" laatste sample ");
       str += LastReport;
-      str += F("<br>");
+	  str += F("<br>");
     }
     str += F(" firmware versie: ");
     str += version;
@@ -351,8 +351,8 @@
     addHead(str,0);
     addIntro(str);
 
-  // str += ("</p>");
-	str += "<meta http-equiv='refresh' content='20'/>"; // 20s refresh time
+  // str += ("</p>");  
+    str += "<meta http-equiv='refresh' content='20'/>"; // 20s refresh time    
     str += F("<fieldset>");
     str += F("<form ><fieldset><legend><b>Meetwaarden</b></legend>");
   // str += F("<form action='/' method='post'>");

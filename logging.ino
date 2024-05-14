@@ -472,27 +472,36 @@ void resetGasCount(){
 }
 
 void DirListing(){
- String str; 
- char buffer[55];
- str += F("<html>\n<head>\n");
+  String str; 
+  char buffer[55];
+  str += F("<html>\n<head>\n");
  
- #ifdef NEDERLANDS
-   str += F("<title>Slimme meter</title>");
- #endif
-   str += F("<title>Smart-Meter</title>");
- #ifdef GERMAN
- 
- #endif
- str += F("</head><body>\n");
+  #ifdef NEDERLANDS
+    str += F("<title>Slimme meter</title>");
+  #endif
 
-Dir root = LittleFS.openDir("/");
- while (root.next()) {
-  File file = root.openFile("r");
-  str += ("  FILE: ");
-  str += (root.fileName());
-  str +=("  SIZE: ");
-  str +=((String)file.size());
-  str +=("<br>");
+  #ifdef GERMAN
+    str += F("<title>Smart-Meter</title>");
+  #endif
+
+  #ifdef FRENCH
+    str += F("<title>Compteur intelligent</title>");
+  #endif
+
+  #ifdef SWEDISH
+    str += F("<title>Smart mätare</title>");
+  #endif
+  
+  str += F("</head><body>\n");
+
+  Dir root = FST.openDir("/");
+  while (root.next()) {
+    File file = root.openFile("r");
+    str += ("  FILE: ");
+    str += (root.fileName());
+    str +=("  SIZE: ");
+    str +=((String)file.size());
+    str +=("<br>");
 
   // time_t cr = file.getCreationTime();
   // time_t lw = file.getLastWrite();

@@ -121,7 +121,7 @@ void createToken(){
 void listDir(const char * dirname) {
   debugff("Listing directory: %s\n", dirname);
 
-  Dir root = LittleFS.openDir(dirname);
+  Dir root = FST.openDir(dirname);
 
   while (root.next()) {
     File file = root.openFile("r");
@@ -142,7 +142,7 @@ void listDir(const char * dirname) {
 void readFile(const char * path) {
   debugff("Reading file: %s\n", path);
   debugln();
-  File file = LittleFS.open(path, "r");
+  File file = FST.open(path, "r");
   if (!file) {
     debugln("Failed to open file for reading");
     return;
@@ -241,26 +241,26 @@ void deleteFile(const char * path) {
  * if not at end-of-file.
  *
  */
-// size_t readField(File* file, char* str, size_t size, char* delim) {
-//   char ch;
-//   size_t n = 0;
-
-  
-//   while ((n + 1) < size){ // && filel.available()) {
-//     ch = file->read(); 
-//     debug(ch);
-//       // Delete CR.
-//       if (ch == '\r') {
-//       continue;
-//     }
-//     str[n++] = ch;
-//     if (strchr(delim, ch)) {
-//         break;
-//     }
-//   }
-//   str[n] = '\0';
-//   return n;
-// }
+//size_t readField(File* file, char* str, size_t size, char* delim) {
+//  char ch;
+//  size_t n = 0;
+//
+//  
+//  while ((n + 1) < size){ // && filel.available()) {
+//    ch = file->read(); 
+//    debug(ch);
+//      // Delete CR.
+//      if (ch == '\r') {
+//      continue;
+//    }
+//    str[n++] = ch;
+//    if (strchr(delim, ch)) {
+//        break;
+//    }
+//  }
+//  str[n] = '\0';
+//  return n;
+//}
 
 int numLines(const char * path){
   int numberOfLines = 0;

@@ -67,11 +67,17 @@
  *  auteur: Ronald Leenes
  *          Hans Schneider
  *
+ *  1.2c   measurement page refreshes every 20 seconds now
+ *         P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
+ *         actualElectricityPowerReturned to cFos Power Brain wallbox. That is important to calculate correct
+ *         values for feeding energy into the power grid.         
  *  1.2b   changes for cFos Power Brain FW 1.19.4: power_va is now power_w, is_va doesn't exist anymore
- *         improvements of Netherlands, French and Swedish language  
- *  1.2ab  display of module voltage in footer of webserver pages (re)activated, bug fixes 
+ *         improvements of Netherlands, French and Swedish language
+ *  1.2ab  display of module voltage in footer of webserver pages (re)activated, bug fixes       
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
- *  1.2:   support for HTTP input meter in cFos Power Brain wallbox implemented
+ *  1.2:   bug fixes
+ *         improvements for T211 SmartMeter in Belgium
+ *         implemented support for HTTP input meter in cFos Power Brain wallbox  
  *           note: for this to work your cFos Charging Manager firmware has to be at least 1.17.4-beta
  *         improvements for T211 SmartMeter in Belgium
  *         bug fixes
@@ -160,10 +166,10 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2b – " + sfx;
+String version = "1.2c – " + sfx;
 
 #define HOSTNAME "p1meter"
-#define FSystem 1 // 0= LittleFS 1 = SPIFFS
+#define FSystem 1 // 0 = LittleFS 1 = SPIFFS
 
 #define GRAPH 1
 #define V3
@@ -200,7 +206,7 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
   #define debugff(x,y)
   #define debugfff(x,y,z)
 #else
-  const char* host = "p1meter";
+  const char* host = "P1wifi";
   #define BLED LED_BUILTIN
   #define debug(x)
   #define debugln(x)
@@ -211,14 +217,14 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
 
 #define errorHalt(msg) {debugln(F(msg)); return;}
 
-#define NUM(off, mult) ((P1timestamp[(off)] - '0') * (mult) )   // macro for getting time out of timestamp, see decoder
+#define NUM(off, mult) ((P1timestamp[(off)] - '0') * (mult))   // macro for getting time out of timestamp, see decoder
 
 #define ToggleLED  digitalWrite(BLED, !digitalRead(BLED));
 #define LEDoff  digitalWrite(BLED, HIGH);
 #define LEDon   digitalWrite(BLED, LOW);
 #define OE  16 //IO16 OE on the 74AHCT1G125 
 #define DR  4  //IO4 is Data Request
-//#define WLED 12  //IO12 (D6) is WiFi-LED, uncomment if it's present
+#define WLED 12  //IO12 (D6) is WiFi-LED, uncomment if it's present
 
 #include <TZ.h>
 #define MYTZ TZ_Europe_Amsterdam
@@ -236,7 +242,7 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
     #include <LittleFS.h>
     #define FST LittleFS
   #elif FSystem == 1
-    #include "FS.h" //SPIFFS
+    #include "FS.h" //SPIFFS 
     #define FST SPIFFS
   #endif
   File file;
@@ -424,9 +430,9 @@ void setup() {
   digitalWrite(DR, LOW);    //  DR low (only goes high when we want to receive data)
   #ifdef WLED
     pinMode(WLED, OUTPUT);
-    digitalWrite(WLED, LOW);   // LED is high when WiFi is connected
+    digitalWrite(WLED, LOW);   // LED is on when WiFi is connected
   #endif
- 
+
   blink(3);
   debugln("Booting");
   debugln("Done with Cap charging … ");
@@ -484,14 +490,14 @@ void setup() {
       break;
     }
   }
- 
+
   debugln("");
   debugln("Set up wifi, either in STA or AP mode");
   if (softAp){
     debugln("running in AP mode, all handles will be initiated");
     start_webservices();
   }
- 
+
   if (WiFi.status() == WL_CONNECTED) {
     WiFi.setAutoReconnect(true);
     debugln("HTTP server running.");
@@ -502,7 +508,7 @@ void setup() {
     debugln("WiFi running in STA (normal) mode");
     LEDoff
     #ifdef WLED
-	  pinMode(WLED, OUTPUT);
+      pinMode(WLED, OUTPUT);
       digitalWrite(WLED, HIGH);
     #endif  
     ESP.rtcUserMemoryWrite(RTC_config_data_SLOT_WIFI_STATE, reinterpret_cast<uint32_t *>(&WiFistate), sizeof(WiFistate));
@@ -520,7 +526,7 @@ void setup() {
     monitoring = true; // start monitoring data
     time_to_sleep = millis() + wakeTime;  // we go to sleep wakeTime seconds from now
 
-	
+
     // handle Files
     debug("Mounting file system ... ");
 
@@ -586,7 +592,7 @@ void loop() {
   if (OEstate) readTelegram();
 
   #ifdef SLEEP_ENABLED
-    if ((millis() > time_to_sleep) && !atsleep && wifiSta){  // not currently sleeping and sleeptime
+    if ((millis() > time_to_sleep) && !atsleep && wifiSta) {  // not currently sleeping and sleeptime
       modemSleep();
     }
     if (wifiSta && (millis() > time_to_wake) && (WiFi.status() != WL_CONNECTED)) { // time to wake, if we're not already awake
@@ -618,8 +624,8 @@ void loop() {
     if (MQTT_debug) MQTT_Debug();
 
     state = WAITING;
-  }  
-    
+  }
+  
 
   if (softAp || (WiFi.status() == WL_CONNECTED)) {
     server.handleClient(); //handle web requests
