@@ -50,6 +50,11 @@ hans(dot)schneider(at)gmx(dot)ch
 ```
 
 ```
+Version: 1.2c Datum: 23.05.2024
+         measurement page refreshes every 20 seconds now
+         P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
+         actualElectricityPowerReturned to cFos Power Brain wallbox. That is important to calculate correct
+         values for feeding energy into the power grid.
 Version: 1.2b Datum: 22.05.2023
          Anpassungen für die Firmware 1.19.4 der cFos Power Brain Wallbox
          (power_va ist nun power_w, is_va existiert nicht mehr)
@@ -130,6 +135,7 @@ Benötigte Dateien:
 ```
 Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen lauffähig.</Del> Bei der französischen und der schwedischen Version muss ggf. die Übersetzung korrigiert werden.
 
+
 **English Version:**
 
 P1-WiFi-Gateway with support for cFos Power Brain Wallbox
@@ -181,6 +187,11 @@ hans(dot)schneider(at)gmx(dot)ch
 ```
 
 ```
+Version: 1.2c Datum: 23.05.2024
+         measurement page refreshes every 20 seconds now
+         P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
+         actualElectricityPowerReturned to cFos Power Brain wallbox. That is important to calculate correct
+         values for feeding energy into the power grid.
 Version: 1.2b Datum: 22.05.2023
          changes for cFos Power Brain Firmware 1.19.4
          (power_va is now power_w, is_va doesn't exist anymore)
