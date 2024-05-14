@@ -20,7 +20,7 @@
  * @author Ronald Leenes
  *         Hans Schneider
  * @date 22.05.2023
- * @version 1.2b
+ * @version 1.2c
  *
  * @brief This file contains the main file for the P1 wifi gatewway
  *
@@ -62,8 +62,8 @@
  *  
  *  
  *    
- *  versie: 1.2b
- *  datum:  22 May 2023
+ *  versie: 1.2c
+ *  datum:  13 May 2024
  *  auteur: Ronald Leenes
  *          Hans Schneider
  *
@@ -72,16 +72,14 @@
  *         actualElectricityPowerReturned to cFos Power Brain wallbox. That is important to calculate correct
  *         values for feeding energy into the power grid.         
  *  1.2b   changes for cFos Power Brain FW 1.19.4: power_va is now power_w, is_va doesn't exist anymore
- *         improvements of Netherlands, French and Swedish language
- *  1.2ab  display of module voltage in footer of webserver pages (re)activated, bug fixes       
+ *         improvements of Netherlands, French and Swedish language 
+ *  1.2ab  display of module voltage in footer of webserver pages (re)activated, bug fixes
  *  1.2a:  debugging French and Swedish versions and improvements of translations (needs to be checked)        
  *  1.2:   bug fixes
  *         improvements for T211 SmartMeter in Belgium
  *         implemented support for HTTP input meter in cFos Power Brain wallbox  
  *           note: for this to work your cFos Charging Manager firmware has to be at least 1.17.4-beta
- *         improvements for T211 SmartMeter in Belgium
- *         bug fixes
- *
+ *         debugging French and Swedish versions and improvements of translations (needs to be checked)
  *  1.1b   cleaning up, bug fixes, cosmetic changes
  *  1.1adc
  *  1.1ad: bug fixes and graph improvements
@@ -242,7 +240,7 @@ const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
     #include <LittleFS.h>
     #define FST LittleFS
   #elif FSystem == 1
-    #include "FS.h" //SPIFFS 
+    #include "FS.h" //SPIFFS
     #define FST SPIFFS
   #endif
   File file;
@@ -432,7 +430,7 @@ void setup() {
     pinMode(WLED, OUTPUT);
     digitalWrite(WLED, LOW);   // LED is on when WiFi is connected
   #endif
-
+ 
   blink(3);
   debugln("Booting");
   debugln("Done with Cap charging … ");
@@ -442,7 +440,7 @@ void setup() {
   EEPROM.get(0, config_data);
 
   if (config_data.dataSet[0] != 'j') {
-    config_data = (settings) {"n", "", "", "0.0.0.0", "8080", "1234", "1235", "sensors/power/p1meter", "0.0.0.0", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "0.0.0.0", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "adminpwd"};  
+    config_data = (settings) {"n", "", "", "0.0.0.0", "8080", "1234", "1235", "sensors/power/p1meter", "0.0.0.0", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "0.0.0.0", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "adminpwd"};	  
   }
   
   (config_data.watt[0] == 'j') ? reportInDecimals = false : reportInDecimals = true;
@@ -490,14 +488,14 @@ void setup() {
       break;
     }
   }
-
+ 
   debugln("");
   debugln("Set up wifi, either in STA or AP mode");
   if (softAp){
     debugln("running in AP mode, all handles will be initiated");
     start_webservices();
   }
-
+ 
   if (WiFi.status() == WL_CONNECTED) {
     WiFi.setAutoReconnect(true);
     debugln("HTTP server running.");
@@ -508,7 +506,7 @@ void setup() {
     debugln("WiFi running in STA (normal) mode");
     LEDoff
     #ifdef WLED
-      pinMode(WLED, OUTPUT);
+	  pinMode(WLED, OUTPUT);
       digitalWrite(WLED, HIGH);
     #endif  
     ESP.rtcUserMemoryWrite(RTC_config_data_SLOT_WIFI_STATE, reinterpret_cast<uint32_t *>(&WiFistate), sizeof(WiFistate));
@@ -526,7 +524,7 @@ void setup() {
     monitoring = true; // start monitoring data
     time_to_sleep = millis() + wakeTime;  // we go to sleep wakeTime seconds from now
 
-
+	
     // handle Files
     debug("Mounting file system ... ");
 
@@ -624,8 +622,8 @@ void loop() {
     if (MQTT_debug) MQTT_Debug();
 
     state = WAITING;
-  }
-  
+  }  
+    
 
   if (softAp || (WiFi.status() == WL_CONNECTED)) {
     server.handleClient(); //handle web requests

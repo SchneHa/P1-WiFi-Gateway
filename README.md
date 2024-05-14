@@ -201,6 +201,18 @@ ud: fixed update headers
 ao: fixed problem with setup fields
 u: Added password protection for setup and update firmware menus when booting version 
 1.0u for the first time, go to setup menu within 60 seconds to bypass password protection
+     Added out-of-the-box support for Home Assistant "DSMR Reader" integration 
+     Use "dsmr" as MQTT prefix and data is automatically delivered to the MQTT broker in "DSMR Reader" format
+     Fixed MQTT reconnection, it's non-blocking now
+     Fixed resetting hardboot day counters
+     Fixed sending empty MQTT messages
+     Improved overall stability
+t: Power management improvements
+   general (minor) cleanup 
+ta: Fix for telnet reports
+    added French localization
+s: added german localization
+   added mqtt output for swedish specific OBIS codes
 r: Speed improvements and streamlining of parser 
    localizations for: NL, SE
 q: daily values added 
