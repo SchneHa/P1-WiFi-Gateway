@@ -58,7 +58,7 @@ void mqtt_reconnect() {
     if (mqtt_client.connect(HOSTNAME, config_data.mqttUser, config_data.mqttPass)) {
       debugln("   connected to broker");
       // Once connected, publish an announcement...
-      mqtt_client.publish("outTopic", "p1 gateway running");
+      mqtt_client.publish("outTopic", "P1 gateway running");
       // ... and resubscribe
       mqtt_client.subscribe("inTopic");
       MqttConnected = true;
