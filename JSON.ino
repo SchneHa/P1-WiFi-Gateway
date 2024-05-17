@@ -94,7 +94,7 @@ void doCFOS() {
         dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImportExport); // positiv
         debugln(actualPowerImportExport);
       }
-      if ((atof(actualElectricityPowerReturned), 1, 2) > 0) { // Einspeisung
+      else if ((atof(actualElectricityPowerReturned), 1, 2) > 0) { // Einspeisung
         dtostrf(atof(actualElectricityPowerReturned)*(-1), 1, 2, actualPowerImportExport); // negativ
         debugln(actualPowerImportExport);
       }
@@ -108,7 +108,7 @@ void doCFOS() {
         dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImportExport); // positiv
         debugln(actualPowerImportExport);
       }
-      if ((atof(actualElectricityPowerReturned), 1, 2) > 0) { // Einspeisung
+      else if ((atof(actualElectricityPowerReturned), 1, 2) > 0) { // Einspeisung
         dtostrf(atof(actualElectricityPowerReturned)*(-1000), 1, 2, actualPowerImportExport); // negativ
         debugln(actualPowerImportExport);
       }
