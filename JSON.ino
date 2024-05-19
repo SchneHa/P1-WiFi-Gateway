@@ -90,28 +90,77 @@ void doCFOS() {
     if (!reportInDecimals) {  // Anzeige in kW
       dtostrf(atof(electricityUsedTariff1)+atof(electricityUsedTariff2), 1, 2, cumulativeActiveImport);
       dtostrf(atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2), 1, 2, cumulativeActiveExport);
-      if ((atof(actualElectricityPowerDelivered), 1, 2) > 0) { // Verbrauch
-        dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImportExport); // positiv
-        debugln(actualPowerImportExport);
+      
+      debugln("Wert 1 delivered (if)");
+      debugln(atof(actualElectricityPowerDelivered));
+      debugln(actualElectricityPowerDelivered);
+      
+      if (atof(actualElectricityPowerDelivered) > 0) {
+        dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImportExport);
+        
+        debugln("atof Import 1 (if):");
+        debugln(atof(actualElectricityPowerDelivered));
+        
+        }
+      
+      else {
+        
+        debugln("Wert 1 returned (if)");
+        debugln(atof(actualElectricityPowerReturned));
+        debugln(actualElectricityPowerReturned);
+        
+      if (atof(actualElectricityPowerReturned) > 0) {
+        dtostrf(atof(actualElectricityPowerReturned)*(-1), 1, 2, actualPowerImportExport);
+          
+        debugln("atof Export 1 (else):");
+        debugln(atof(actualElectricityPowerReturned));
+         
+        }
       }
-      else if ((atof(actualElectricityPowerReturned), 1, 2) > 0) { // Einspeisung
-        dtostrf(atof(actualElectricityPowerReturned)*(-1), 1, 2, actualPowerImportExport); // negativ
-        debugln(actualPowerImportExport);
-      }
+      
+      debugln("Ergebnis 1");
+      debugln(actualPowerImportExport);
+      
       dtostrf(atof(instantaneousCurrentL1)*10, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*10, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*10, 1, 2, CurrentL3);
-    } else {  // Anzeige in W
+      }
+       
+    else {  // Anzeige in W
+      
       dtostrf((atof(electricityUsedTariff1)+atof(electricityUsedTariff2))*1000, 1, 2, cumulativeActiveImport);
       dtostrf((atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2))*1000, 1, 2, cumulativeActiveExport);
-      if ((atof(actualElectricityPowerDelivered), 1, 2) > 0) { // Verbrauch
-        dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImportExport); // positiv
-        debugln(actualPowerImportExport);
+      
+      debugln("Wert 2 delivered (if)");
+      debugln(atof(actualElectricityPowerDelivered));
+      debugln(actualElectricityPowerDelivered);
+      
+      if ((atof(actualElectricityPowerDelivered)) > 0) {
+        dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImportExport);
+        
+        debugln("atof Import 2 (if):");
+        debugln(atof(actualElectricityPowerDelivered));
+        
+        }
+        
+      else {
+        
+        debugln("Wert 2 returned (else)");
+        debugln(atof(actualElectricityPowerReturned));
+        debugln(actualElectricityPowerReturned);
+        
+      if ((atof(actualElectricityPowerReturned)) > 0) {
+        dtostrf(atof(actualElectricityPowerReturned)*(-1000), 1, 2, actualPowerImportExport);
+        
+        debugln("atof Export 2 (else):");
+        debugln(atof(actualElectricityPowerReturned));
+        
+        } 
       }
-      else if ((atof(actualElectricityPowerReturned), 1, 2) > 0) { // Einspeisung
-        dtostrf(atof(actualElectricityPowerReturned)*(-1000), 1, 2, actualPowerImportExport); // negativ
-        debugln(actualPowerImportExport);
-      }
+      
+      debugln("Ergebnis 2");
+      debugln(actualPowerImportExport);
+      
       dtostrf(atof(instantaneousCurrentL1)*1000, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*1000, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*1000, 1, 2, CurrentL3);
@@ -119,7 +168,15 @@ void doCFOS() {
 // end Workaround
     
 //    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_va=%s&is_va=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actuaPowerImport, cfosIsVA);    
-    sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerImportExport);
+//    if ((atof(actualPowerImport), 1)  != 0) {// (atof(actualElectricityPowerReturned))) {
+      sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerImportExport); // positiv: Netzbezug, negativ: Einspeisung
+      //      sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s&actual_consumption=%s&actual_returndelivery=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerImportExport, actual_c, actualElectricityPowerReturned); // Netzbezug
+//      sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&actual_consumption=%s&actual_returndelivery=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerImport, actualPowerExport); // Netzbezug
+//    }
+// else {
+ //   if ((atof(actualPowerExport), 1) != 0) {// (atof(actualElectricityPowerReturned))) {
+//      sprintf(url, "http://%s:%s@%s:%s/cnf?cmd=set_ajax_meter&dev_id=%s&model=%s&import_wh=%s&export_wh=%s&voltage=%s,%s,%s&current=%s,%s,%s&power_w=%s", cfosUsr, cfosPwd, cfosIP, cfosPort, cfosID, cfosModel, cumulativeActiveImport, cumulativeActiveExport, instantaneousVoltageL1, instantaneousVoltageL2, instantaneousVoltageL3, CurrentL1, CurrentL2, CurrentL3, actualPowerExport); // Einspeisung
+//    }
     debugff("[HTTP] GET... URL: %s\n",url);
     http.begin(client, url); //HTTP
     int httpCode = http.GET();

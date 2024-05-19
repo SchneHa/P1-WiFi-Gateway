@@ -186,7 +186,8 @@ void MQTT_reporter() {
     mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
     mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
     mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
-	mqtt_send_metric("power_w", actualPowerImportExport);
+    
+    mqtt_send_metric("power_w", actualPowerImportExport);
     
     mqtt_send_metric("gas_meter_m3", gasReceived5min);
 
@@ -217,8 +218,9 @@ void MQTT_reporter() {
     mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
     mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
     mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
+    
     mqtt_send_metric("power_w", actualPowerImportExport);
-	
+    
     mqtt_send_metric("gas_meter_m3", gasReceived5min);
 
     mqtt_send_metric("actual_tarif_group", tariffIndicatorElectricity);
@@ -298,9 +300,10 @@ void MQTT_reporter() {
     mqtt_send_metric("currentL1", instantaneousCurrentL1);  // 31.7.0
     mqtt_send_metric("currentL2", instantaneousCurrentL2);  // 51.7.0
     mqtt_send_metric("currentL3", instantaneousCurrentL3);  // 71.7.0
-	mqtt_send_metric("power_w", actualPowerImportExport);
-	
-	LastReportinMillis = millis();
+
+    mqtt_send_metric("power_w", actualPowerImportExport);
+    
+    LastReportinMillis = millis();
   #endif      
   LastReport = timestamp();
   MqttDelivered = true;
