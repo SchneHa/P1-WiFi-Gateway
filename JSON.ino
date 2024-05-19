@@ -90,37 +90,14 @@ void doCFOS() {
     if (!reportInDecimals) {  // Anzeige in kW
       dtostrf(atof(electricityUsedTariff1)+atof(electricityUsedTariff2), 1, 2, cumulativeActiveImport);
       dtostrf(atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2), 1, 2, cumulativeActiveExport);
-      
-      debugln("Wert 1 delivered (if)");
-      debugln(atof(actualElectricityPowerDelivered));
-      debugln(actualElectricityPowerDelivered);
-      
       if (atof(actualElectricityPowerDelivered) > 0) {
         dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImportExport);
-        
-        debugln("atof Import 1 (if):");
-        debugln(atof(actualElectricityPowerDelivered));
-        
         }
-      
-      else {
-        
-        debugln("Wert 1 returned (if)");
-        debugln(atof(actualElectricityPowerReturned));
-        debugln(actualElectricityPowerReturned);
-        
+      else {  
       if (atof(actualElectricityPowerReturned) > 0) {
         dtostrf(atof(actualElectricityPowerReturned)*(-1), 1, 2, actualPowerImportExport);
-          
-        debugln("atof Export 1 (else):");
-        debugln(atof(actualElectricityPowerReturned));
-         
         }
       }
-      
-      debugln("Ergebnis 1");
-      debugln(actualPowerImportExport);
-      
       dtostrf(atof(instantaneousCurrentL1)*10, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*10, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*10, 1, 2, CurrentL3);
@@ -130,37 +107,14 @@ void doCFOS() {
       
       dtostrf((atof(electricityUsedTariff1)+atof(electricityUsedTariff2))*1000, 1, 2, cumulativeActiveImport);
       dtostrf((atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2))*1000, 1, 2, cumulativeActiveExport);
-      
-      debugln("Wert 2 delivered (if)");
-      debugln(atof(actualElectricityPowerDelivered));
-      debugln(actualElectricityPowerDelivered);
-      
       if ((atof(actualElectricityPowerDelivered)) > 0) {
         dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImportExport);
-        
-        debugln("atof Import 2 (if):");
-        debugln(atof(actualElectricityPowerDelivered));
-        
         }
-        
       else {
-        
-        debugln("Wert 2 returned (else)");
-        debugln(atof(actualElectricityPowerReturned));
-        debugln(actualElectricityPowerReturned);
-        
       if ((atof(actualElectricityPowerReturned)) > 0) {
         dtostrf(atof(actualElectricityPowerReturned)*(-1000), 1, 2, actualPowerImportExport);
-        
-        debugln("atof Export 2 (else):");
-        debugln(atof(actualElectricityPowerReturned));
-        
         } 
       }
-      
-      debugln("Ergebnis 2");
-      debugln(actualPowerImportExport);
-      
       dtostrf(atof(instantaneousCurrentL1)*1000, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*1000, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*1000, 1, 2, CurrentL3);
