@@ -174,6 +174,7 @@ void MQTT_reporter() {
     mqtt_send_metric("consumption_high_tarif", electricityUsedTariff2);
     mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff1);
     mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff2);
+    mqtt_send_metric("power_w", actualPowerImportExport);
     mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
     mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
 
@@ -186,8 +187,6 @@ void MQTT_reporter() {
     mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
     mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
     mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
-    
-    mqtt_send_metric("power_w", actualPowerImportExport);
     
     mqtt_send_metric("gas_meter_m3", gasReceived5min);
 
@@ -205,7 +204,8 @@ void MQTT_reporter() {
     mqtt_send_metric("consumption_high_tarif", electricityUsedTariff1); // in Belgium electricityUsedTariff1 is high tariff
     mqtt_send_metric("consumption_low_tarif", electricityUsedTariff2);  // in Belgium electricityUsedTariff2 is low tariff
     mqtt_send_metric("returndelivery_high_tarif", electricityReturnedTariff1); // in Belgium electricityReturnedTariff1 is high tariff
-    mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff2);  // in Belgium electricityReturnedTariff2 is low tariff
+    mqtt_send_metric("returndelivery_low_tarif", electricityReturnedTariff2);  // in Belgium electricityReturnedTariff2 is low tariff 
+	mqtt_send_metric("power_w", actualPowerImportExport);
     mqtt_send_metric("actual_consumption", actualElectricityPowerDelivered);
     mqtt_send_metric("actual_returndelivery", actualElectricityPowerReturned);
 
@@ -218,8 +218,6 @@ void MQTT_reporter() {
     mqtt_send_metric("l1_voltage", instantaneousVoltageL1);
     mqtt_send_metric("l2_voltage", instantaneousVoltageL2);
     mqtt_send_metric("l3_voltage", instantaneousVoltageL3);
-    
-    mqtt_send_metric("power_w", actualPowerImportExport);
     
     mqtt_send_metric("gas_meter_m3", gasReceived5min);
 
@@ -270,6 +268,7 @@ void MQTT_reporter() {
     mqtt_send_metric("cumulativeReactiveImport", cumulativeReactiveImport);   // 3.8.0
     mqtt_send_metric("cumulativeReactiveExport", cumulativeReactiveExport);   // 4.8.0
 
+	mqtt_send_metric("power_w", actualPowerImportExport);
     mqtt_send_metric("momentaryActiveImport", momentaryActiveImport);         // 1.7.0
     mqtt_send_metric("momentaryActiveExport", momentaryActiveExport);         // 2.7.0
     mqtt_send_metric("momentaryReactiveImport", momentaryReactiveImport);     // 3.7.0
@@ -300,8 +299,6 @@ void MQTT_reporter() {
     mqtt_send_metric("currentL1", instantaneousCurrentL1);  // 31.7.0
     mqtt_send_metric("currentL2", instantaneousCurrentL2);  // 51.7.0
     mqtt_send_metric("currentL3", instantaneousCurrentL3);  // 71.7.0
-
-    mqtt_send_metric("power_w", actualPowerImportExport);
     
     LastReportinMillis = millis();
   #endif      

@@ -90,7 +90,7 @@ void doCFOS() {
     if (!reportInDecimals) {  // Anzeige in kW
       dtostrf(atof(electricityUsedTariff1)+atof(electricityUsedTariff2), 1, 2, cumulativeActiveImport);
       dtostrf(atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2), 1, 2, cumulativeActiveExport);
-      if (atof(actualElectricityPowerDelivered) > 0) {
+      if (atof(actualElectricityPowerDelivered) >= 0) {
         dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImportExport);
         }
       else {  
@@ -107,7 +107,7 @@ void doCFOS() {
       
       dtostrf((atof(electricityUsedTariff1)+atof(electricityUsedTariff2))*1000, 1, 2, cumulativeActiveImport);
       dtostrf((atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2))*1000, 1, 2, cumulativeActiveExport);
-      if ((atof(actualElectricityPowerDelivered)) > 0) {
+      if ((atof(actualElectricityPowerDelivered)) >= 0) {
         dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImportExport);
         }
       else {
