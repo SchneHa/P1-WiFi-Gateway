@@ -90,31 +90,15 @@ void doCFOS() {
     if (!reportInDecimals) {  // Anzeige in kW
       dtostrf(atof(electricityUsedTariff1)+atof(electricityUsedTariff2), 1, 2, cumulativeActiveImport);
       dtostrf(atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2), 1, 2, cumulativeActiveExport);
-      if (atof(actualElectricityPowerDelivered) >= 0) {
-        dtostrf(atof(actualElectricityPowerDelivered), 1, 2, actualPowerImportExport);
-        }
-      else {  
-      if (atof(actualElectricityPowerReturned) > 0) {
-        dtostrf(atof(actualElectricityPowerReturned)*(-1), 1, 2, actualPowerImportExport);
-        }
-      }
+	  dtostrf((atof(actualElectricityPowerDelivered)-atof(actualElectricityPowerReturned)), 1, 2, actualPowerImportExport);
       dtostrf(atof(instantaneousCurrentL1)*10, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*10, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*10, 1, 2, CurrentL3);
       }
-       
     else {  // Anzeige in W
-      
       dtostrf((atof(electricityUsedTariff1)+atof(electricityUsedTariff2))*1000, 1, 2, cumulativeActiveImport);
       dtostrf((atof(electricityReturnedTariff1)+atof(electricityReturnedTariff2))*1000, 1, 2, cumulativeActiveExport);
-      if ((atof(actualElectricityPowerDelivered)) >= 0) {
-        dtostrf(atof(actualElectricityPowerDelivered)*1000, 1, 2, actualPowerImportExport);
-        }
-      else {
-      if ((atof(actualElectricityPowerReturned)) > 0) {
-        dtostrf(atof(actualElectricityPowerReturned)*(-1000), 1, 2, actualPowerImportExport);
-        } 
-      }
+      dtostrf((atof(actualElectricityPowerDelivered)-atof(actualElectricityPowerReturned))*(1000), 1, 2, actualPowerImportExport);
       dtostrf(atof(instantaneousCurrentL1)*1000, 1, 2, CurrentL1);
       dtostrf(atof(instantaneousCurrentL2)*1000, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)*1000, 1, 2, CurrentL3);
