@@ -65,7 +65,7 @@ Version: 1.2a Datum: 13.03.2023
          Fertigstellung der französischen und schwedischen Version
          diverse Verbesserungen und Fehlerbehebungen
 Version: 1.2 Datum: 05.03.2023, Autor: Hans Schneider
-         Unterstützung für den HTTP input Zähler der cFos Power Brain Wallbox hinzugefügt
+         Unterstützung für den HTTP_input Zähler der cFos Power Brain Wallbox hinzugefügt
          diverse Verbesserungen und Fehlerbehebungen
 Version: 1.1adc Datum: 12.02.2023 Autor: Ronald Leenes
 1.1adc: Umfangreiche Protokollierung implementiert
@@ -204,7 +204,7 @@ Version: 1.2a Date: 13.03.2023
          Finishing the french and swedish Version
          various Improvements and bug fixes
 Version: 1.2 Date: 03/05/2023, Author: Hans Schneider
-         added Support for the HTTP input meter of cFos Power Brain Wallbox
+         added Support for the HTTP_input meter of cFos Power Brain Wallbox
          various improvements and bug fixes
 Version: 1.1adc Date: 02/12/2023 Author: Ronald Leenes
 1.1adc: Extensive logging implemented
