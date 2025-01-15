@@ -142,13 +142,6 @@ bool MQTT_debug = false;
 
 // for cFos
 bool cfos = true;
-const char* cfosUsr = "admin";
-const char* cfosPwd = "1234abcd";
-const char* cfosIP = "192.168.1.183";
-const char* cfosPort = "80";
-const char* cfosID = "M4";
-const char* cfosModel = "HTTP_Input";
-// const char* cfosIsVA = "true";
 char actualPowerImport[8];
 char actualPowerExport[8];
 char actualPowerImportExport[8];
