@@ -50,11 +50,13 @@ hans(dot)schneider(at)gmx(dot)ch
 ```
 
 ```
+Version: 1.2d Datum: 15.01.2025
+         nach Ändern des voreingestellten Passworts für die cFos Power Brain wird das Passwort nun nicht mehr vergessen
 Version: 1.2c Datum: 23.05.2024
-         measurement page refreshes every 20 seconds now
-         P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
-         actualElectricityPowerReturned to cFos Power Brain wallbox. That is important to calculate correct
-         values for feeding energy into the power grid.
+         die Anzeige der Seite mit den Messwerten wird nun alle 20 Sekunden erneuert
+         P1meter sendet nun positive Werte für actualElectricityPowerDelivered und negative Werte für
+         actualElectricityPowerReturned zur cFos Power Brain Wallbox (das ist wichtig um korrekte Werte für die Einspeisung
+         ins Stomnetz zu erhalten)
 Version: 1.2b Datum: 22.05.2023
          Anpassungen für die Firmware 1.19.4 der cFos Power Brain Wallbox
          (power_va ist nun power_w, is_va existiert nicht mehr)
@@ -187,11 +189,13 @@ hans(dot)schneider(at)gmx(dot)ch
 ```
 
 ```
+Version: 1.2d Datum: 15.01.2025
+         after changing cFos Power Brain password from it's default the new password isn't forgotten anymore now
 Version: 1.2c Datum: 23.05.2024
          measurement page refreshes every 20 seconds now
          P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
-         actualElectricityPowerReturned to cFos Power Brain wallbox. That is important to calculate correct
-         values for feeding energy into the power grid.
+         actualElectricityPowerReturned to cFos Power Brain wallbox (that is important to calculate correct
+         values for feeding energy into the power grid)
 Version: 1.2b Datum: 22.05.2023
          changes for cFos Power Brain Firmware 1.19.4
          (power_va is now power_w, is_va doesn't exist anymore)
