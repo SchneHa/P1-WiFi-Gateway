@@ -20,7 +20,7 @@
  * @author Ronald Leenes
  *         Hans Schneider
  * @date 22.05.2023
- * @version 1.2d
+ * @version 1.2c
  *
  * @brief This file contains the main file for the P1 wifi gatewway
  *
@@ -62,11 +62,12 @@
  *  
  *  
  *    
- *  versie: 1.2d
- *  datum:  15 January 2025
+ *  versie: 1.2e
+ *  datum:  02 November 2025
  *  auteur: Ronald Leenes
  *          Hans Schneider
  *  
+ *  1.2e   now checks connection to wifi in every loop, if not connected it will be reconnected
  *  1.2d   after changing cFos Power Brain password from it's default the new password isn't now forgotten anymore
  *  1.2c   measurement page refreshes every 20 seconds now
  *         P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
@@ -165,7 +166,7 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2d – " + sfx;
+String version = "1.2e – " + sfx;
 
 #define HOSTNAME "p1meter"
 #define FSystem 1 // 0 = LittleFS 1 = SPIFFS
@@ -638,7 +639,12 @@ void loop() {
     doWatchDogs();
     EverSoOften = millis() + 22000;
   }
-  timerAlarm.update(); 
+  timerAlarm.update();
+  
+  if (WiFi.status() != WL_CONNECTED) {
+    wifiReconnect();
+  }
+  
 }
 
 void initTimers(){
