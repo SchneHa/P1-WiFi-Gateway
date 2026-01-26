@@ -50,6 +50,8 @@ hans(dot)schneider(at)gmx(dot)ch
 ```
 
 ```
+Version: 1.2e Datum: 02.11.2025
+         Checkt nun, ob eine Verbindung zum WiFi besteht. Wenn nicht, wird die Verbindung neu hergestellt.
 Version: 1.2d Datum: 15.01.2025
          nach Ändern des voreingestellten Passworts für die cFos Power Brain wird das Passwort nun nicht mehr vergessen
 Version: 1.2c Datum: 23.05.2024
@@ -189,14 +191,16 @@ hans(dot)schneider(at)gmx(dot)ch
 ```
 
 ```
-Version: 1.2d Datum: 15.01.2025
+Version: 1.2e Date: 02.11.2025
+         now checks connection to wifi in every loop, if not connected it will be reconnected
+Version: 1.2d Date: 15.01.2025
          after changing cFos Power Brain password from it's default the new password isn't forgotten anymore now
-Version: 1.2c Datum: 23.05.2024
+Version: 1.2c Date: 23.05.2024
          measurement page refreshes every 20 seconds now
          P1meter now sends positive values for actualElectricityPowerDelivered and negative values for
          actualElectricityPowerReturned to cFos Power Brain wallbox (that is important to calculate correct
          values for feeding energy into the power grid)
-Version: 1.2b Datum: 22.05.2023
+Version: 1.2b Date: 22.05.2023
          changes for cFos Power Brain Firmware 1.19.4
          (power_va is now power_w, is_va doesn't exist anymore)
          improvements of dutch, french and swedish language
