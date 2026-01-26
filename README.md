@@ -51,7 +51,7 @@ hans(dot)schneider(at)gmx(dot)ch
 
 ```
 Version: 1.2e Datum: 02.11.2025
-         Checkt nun, ob eine Verbindung zum WiFi besteht. Wenn nicht, wird die Verbindung neu hergestellt.
+         Checkt nun in jedem loop, ob eine Verbindung zum WiFi besteht. Wenn nicht, wird die Verbindung neu hergestellt.
 Version: 1.2d Datum: 15.01.2025
          nach Ändern des voreingestellten Passworts für die cFos Power Brain wird das Passwort nun nicht mehr vergessen
 Version: 1.2c Datum: 23.05.2024
