@@ -35,7 +35,7 @@ void addFoot(String& str){
   char sysmsg[100];
   sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
   str += sysmsg;
-  str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
+  str += F("<br><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a>");
   str += F("</div></div></body></html>");
 }
 */
@@ -57,7 +57,7 @@ void addFoot(String& str){
     sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
     str += sysmsg;
     
-    str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
+    str += F("<br><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a>");
     str += F("</div></div></body></html>");
   }
 
@@ -71,7 +71,7 @@ void addFoot(String& str){
     sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
     str += sysmsg;
     
-    str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
+    str += F("<br><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a>");
     str += F("</div></div></body></html>");
   }
 
@@ -87,7 +87,7 @@ void addFoot(String& str){
     str += F("<br>");
  // str += F("<p id=\"timer\"></p>");
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
   }
 
   void handleUploadForm(){
@@ -125,7 +125,7 @@ void addFoot(String& str){
     str += F("<p>misslyckats och du kommer att göra det behöver återkoppla  <br>");
     str += F("med WiFi-nätverket 'P1_Setup'.</p>");
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
     server.send(200, "text/html", str);
     delay(2000);
   }
@@ -528,7 +528,7 @@ void uploadDiag(String& str){
     str += F("Erik Forsberg beskriver i sin <a href='https://github.com/forsberg/esphome-p1reader'>github</a> hur man konfigurerar esphome ytterligare.</p>");
 
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
     server.send(200, "text/html", str);
   }
 #endif
