@@ -51,14 +51,16 @@ hans(dot)schneider(at)gmx(dot)ch
 
 ```
 Version: 1.2e Datum: 02.11.2025
-         Checkt nun in jedem loop, ob eine Verbindung zum WiFi besteht. Wenn nicht, wird die Verbindung neu hergestellt.
+         Checkt nun in jedem loop, ob eine Verbindung zum WiFi besteht. Wenn nicht, wird die
+         Verbindung neu hergestellt.
 Version: 1.2d Datum: 15.01.2025
-         nach Ändern des voreingestellten Passworts für die cFos Power Brain wird das Passwort nun nicht mehr vergessen
+         nach Ändern des voreingestellten Passworts für die cFos Power Brain wird das Passwort
+         nun nicht mehr vergessen
 Version: 1.2c Datum: 23.05.2024
          die Anzeige der Seite mit den Messwerten wird nun alle 20 Sekunden erneuert
-         P1meter sendet nun positive Werte für actualElectricityPowerDelivered und negative Werte für
-         actualElectricityPowerReturned zur cFos Power Brain Wallbox (das ist wichtig um korrekte Werte für die Einspeisung
-         ins Stomnetz zu erhalten)
+         P1meter sendet nun positive Werte für actualElectricityPowerDelivered und negative Werte
+         für actualElectricityPowerReturned zur cFos Power Brain Wallbox (das ist wichtig um
+         korrekte Werte für die Einspeisung ins Stomnetz zu erhalten)
 Version: 1.2b Datum: 22.05.2023
          Anpassungen für die Firmware 1.19.4 der cFos Power Brain Wallbox
          (power_va ist nun power_w, is_va existiert nicht mehr)
@@ -76,9 +78,11 @@ Version: 1.1adc Datum: 12.02.2023 Autor: Ronald Leenes
 1.1aa: Fehlerkorrekturen 1.1: Graphen implementiert BerichtstarifIndicatorElectricity behoben
 ud: Kopfzeilen aktualisieren behoben ua: Problem mit Setup-Feldern behoben
 u: Passwortschutz für Setup- und Update-Firmware-Menüs hinzugefügt
-   Gehen Sie beim ersten Booten von Version 1.0u innerhalb von 60 Sekunden zum Setup-Menü, um den Passwortschutz zu umgehen
+   Gehen Sie beim ersten Booten von Version 1.0u innerhalb von 60 Sekunden zum Setup-Menü, um den
+   Passwortschutz zu umgehen
    Out-of-the-Box-Unterstützung für die Integration von Home Assistant "DSMR Reader" hinzugefügt 
-   Verwenden Sie „dsmr“ als MQTT-Präfix und Daten werden automatisch im „DSMR Reader“-Format an den MQTT-Broker geliefert
+   Verwenden Sie „dsmr“ als MQTT-Präfix und Daten werden automatisch im „DSMR Reader“-Format an den
+   MQTT-Broker geliefert
    MQTT-Wiederverbindung behoben, es ist jetzt nicht blockierend
    Zurücksetzen der Hardboot-Tageszähler behoben
    Senden leerer MQTT-Nachrichten behoben
@@ -137,7 +141,8 @@ Benötigte Dateien:
   webserverSE.ino
   wifi.ino
 ```
-Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen lauffähig.</Del> Bei der französischen und der schwedischen Version muss ggf. die Übersetzung korrigiert werden.
+Anmerkung: <Del>Zurzeit sind nur die deutsche und die niederländische Versionen lauffähig.</Del> 
+Bei der französischen und der schwedischen Version muss ggf. die Übersetzung korrigiert werden.
 
 
 **English Version:**
