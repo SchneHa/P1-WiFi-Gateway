@@ -33,7 +33,7 @@
   
     if (Mqtt) {
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
-      str += F(" letztes sample ");
+      str += F(" répétition finale ");
       str += LastReport;
       str += F("<br>");
     }  
@@ -45,7 +45,7 @@
     sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
     str += sysmsg;
     
-    str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
+    str += F("<br><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a>");
     str += F("</div></div></body></html>");
   }
 
@@ -59,7 +59,7 @@
     sprintf_P(sysmsg, PSTR(" – %1.2fV"), volts / 1000);
     str += sysmsg;
 	
-    str += F("<br><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a>");
+    str += F("<br><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a>");
     str += F("</div></div></body></html>");
   }
 
@@ -75,7 +75,7 @@
     str += F("<br>");
   //str += F("<p id=\"timer\"></p>");
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
   }
 
   void handleUploadForm(){
@@ -114,7 +114,7 @@
     str += F("<p>Si la LED bleue reste allumée, Si la LED bleue reste allumée, c'est que le réglage a échoué. Reconnectez vous alors au réseau WiFi 'P1_Setup' pour corriger les paramètres.</p>");
     str += F("<br>");
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
     server.send(200, "text/html", str);
     delay(2000);
   }
@@ -505,7 +505,7 @@
     str += F("Daniel de Jong décrit sur son github comment configurer davantage HA. <br>Utilisez les cases à cocher pour indiquer la ou les méthodes de déclaration que vous souhaitez utiliser.</p>");
 
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='http://esp8266thingies.nl' target='_blank' style='color:#aaa;'>esp8266thingies.nl</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
     server.send(200, "text/html", str);
   }
 #endif
