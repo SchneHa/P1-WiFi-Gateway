@@ -641,8 +641,9 @@ void loop() {
   }
   timerAlarm.update();
   
-  if (!softAp || WiFi.status() != WL_CONNECTED) {
-    wifiReconnect();
+  if (!softAp)
+    if (WiFi.status() != WL_CONNECTED) {
+      wifiReconnect();
   }
   
 }
