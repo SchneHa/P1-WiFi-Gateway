@@ -33,6 +33,7 @@
   
     if (Mqtt) {
       if (MqttConnected) str += F("MQTT link: √ "); else str += F("MQTT – ");
+//      str += F(" letztes sample ");
       str += F(" répétition finale ");
       str += LastReport;
       str += F("<br>");
@@ -310,6 +311,31 @@
 //    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
     str += F("</fieldset>");
 
+    // for MQTT Gas
+    str += F("<fieldset><legend><b>&nbsp;Paramètres de consommation de gaz&nbsp;</b></legend>"); 
+
+    str += F("<p><b>Lire la consommation de gaz via MQTT ?</b><input type='checkbox' class='form-control' name='mgas' id='mgas' ");
+  
+    if (config_data.mgas[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+    str += F("<p><b>Adresse IP du serveur MQTT</b><input type='text' class='form-control' name='mqttGasIP' value='");
+    str += config_data.mqttGasIP;
+    str += F("'></p><p>");
+    str += F("<b>Port du serveur MQTT</b><input type='text' class='form-control' name='mqttGasPort' value='");
+    str += config_data.mqttGasPort;
+    str += F("'></p><p>");
+    str += F("<b>Utilisateur MQTT</b><input type='text' class='form-control' name='mqttGasUser' value='");
+    str += config_data.mqttGasUser;
+    str += F("'></p><p>");
+    str += F("<b>Mot de passe MQTT</b><input type='text' class='form-control' name='mqttGasPass' value='");
+    str += config_data.mqttGasPass;
+    str += F("'></p>");
+    str += F("<b>Rubrique racine MQTT Compteur total</b><input type='text' class='form-control' name='mqttGasTopic' value='");
+    str += config_data.mqttGasTopic;
+    str += F("'></p>");
+    str += F("<b>Rubrique racine MQTT Compteur de jours</b><input type='text' class='form-control' name='mqttGasTopicT' value='");
+    str += config_data.mqttGasTopicT;
+    // end MQTT Gas
+
     str += F("<fieldset><legend><b>&nbsp;Plus de réglages&nbsp;</b></legend>");
   
     str += F("<b>Intervalle de mesure en sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
@@ -438,10 +464,38 @@
   str += F("'></p>");
   */
     str += "<p><div class='row'><div class='column'><b>Consommation de gaz: total</b><input type='text' class='form-control c6' value='";
-    str += gasReceived5min;
+    
+    // for MQTT Gas
+    if (MQTTgas) {  
+      Volume = "";
+      for (int i=0; i<r_len; i++) {
+        Volume = Volume + buffer[i];
+        Volume.trim();
+        }   
+        str += Volume;
+        Volume = "";
+      }  
+    else
+    // end MQTT Gas 
+      str += gasReceived5min;
+
     str += F(" m3'></div>");
     str += "<div class='column' style='text-align:right'><b>aujourd'hui</b><input type='text' class='form-control c7' value='";
-    str += atof(gasReceived5min) - atof(log_data.dayG);
+
+    // for MQTT Gas
+    if (MQTTgas) { 
+      VolT = "";
+      for (int j=0; j<r_lenT; j++) {
+        VolT = VolT + bufferT[j];
+        VolT.trim();
+        }  
+        str += VolT;
+        VolT = "";
+      }
+    else
+      // end MQTT Gas
+      str += atof(gasReceived5min) - atof(log_data.dayG);
+
     str += " m3'></div></div></p>";
     str += F("</fieldset></form>");
     str += F("<form action='/' method='POST'><button class='button bhome'>Menu</button></form>");
@@ -501,8 +555,14 @@
     str += F("<p><b>Domoticz</b> accepte les messages json. Pour ce faire, entrez l'adresse IP de votre serveur Domoticz et le numéro de port sur lequel il est accessible (généralement 8080).</p>");
     str += F("Vous obtenez les Idx nécessaires pour le gaz et l'électricité en créant d'abord des capteurs virtuels pour les deux dans Domoticz. Une fois créés, les Idx apparaîtront sous l'onglet 'devices'.</p><br>");
     str += F("");
-    str += F("Les données peuvent également être lues (par Domoticz par exemple) via le port 23 du module (p1wifi.local:23).C'est ainsi que le dispositif matériel Domoticz (P1 Smart Meter avec interface LAN) peut récupérer des données, il n'a rien à régler (ne pas cochesr le json et le MQTT). Pour les autres systèmes, vous pouvez utiliser un serveur MQTT. Remplissez les paramètres du serveur et définissez le sujet racine. Pour Home Assistant, il s'agit de 'capteurs/alimentation/p1mètre'. ");
+    str += F("Les données peuvent également être lues (par Domoticz par exemple) via le port 23 du module (p1wifi.local:23).C'est ainsi que le dispositif matériel Domoticz (P1 Smart Meter avec interface LAN) ");
+    str += F("peut récupérer des données, il n'a rien à régler (ne pas cochesr le json et le MQTT). Pour les autres systèmes, vous pouvez utiliser un serveur MQTT. Remplissez les paramètres du serveur et ");
+    str += F("définissez le sujet racine. Pour Home Assistant, il s'agit de 'capteurs/alimentation/p1mètre'. ");
     str += F("Daniel de Jong décrit sur son github comment configurer davantage HA. <br>Utilisez les cases à cocher pour indiquer la ou les méthodes de déclaration que vous souhaitez utiliser.</p>");
+
+    str += F("Si l'interface P1 de votre compteur intelligent ne fournit pas de valeurs pour la consommation de gaz, vous pouvez lire ces valeurs via MQTT. La condition préalable est que votre compteur");
+    str += F("de gaz transmette les relevés au courtier. Le courtier peut être le même que dans la section « MQTT », mais il peut aussi s'agir d'un courtier différent. Le thème par défaut pour la consommation ");
+    str += F("de gaz est «Energie/Gas/Volume» pour le compteur total et «Energie/Gas/Daily_m3» pour le compteur journalier.</p>");
 
     str += F("</fieldset></p>");
     str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");

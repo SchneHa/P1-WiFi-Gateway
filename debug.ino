@@ -32,14 +32,22 @@ void readVoltage() { // read internal VCC
 }
 
 void PrintConfigData(){
+  debugln();
+
   debug("dataSet : ");
     debugln(config_data.dataSet);
+  debugln();
+
   debug("Admin password : ");
     debugln(config_data.adminPassword);
+  debugln();
+
   debug("SSID : ");
     debugln(config_data.ssid);
   debug("password : ");
     debugln(config_data.password);
+  debugln();
+
   debug("DomoticxIP : ");
     debugln(config_data.domoticzIP);
   debug("DomoticzPort : ");
@@ -48,6 +56,7 @@ void PrintConfigData(){
    debugln(config_data.domoticzGasIdx);
   debug("domotixzEnergyIdx : ");
    debugln(config_data.domoticzEnergyIdx);
+  debugln();
 
   debug("mqttIP : ");
     debugln(config_data.mqttIP);
@@ -59,7 +68,8 @@ void PrintConfigData(){
     debugln(config_data.mqttPass);
   debug("mqttTopic : ");
     debugln(config_data.mqttTopic);
-    
+  debugln();
+
   debug("cfosIP : ");
     debugln(config_data.cfosIP);
   debug("cfosPort : ");
@@ -72,11 +82,27 @@ void PrintConfigData(){
     debugln(config_data.cfosID);
   debug("cfosModel : ");
     debugln(config_data.cfosModel);
+  debugln();
+
+//  debug("mqttGasIP : ");
+//    debugln(config_data.mqttGasIP);
+//  debug("mqttGasPort : ");
+//    debugln(config_data.mqttGasPort);
+//  debug("mqttGasUser : ");
+//    debugln(config_data.mqttGasUser);
+//  debug("mqttGasPass : ");
+//    debugln(config_data.mqttGasPass);
+  debug("mqttGasTopic : ");
+    debugln(config_data.mqttGasTopic);
+  debugln();
+  debug("mqttGasTopicT : ");
+    debugln(config_data.mqttGasTopicT);
+  debugln();
 //  debug("cfosVA : ");
 //    debugln(config_data.cfosVA);
 //  debug("cfosIsVA : ");
 //    debugln(cfosIsVA);
-    
+
   debug("interval : ");
     debugln(config_data.interval);
   debug("json : ");
@@ -84,9 +110,12 @@ void PrintConfigData(){
   debug("mqtt : ");
     debugln(config_data.mqtt);
   debug("cfos : ");
-    debugln(config_data.cfos);  
+    debugln(config_data.cfos); 
+  debug("mgas : ");
+    debugln(config_data.mgas);  
   debug("watt : ");
     debugln(config_data.watt);
   debug("telnet : ");
     debugln(config_data.telnet);
+  debugln();
 }

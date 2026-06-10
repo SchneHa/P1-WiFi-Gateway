@@ -109,10 +109,10 @@
     str += F("<p>Das Modul sollte nun neu starten. Das dauert etwa eine Minute.</p>");
     str += F("<p>Die blaue LED leuchtet 2x auf wenn das Modul gestartet ist.</p>");
     str += F("<p>Die LED blinkt langsam während des Verbindens mit dem WiFi-Netzwerk.</p>");
-    str += F("<p>Wenn die blaue LED permanent leuchtet, ist die Einstellung missglückt und das Modul muss neu mit dem WiFi-Netzwerk<br>");
+    str += F("<p>Wenn die blaue LED permanent leuchtet, ist die Einstellung fehlgeschlagen und das Modul muss neu mit dem WiFi-Netzwerk<br>");
     str += F("'P1_Setup' verbunden werden.</p>");
     str += F("</fieldset></p>");
-    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
+    str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");
     server.send(200, "text/html", str);
     delay(2000);
   }
@@ -222,7 +222,7 @@
 
     addHead(str,0);
     addIntro(str);
-	str += F("<fieldset>");
+	  str += F("<fieldset>");
     str += F("<form action='/SetupSave' method='POST'><fieldset>");
     str += F("<input type='hidden' name='setuptoken' value='");
     str += setupToken;
@@ -281,6 +281,7 @@
     str += F("<b>MQTT root-topic</b><input type='text' class='form-control' name='mqttTopic' value='");
     str += config_data.mqttTopic;
     str += F("'></p>");
+
     str += F("</fieldset>");
   
     str += F("<fieldset><legend><b>&nbsp;cFos Power Brain Wallbox Parameter&nbsp;</b></legend>");
@@ -306,10 +307,38 @@
     str += F("<b>cFos Power Brain ZählerID</b><input type='text' class='form-control' name='cfosID' value='");
     str += config_data.cfosID;
     str += F("'></p>");
-//    str += F("<p><b>cfos Power Brain Zähleranzeige in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
-//    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+   //  str += F("<p><b>cfos Power Brain Zähleranzeige in VA (statt in W) </b><input type='checkbox' class='form-control' name='cfosVA' id='cfosVA' ");
+   //  if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
     str += F("</fieldset>");
 
+    // for MQTT Gas
+    str += F("<fieldset><legend><b>&nbsp;Gasverbrauch Parameter&nbsp;</b></legend>"); 
+
+    str += F("<p><b>Gasverbrauch über MQTT lesen?</b><input type='checkbox' class='form-control' name='mgas' id='mgas' ");
+  
+    if (config_data.mgas[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+    str += F("<p><b>MQTT Broker IP-Adresse</b><input type='text' class='form-control' name='mqttGasIP' value='");
+    str += config_data.mqttGasIP;
+    str += F("'></p><p>");
+    str += F("<b>MQTT Broker Port</b><input type='text' class='form-control' name='mqttGasPort' value='");
+    str += config_data.mqttGasPort;
+    str += F("'></p><p>");
+    str += F("<b>MQTT User</b><input type='text' class='form-control' name='mqttGasUser' value='");
+    str += config_data.mqttGasUser;
+    str += F("'></p><p>");
+    str += F("<b>MQTT Passwort</b><input type='text' class='form-control' name='mqttGasPass' value='");
+    str += config_data.mqttGasPass;
+    str += F("'></p>");
+    str += F("<b>MQTT root-topic Gesamtzähler</b><input type='text' class='form-control' name='mqttGasTopic' value='");
+    str += config_data.mqttGasTopic;
+    str += F("'></p>");
+    str += F("<b>MQTT root-topic Tageszähler</b><input type='text' class='form-control' name='mqttGasTopicT' value='");
+    str += config_data.mqttGasTopicT;
+    // end MQTT Gas
+
+    str += F("'></p>");
+    str += F("</fieldset>");
+  
     str += F("<fieldset><legend><b>&nbsp;Weitere Einstellungen&nbsp;</b></legend>");
   
     str += F("<b>Messintervall in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
@@ -345,7 +374,7 @@
       dtostrf(atof(instantaneousCurrentL2)/100, 1, 2, CurrentL2);
       dtostrf(atof(instantaneousCurrentL3)/100, 1, 2, CurrentL3);
     }
-  //if (reportInDecimals) eenheid = " kWh</div></div>"; else eenheid = " Wh</div></div>";
+    // if (reportInDecimals) eenheid = " kWh</div></div>"; else eenheid = " Wh</div></div>";
     if (reportInDecimals) eenheid2 = " kW'></div></p>"; else eenheid2 = " W'></div></p>";
   
     char str2[10];
@@ -359,7 +388,7 @@
    // str += P1timestamp[8];
    // str += P1timestamp[9];
    // str += ("</p>");
-	str += "<meta http-equiv='refresh' content='20'/>"; // 20s refresh time
+	  str += "<meta http-equiv='refresh' content='20'/>"; // 20s refresh time
     str += F("<fieldset>");
     str += F("<form ><fieldset><legend><b>Messwerte</b></legend>");
    // str += F("<form action='/' method='post'>");
@@ -426,23 +455,51 @@
     str += CurrentL3;
     str += " A'></div></div></p>";
 
-/*
-  str += F("<p><b>Voltage dips</b><input type='text' class='form-control' style='text-align:right' value='");
-  str += numberVoltageSagsL1;
-  str += F("'></p>");
-  str += F("<p><b>Voltage pieken</b><input type='text' class='form-control' style='text-align:right' value='");
-  str += numberVoltageSwellsL1;
-  str += F("'></p>");
-  str += F("<p><b>Stroomonderbrekingen</b><input type='text' class='form-control' style='text-align:right' value='");
-  str += numberPowerFailuresAny;
-  str += F("'></p>");
-*/
+   /*
+     str += F("<p><b>Voltage dips</b><input type='text' class='form-control' style='text-align:right' value='");
+     str += numberVoltageSagsL1;
+     str += F("'></p>");
+     str += F("<p><b>Voltage pieken</b><input type='text' class='form-control' style='text-align:right' value='");
+     str += numberVoltageSwellsL1;
+     str += F("'></p>");
+     str += F("<p><b>Stroomonderbrekingen</b><input type='text' class='form-control' style='text-align:right' value='");
+     str += numberPowerFailuresAny;
+     str += F("'></p>");
+   */
   
-    str += "<p><div class='row'><div class='column'><b>Gasverbrauch:<br>insgesamt</b><input type='text' class='form-control c6' value='";
-    str += gasReceived5min;
+    str += "<p><div class='row'><div class='column'><b>Gasverbrauch:<br>insgesamt</b><input type='text' class='form-control c6' value='"; 
+  
+    // for MQTT Gas
+    if (MQTTgas) {  
+      Volume = "";
+      for (int i=0; i<r_len; i++) {
+        Volume = Volume + buffer[i];
+        Volume.trim();
+        }   
+        str += Volume;
+        Volume = "";
+      }  
+    else
+    // end MQTT Gas 
+      str += gasReceived5min;
+    
     str += F(" m3'></div>");
     str += "<div class='column' style='text-align:right'><br><b>heute</b><input type='text' class='form-control c7' value='";
-    str += atof(gasReceived5min) - atof(log_data.dayG);
+    
+    // for MQTT Gas
+    if (MQTTgas) { 
+      VolT = "";
+      for (int j=0; j<r_lenT; j++) {
+        VolT = VolT + bufferT[j];
+        VolT.trim();
+        }  
+        str += VolT;
+        VolT = "";
+      }
+    else
+    // end MQTT Gas
+      str += atof(gasReceived5min) - atof(log_data.dayG);
+
     str += " m3'></div></div></p>";
     str += F("</fieldset></form>");
     str += F("<form action='/' method='POST'><button class='button bhome'>Menu</button></form>");
@@ -497,18 +554,24 @@ void uploadDiag(String& str){
   
     str += F("<p>Die Rohdaten sind über ");
     str += ipstr;
-    str += F("/Data oder über p1wifi.local/Data verfügbar.</p><br><br>");
+    str += F("/Data oder über p1wifi.local/Data verfügbar.</p><br>");
     str += F("<p>Häufiger ist die Verwendung des Gateways mit einem Hausautomationssystem.</p>");
     str += F("<p><b>Domoticz</b> akzeptiert json-Nachrichten. Geben Sie dazu die IP-Adresse von Ihrem Domoticz-Server ein und die Portnummer, über die darauf zugegriffen werden kann (normalerweise 8080).</p>");
     str += F("Die notwendigen Idx für Gas und Strom erhalten Sie, indem Sie zunächst virtuelle Sensoren in Domoticz für beide erstellen. ");
     str += F("Nach der Erstellung erscheinen die Idxes auf der Registerkarte 'Geräte'.</p><br>");
     str += F("");
     str += F("Über Port 23 des Moduls (p1wifi.local:23) können Daten auch gelesen werden (z.B. von Domoticz). ");
-    str += F("Auf diese Weise kann die Domoticz mittels Hardwareeinstellung [P1 Smart Meter mit LAN-Schnittstelle] Daten abrufen. ");
-    str += F("Sie brauchen auf der p1wifi Seite nichts einzustellen (Nur Häkchen bei json und mqtt). ");
+    str += F("Auf diese Weise kann Domoticz mittels Hardwareeinstellung [P1 Smart Meter mit LAN-Schnittstelle] Daten abrufen. ");
+    str += F("Sie brauchen auf der p1wifi Seite nichts einzustellen (nur Häkchen bei json und mqtt). ");
 
-    str += F("Für andere Systeme können Sie einen MQTT Broker verwenden. Füllen Sie die Details der Broker aus und legen Sie das Stammthema fest. Für Home Assistant ist dies 'sensors/power/p1meter'.</p>");
-    str += F("Daniel de Jong beschreibt auf seinem <a href='https://github.com/daniel-jong/esp8266_p1meter'>github</a> wie man HA weiter konfiguriert.</p>");
+    str += F("Für andere Systeme können Sie einen <b>MQTT Broker</b> verwenden. Füllen Sie die Details des Brokers aus und legen Sie das Stammthema (topic) fest. Für <b>Home Assistant</b> ist dies 'sensors/power/p1meter'.</p>");
+    
+    str += F("Daniel de Jong beschreibt auf <a href='https://github.com/daniel-jong/esp8266_p1meter'>github</a> wie man HA weiter konfiguriert.</p><br>");
+
+    str += F("Wenn die P1-Schnittstelle Ihres Smartmeters keine Werte für den Gasverbrauch bereitstellt, können Sie diese Werte über MQTT einlesen. Voraussetzung ist, dass Ihr Gaszähler die Werte an den Broker ");
+    str += F("sendet. Der Broker kann derselbe sein wie im Abschnitt 'MQTT', es kann aber auch ein anderer sein. Das voreingestellte Stammthema (topic) für den Gasverbrauch ist 'Energy/Gas/Volume' für den ");
+    str += F("Gesamtzähler und 'Energy/Gas/Daily_m3' für den Tageszähler.</p>");
+    
     str += F("Verwenden Sie die Kontrollkästchen um anzugeben, welche Berichtsmethode(n) Sie verwenden möchten.</p>");
 
     str += F("</fieldset></p>");

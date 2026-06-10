@@ -310,6 +310,31 @@
 //    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
     str += F("</fieldset>");
 
+    // for MQTT Gas
+    str += F("<fieldset><legend><b>&nbsp;Gasverbruiksparameters&nbsp;</b></legend>"); 
+
+    str += F("<p><b>Gasverbruik uitlezen via MQTT?</b><input type='checkbox' class='form-control' name='mgas' id='mgas' ");
+  
+    if (config_data.mgas[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+    str += F("<p><b>MQTT broker IP address</b><input type='text' class='form-control' name='mqttGasIP' value='");
+    str += config_data.mqttGasIP;
+    str += F("'></p><p>");
+    str += F("<b>MQTT broker Port</b><input type='text' class='form-control' name='mqttGasPort' value='");
+    str += config_data.mqttGasPort;
+    str += F("'></p><p>");
+    str += F("<b>MQTT user</b><input type='text' class='form-control' name='mqttGasUser' value='");
+    str += config_data.mqttGasUser;
+    str += F("'></p><p>");
+    str += F("<b>MQTT password</b><input type='text' class='form-control' name='mqttGasPass' value='");
+    str += config_data.mqttGasPass;
+    str += F("'></p>");
+    str += F("<b>MQTT root topic Totaal aantal</b><input type='text' class='form-control' name='mqttGasTopic' value='");
+    str += config_data.mqttGasTopic;
+    str += F("'></p>");
+    str += F("<b>MQTT root topic Dagteller</b><input type='text' class='form-control' name='mqttGasTopicT' value='");
+    str += config_data.mqttGasTopicT;
+    // end MQTT Gas
+
     str += F("<fieldset><legend><b>&nbsp;Meer instellingen&nbsp;</b></legend>");
     str += F("<b>Meetinterval in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
     str += config_data.interval; 
@@ -433,10 +458,38 @@
 */
   
     str += "<p><div class='row'><div class='column'><b>Gasverbruik: <br>totaal</b><input type='text' class='form-control c6' value='";
-    str += gasReceived5min;
+    
+    // for MQTT Gas
+    if (MQTTgas) {  
+      Volume = "";
+      for (int i=0; i<r_len; i++) {
+        Volume = Volume + buffer[i];
+        Volume.trim();
+        }   
+        str += Volume;
+        Volume = "";
+      }  
+    else
+    // end MQTT Gas     
+      str += gasReceived5min;
+
     str += F(" m3'></div>");
     str += "<div class='column' style='text-align:right'><br><b>vandaag</b><input type='text' class='form-control c7' value='";
-    str += atof(gasReceived5min) - atof(log_data.dayG);
+    
+        // for MQTT Gas
+    if (MQTTgas) { 
+      VolT = "";
+      for (int j=0; j<r_lenT; j++) {
+        VolT = VolT + bufferT[j];
+        VolT.trim();
+        }  
+        str += VolT;
+        VolT = "";
+      }
+    else
+      // end MQTT Gas
+      str += atof(gasReceived5min) - atof(log_data.dayG);
+
     str += " m3'></div></div></p>";
     str += F("</fieldset></form>");
     str += F("<form action='/' method='POST'><button class='button bhome'>Menu</button></form>");
@@ -491,6 +544,11 @@
     str += F("broker in, en stel het root topic in. Voor Home Assistant is dat 'sensors/power/p1meter'.</p>");
     str += F("Daniel de Jong beschijft op zijn <a href='https://github.com/daniel-jong/esp8266_p1meter'>github</a> hoe u HA verder configureert.</p>");
     str += F("Geef met de checkboxes aan welke rapportage methode(n) u wilt gebruiken.</p>");
+
+    str += F("Als de P1-interface van uw slimme meter geen waarden voor het gasverbruik weergeeft, kunt u deze waarden via MQTT uitlezen.");
+    str += F("De voorwaarde is dat uw gasmeter de meterstanden naar de tussenpersoon doorstuurt. De broker kan dezelfde zijn  als in het ");
+    str += F("'MQTT'-gedeelte, maar het kan ook een andere zijn. Het standaardonderwerp voor gasverbruik is 'Energie/Gas/Volume' voor de ");
+    str += F("totale meter en 'Energie/Gas/Daily_m3' voor de dagelijkse meter.</p>");
 
     str += F("</fieldset></p>");
     str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");

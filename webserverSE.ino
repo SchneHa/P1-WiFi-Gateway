@@ -323,6 +323,31 @@ void addFoot(String& str){
 //    if (config_data.cfosVA[0] =='j') str += F(" checked></p>"); else str += F("></p>");
 //  str += F("'></p>");
     str += F("</fieldset>");
+
+        // for MQTT Gas
+    str += F("<fieldset><legend><b>&nbsp;Parametrar för gasförbrukning&nbsp;</b></legend>"); 
+
+    str += F("<p><b>Läsa gasförbrukning via MQTT?</b><input type='checkbox' class='form-control' name='mgas' id='mgas' ");
+  
+    if (config_data.mgas[0] =='j') str += F(" checked></p>"); else str += F("></p>");
+    str += F("<p><b>MQTT broker IP address</b><input type='text' class='form-control' name='mqttGasIP' value='");
+    str += config_data.mqttGasIP;
+    str += F("'></p><p>");
+    str += F("<b>MQTT broker Port</b><input type='text' class='form-control' name='mqttGasPort' value='");
+    str += config_data.mqttGasPort;
+    str += F("'></p><p>");
+    str += F("<b>MQTT user</b><input type='text' class='form-control' name='mqttGasUser' value='");
+    str += config_data.mqttGasUser;
+    str += F("'></p><p>");
+    str += F("<b>MQTT password</b><input type='text' class='form-control' name='mqttGasPass' value='");
+    str += config_data.mqttGasPass;
+    str += F("'></p>");
+    str += F("<b>MQTT root topic Totalräknare</b><input type='text' class='form-control' name='mqttGasTopic' value='");
+    str += config_data.mqttGasTopic;
+    str += F("'></p>");
+    str += F("<b>MQTT root topic Dagräknare</b><input type='text' class='form-control' name='mqttGasTopicT' value='");
+    str += config_data.mqttGasTopicT;
+    // end MQTT Gas
 	
     str += F("<fieldset><legend><b>&nbsp;Fler inställningar&nbsp;</b></legend>");
     str += F("<b>Mätintervall in sec (> 10 sec)</b><input type='text' class='form-control' name='interval' value='");
@@ -452,10 +477,38 @@ void addFoot(String& str){
 */
   
     str += "<p><div class='row'><div class='column'><b>Gasförbrukning:<br> total</b><input type='text' class='form-control c6' value='";
-    str += gasReceived5min;
+    
+    // for MQTT Gas
+    if (MQTTgas) {  
+      Volume = "";
+      for (int i=0; i<r_len; i++) {
+        Volume = Volume + buffer[i];
+        Volume.trim();
+        }   
+        str += Volume;
+        Volume = "";
+      }  
+    else
+    // end MQTT Gas  
+      str += gasReceived5min;
+
     str += F(" m3'></div>");
     str += "<div class='column' style='text-align:right'><br><b>idag</b><input type='text' class='form-control c7' value='";
-    str += atof(gasReceived5min) - atof(log_data.dayG);
+
+    // for MQTT Gas
+    if (MQTTgas) { 
+      VolT = "";
+      for (int j=0; j<r_lenT; j++) {
+        VolT = VolT + bufferT[j];
+        VolT.trim();
+        }  
+        str += VolT;
+        VolT = "";
+      }
+    else
+    // end MQTT Gas
+      str += atof(gasReceived5min) - atof(log_data.dayG);
+      
     str += " m3'></div></div></p>";
     str += F("</fieldset></form>");
     str += F("<form action='/' method='POST'><button class='button bhome'>Meny</button></form>");
@@ -526,6 +579,10 @@ void uploadDiag(String& str){
     str += F("Daniel de Jong beskriver i sin <a href='https://github.com/daniel-jong/esp8266_p1meter'>github</a> hur man konfigurerar HA ytterligare.</p>");
     str += F("Använd kryssrutorna för att ange vilken/vilka rapporteringsmetoder du vill använda.</p>");
     str += F("Erik Forsberg beskriver i sin <a href='https://github.com/forsberg/esphome-p1reader'>github</a> hur man konfigurerar esphome ytterligare.</p>");
+
+    str += F("Om P1-gränssnittet på din smarta mätare inte anger värden för gasförbrukning kan du läsa av dessa värden via MQTT. Förutsättningen är att din ");
+    str += F("gasmätare skickar avläsningarna till mäklaren. Mäklaren kan vara densamma som i avsnittet 'MQTT', men det kan också vara en annan. ");
+    str += F("Het standaardonderwerp voor gasverbruik is 'Energie/Gas/Volume' voor de totale meter en 'Energie/Gas/Daily_m3' voor de dagelijkse meter.</p>");
 
     str += F("</fieldset></p>");
     str += F("<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/SchneHa/P1-WiFi-Gateway' target='_blank' style='color:#aaa;'>github.com/SchneHa/P1-WiFi-Gateway</a></div></div></fieldset></body></html>");

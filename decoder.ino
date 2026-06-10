@@ -163,7 +163,7 @@ void getDomoticzGasValue(char *theValue, char *buffer, int maxlen, char startcha
      // } else if (endchar == ')')  if (isNumber(res, l))  strncpy(theValue, res, l);
    }
 }
- 
+
 void getStr(char *theValue, char *buffer, int maxlen, char startchar, char endchar){
   int s = FindCharInArrayRev(buffer, startchar, maxlen - 2);
   int l = FindCharInArrayRev(buffer, endchar, maxlen - 2) - s - 1;
@@ -405,7 +405,6 @@ else  { // normal line, process
              getValue(cumulativeReactiveImport, telegram, len, '(', '*');
 
 #endif 
-
             
           // 1-0:31.7.0(002*A) Instantane stroom Elektriciteit L1
           if (strncmp(telegram, "1-0:31.7.0", strlen("1-0:31.7.0")) == 0)
@@ -446,7 +445,6 @@ else  { // normal line, process
            getValue(momentaryReactiveExportL2, telegram, len, '(', '*');
        
 #endif
-
 
         // 1-0:41.7.0(00.378*kW) Instantaan vermogen Elektriciteit levering L2
         if (strncmp(telegram, "1-0:41.7.0", strlen("1-0:41.7.0")) == 0)

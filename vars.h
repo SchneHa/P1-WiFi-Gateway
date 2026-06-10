@@ -102,7 +102,7 @@ unsigned int currentCRC=0;        // the CRC v alue of the datagram
 bool gas22Flag = false;        // flag for parsing second gas line on dsmr2.2 meters
 bool reportInDecimals = true;
 bool CRCcheckEnabled = true;      // by default enable CRC checking
-String mtopic ="Een lange MQTT boodschap als placeholder";
+String mtopic ="Een lange MQTT boodschap als placeholder und noch ein wenig länger...";
 
 // process stuff
 #define DISABLED 0
@@ -134,10 +134,11 @@ bool Telnet = false;
 bool AdminAuthenticated = false;
 bool Mqtt = false;
 bool MqttConnected = false;
+bool MqttGasConnected = false;
 bool MqttDelivered = false;
 String LastReport = ""; //timestamp of last telegram reported
 
-bool mqtt_dsmr = false; // deliver mqtt data in 'dsmr reader" format
+bool mqtt_dsmr = false; // deliver mqtt data in 'dsmr reader' format
 bool MQTT_debug = false;
 
 // for cFos
@@ -148,7 +149,17 @@ char actualPowerImportExport[8];
 char CurrentL1[9];
 char CurrentL2[9];
 char CurrentL3[9];
-// for cFos Ende
+// end for cFos
+
+// for MQTT Gas
+bool MQTTgas = false;
+int r_len;
+int r_lenT;
+char buffer[12];
+char bufferT[12];
+String Volume;
+String VolT;
+// end for MQTT Gas
 
 bool daystart = true;
 bool OEstate = false;  // 74125 OE output enable is off by default (EO signal high) 

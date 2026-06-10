@@ -1,3 +1,5 @@
+#include <ESP8266LLMNR.h>
+
  /*
  * Copyright (c) 2022 Ronald Leenes
  *
@@ -19,8 +21,8 @@
  * @file P1WG2022current.ino
  * @author Ronald Leenes
  *         Hans Schneider
- * @date 22.05.2023
- * @version 1.2c
+ * @date 02.11.2025
+ * @version 1.2f
  *
  * @brief This file contains the main file for the P1 wifi gatewway
  *
@@ -62,11 +64,12 @@
  *  
  *  
  *    
- *  versie: 1.2e
- *  datum:  02 November 2025
+ *  versie: 1.2f
+ *  datum:  29 Januar 2026
  *  auteur: Ronald Leenes
  *          Hans Schneider
- *  
+ *
+ *  1.2f   implemented reading Gas values provided of an extern smart gas meter via MQTT
  *  1.2e   now checks connection to wifi in every loop, if not connected it will be reconnected
  *  1.2d   after changing cFos Power Brain password from it's default the new password isn't now forgotten anymore
  *  1.2c   measurement page refreshes every 20 seconds now
@@ -81,7 +84,7 @@
  *         improvements for T211 SmartMeter in Belgium
  *         implemented support for HTTP input meter in cFos Power Brain wallbox  
  *           note: for this to work your cFos Charging Manager firmware has to be at least 1.17.4-beta
- *         debugging French and Swedish versions and improvements of translations (needs to be checked)
+ *         debugging French and Swedish versions and improvemehandlents of translations (needs to be checked)
  *  1.1b   cleaning up, bug fixes, cosmetic changes
  *  1.1adc
  *  1.1ad: bug fixes and graph improvements
@@ -166,9 +169,10 @@ bool zapfiles = false; //false; //true;
   String sfx = "SE";
 #endif
 
-String version = "1.2e – " + sfx;
+String version = "1.2f – " + sfx;
 
 #define HOSTNAME "p1meter"
+//#define HOSTNAME_G "Gas"
 #define FSystem 1 // 0 = LittleFS 1 = SPIFFS
 
 #define GRAPH 1
@@ -180,7 +184,7 @@ String version = "1.2e – " + sfx;
 #define LED_BUILTIN 2
 
 const uint32_t  wakeTime = 90000; // stay awake wakeTime millisecs
-const uint32_t  sleepTime = 5000; //sleep sleepTime millisecs
+const uint32_t  sleepTime = 5000; // sleep sleepTime millisecs
 
 #if DEBUG == 1
   const char* host = "P1test";
@@ -314,10 +318,25 @@ struct settings {
   char cfosID[5] = "M4";
   char cfosModel[30] = "HTTP_Input";
   char interval[3] = "20";
-//  char cfosVA[4] = "n";
+  // char cfosVA[4] = "n";
+
+  // for MQTT Gas
+  char mqttGasTopic[20] = "Energy/Gas/Volume";
+  char mqttGasTopicT[20] = "Energy/Gas/Daily_m3";
+  char mqttGasIP[30] = "";
+  char mqttGasPort[10] = "";
+  char mqttGasUser[32] = "";
+  char mqttGasPass[32] = "";  
+  // end MQTT Gas
+
   char domo[4] = "j";
-  char mqtt[4] = "n";
+  char mqtt[4] = "j";
   char cfos[4] = "j";
+  
+  // for MQTT Gas
+  char mgas[4] = "n";
+  // end MQTT Gas
+
   char watt[4] = "n";
   char telnet[4] = "n";
   char debug[4] = "n";
@@ -400,6 +419,11 @@ char gasDomoticz[12];       //Domoticz wil gas niet in decimalen?
 
 char prevGAS[12];           // not an P1 protocol var, but holds gas value
 
+// char VolGas[12];
+// String Vlm = "";
+// String x;
+
+// static char MQTT_EP[64]; // MQTT Empfangspuffer
 
 // char dayStartGaz[12];
 // char dayStartUsedT1[12];
@@ -442,20 +466,24 @@ void setup() {
   EEPROM.get(0, config_data);
 
   if (config_data.dataSet[0] != 'j') {
-    config_data = (settings) {"n", "", "", "0.0.0.0", "8080", "1234", "1235", "sensors/power/p1meter", "0.0.0.0", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "0.0.0.0", "80", "M4", "HTTP_Input", "30", "n", "n", "n", "n", "n", "n", "adminpwd"};	  
+    config_data = (settings) {"n", "", "", "0.0.0.0", "8080", "1234", "1235", "sensors/power/p1meter", "0.0.0.0", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "0.0.0.0", "80", "M4", "HTTP_Input", "30", "Energy/Gas/Volume", "Energy/Gas/Daily_m3", "0.0.0.0", "1883", "mqtt_gas_user", "mqtt_gas_pass", "n", "n", "n", "n", "n", "n", "n", "adminpwd"};
+  //  config_data = (settings) {"n", "", "", "0.0.0.0", "8080", "1234", "1235", "sensors/power/p1meter", "0.0.0.0", "1883", "mqtt_user", "mqtt_passwd", "admin", "1234abcd", "0.0.0.0", "80", "M4", "HTTP_Input", "30", "Energy/Gas", "n", "n", "n", "n", "n", "n", "n", "adminpwd"};
   }
   
   (config_data.watt[0] == 'j') ? reportInDecimals = false : reportInDecimals = true;
   (config_data.domo[0] == 'j') ? Json = true : Json = false;
   (config_data.mqtt[0] == 'j') ? Mqtt = true : Mqtt = false;
   (config_data.cfos[0] == 'j') ? cfos = true : cfos = false;
+  // for MQTT Gas
+  (config_data.mgas[0] == 'j') ? MQTTgas = true : MQTTgas = false;
+  //
   (config_data.telnet[0] == 'j') ? Telnet = true : Telnet = false;
   (config_data.debug[0] == 'j') ? MQTT_debug = true : MQTT_debug = false;
-//  if (config_data.cfosVA[0] == 'j') {
-//    cfosIsVA = "true";
-//  } else {
-//    cfosIsVA = "false";
-//  }
+  //  if (config_data.cfosVA[0] == 'j') {
+  //    cfosIsVA = "true";
+  //  } else {
+  //    cfosIsVA = "false";
+  //  }
   
   if (strcmp(config_data.mqttTopic, "dsmr") == 0) { // autodetect need to report in 'dsmr reader' mqtt format
     mqtt_dsmr = true;
@@ -465,7 +493,7 @@ void setup() {
    // reportInDecimals = false;
   }
 
-  debugln("EEprom read: done");
+  debugln("EEPROM read: done");
   PrintConfigData();
 
   interval = atoi(config_data.interval) * 1000;
@@ -559,6 +587,10 @@ void setup() {
   timerAlarm.stopService();
   settimeofday_cb(timeIsSet_cb);
   configTime(MYTZ, "pool.ntp.org");
+
+  mqtt_client.setServer(config_data.mqttGasIP, atoi(config_data.mqttGasPort));
+  mqtt_client.setCallback(callback);
+//  mqtt_client.setCallback(callbackT);
 }
 
 void readTelegram() {
@@ -610,22 +642,23 @@ void loop() {
         MqttDelivered = false;
       }
     }
+
     if (Json) {
       doJSON();
       doCFOS();
       datagramValid = false;
       state = WAITING;    
     }
+
     if (Telnet) {
       TelnetReporter();
       datagramValid = false;
       state = WAITING;
     }
-    if (MQTT_debug) MQTT_Debug();
 
-    state = WAITING;
+    if (MQTT_debug) MQTT_Debug();
+      state = WAITING;
   }  
-    
 
   if (softAp || (WiFi.status() == WL_CONNECTED)) {
     server.handleClient(); //handle web requests
@@ -645,7 +678,9 @@ void loop() {
     if (WiFi.status() != WL_CONNECTED) {
       wifiReconnect();
   }
-  
+
+  mqtt_client.loop();
+
 }
 
 void initTimers(){

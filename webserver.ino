@@ -116,20 +116,31 @@ void handleSetupSave() {
     strncpy(config_data.mqttTopic, server.arg("mqttTopic").c_str(), server.arg("mqttTopic").length() );
 
     if (server.arg("cfos") == "on") config_data.cfos[0] = 'j'; else config_data.cfos[0] = 'n';
-//    if (server.arg("cfosVA") == "on") (config_data.cfosVA[0] = 'j'); else (config_data.cfosVA[0] = 'n');
+    // if (server.arg("cfosVA") == "on") (config_data.cfosVA[0] = 'j'); else (config_data.cfosVA[0] = 'n');
     strncpy(config_data.cfosIP, server.arg("cfosIP").c_str(), server.arg("cfosIP").length() );
     strncpy(config_data.cfosPort, server.arg("cfosPort").c_str(), server.arg("cfosPort").length() );
     strncpy(config_data.cfosUsr, server.arg("cfosUsr").c_str(), server.arg("cfosUsr").length() );
     strncpy(config_data.cfosPwd, server.arg("cfosPwd").c_str(), server.arg("cfosPwd").length() );
     strncpy(config_data.cfosID, server.arg("cfosID").c_str(), server.arg("cfosID").length() );
     strncpy(config_data.cfosModel, server.arg("cfosModel").c_str(), server.arg("cfosModel").length() );
-//    strncpy(config_data.cfosIsVA, server.arg("cfosIsVA").c_str(), server.arg("cfosIsVA").length() );
+    // strncpy(config_data.cfosIsVA, server.arg("cfosIsVA").c_str(), server.arg("cfosIsVA").length() );
+
+    // for MQTT Gas
+    if (server.arg("mgas") == "on") config_data.mgas[0] = 'j'; else config_data.mgas[0] = 'n';
+    strncpy(config_data.mqttGasIP, server.arg("mqttGasIP").c_str(), server.arg("mqttGasIP").length() );
+    strncpy(config_data.mqttGasPort, server.arg("mqttGasPort").c_str(), server.arg("mqttGasPort").length() );
+    strncpy(config_data.mqttGasUser, server.arg("mqttGasUser").c_str(), server.arg("mqttGasUser").length() );
+    strncpy(config_data.mqttGasPass, server.arg("mqttGasPass").c_str(), server.arg("mqttGasPass").length() );
+    strncpy(config_data.mqttGasTopic, server.arg("mqttGasTopic").c_str(), server.arg("mqttGasTopic").length() );
+    strncpy(config_data.mqttGasTopicT, server.arg("mqttGasTopicT").c_str(), server.arg("mqttGasTopicT").length() );
+    // end for MQTT Gas
 
     strncpy(config_data.interval, server.arg("interval").c_str(), server.arg("interval").length() );
 
     if (server.arg("watt") == "on") config_data.watt[0] = 'j'; else config_data.watt[0] = 'n';
     if (server.arg("telnet") == "on") config_data.telnet[0] = 'j'; else config_data.telnet[0] = 'n';
     if (server.arg("debug") == "on") config_data.debug[0] = 'j'; else config_data.debug[0] = 'n';
+
 
     config_data.dataSet[0] = 'j';
     config_data.dataSet[1] =
@@ -152,11 +163,22 @@ void handleSetupSave() {
     config_data.cfosPort[server.arg("cfosPort").length()] =
     config_data.cfosID[server.arg("cfosID").length()] = 
     config_data.cfosModel[server.arg("cfosModel").length()] = 
-//    config_data.cfosIsVA[server.arg("cfosIsVA").length()] = 
-//    config_data.cfosVA[1] =      
+    // for MQTT Gas
+    config_data.mqttGasIP[server.arg("mqttGasIP").length()] =
+    config_data.mqttGasPort[server.arg("mqttGasPort").length()] =
+    config_data.mqttGasUser[server.arg("mqttGasUser").length()] =
+    config_data.mqttGasPass[server.arg("mqttGasPass").length()] =
+    config_data.mqttGasTopic[server.arg("mqttGasTopic").length()] = 
+    config_data.mqttGasTopicT[server.arg("mqttGasTopicT").length()] =
+    //
+    // config_data.cfosIsVA[server.arg("cfosIsVA").length()] = 
+    // config_data.cfosVA[1] =      
     config_data.domo[1] = //server.arg("domo").length()] = 
     config_data.mqtt[1] = //server.arg("mqtt").length()] = 
     config_data.cfos[1] =
+    // for MQTT Gas
+    config_data.mgas[1] =
+    // end for MQTT Gas
     config_data.watt[1] = //server.arg("watt").length()] = 
     config_data.telnet[1] = //server.arg("telnet").length()] = 
     config_data.debug[1] = 
