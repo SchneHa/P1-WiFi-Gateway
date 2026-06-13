@@ -101,7 +101,7 @@ void callback(char* gasTopic, byte* payload, unsigned int length) {
       }
     }
 else {
-  //if (String(gasTopic) == String(config_data.mqttGasTopicT)), e.g.: /Energy/Gas/Dily_m3
+  //if (String(gasTopic) == String(config_data.mqttGasTopicT)); // e.g.: Energy/Gas/Daily_m3
     debug("] ");
     r_lenT=length;
     int j=0;
